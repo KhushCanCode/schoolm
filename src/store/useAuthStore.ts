@@ -44,9 +44,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   getUser: async () => {
     try {
       const res = await axiosInstance.get<ApiResponse<AuthUser>>("/auth/user");
-
       if (res.data.status && res.data.data) {
+        
         set({ authUser: res.data.data });
+
       } else {
         set({ authUser: null });
         toast.error(res.data.message || "Failed to fetch user");

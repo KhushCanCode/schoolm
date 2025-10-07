@@ -45,6 +45,7 @@ interface UsersState {
   registerStudent: (schoolId: string, data: StudentForm) => Promise<boolean>;
   updateStudent: (studentId: string, schoolId: string, data: StudentForm) => Promise<boolean>;
   getStats: (schoolId: string) => Promise<Stats | null>;
+  getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
 }
 
 export const useUsersStore = create<UsersState>(() => ({
@@ -70,9 +71,8 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Update student
+  //  Update student
   updateStudent: async (studentId, schoolId, data) => {
-    console.log("working here")
     try {
       const res = await axiosInstance.put<ApiResponse<any>>(
         `/users/update-student/${studentId}/${schoolId}`,
@@ -93,7 +93,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Get school stats
+  //  Get school stats
   getStats: async (schoolId) => {
     try {
       const res = await axiosInstance.get<ApiResponse<Stats>>(
@@ -109,6 +109,27 @@ export const useUsersStore = create<UsersState>(() => ({
     } catch (error: any) {
       console.error("Error fetching stats:", error?.response?.data?.message || error.message);
       toast.error(error?.response?.data?.message || "Failed to fetch stats");
+      return null;
+    }
+  },
+
+  // Get all student details for a school
+  getStudentDetails: async (schoolId) => {
+    try {
+      const res = await axiosInstance.get<ApiResponse<StudentForm[]>>(
+        `/users/students/${schoolId}`
+      );
+
+      if (res.data.status) {
+        toast.success(res.data.message || "Students fetched successfully");
+        return res.data.data;
+      } else {
+        toast.error(res.data.message || "Failed to fetch students");
+        return null;
+      }
+    } catch (error: any) {
+      console.error("Error fetching students:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to fetch students");
       return null;
     }
   },

@@ -29,9 +29,7 @@ function LoginPage() {
   });
 
   const login = useAuthStore((state) => state.login);
-  const verifyForOtp = useAuthStore((state) => state.verifyForOtp);
 
-  
   const navigate = useNavigate();
 
   // Fetch schools from backend

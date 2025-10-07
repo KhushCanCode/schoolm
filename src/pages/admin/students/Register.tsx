@@ -38,12 +38,13 @@ interface School {
 }
 
 const StudentRegister = () => {
+   const { authUser } = useAuthStore();
   const { toast } = useToast();
   const registerStudent = useUsersStore((state) => state.registerStudent);
 
 const [formData, setFormData] = useState<StudentRegisterForm>({
   candidateName: "",
-  schoolId: "",
+  schoolId: authUser.schoolId,
   gender: "",
   addhar: "",
   dob: "",
@@ -62,22 +63,7 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 });
 
 
-  const [schools, setSchools] = useState<School[]>([]);
-  const getSchoolList = useAuthStore((state) => state.getSchoolList);
-
-
-    // ========================= FETCHING SCHOOLS =========================
-  useEffect(() => {
-    const fetchSchools = async () => {
-      const schoolList = await getSchoolList();
-      if (schoolList.length === 0) {
-         toast({ title: "Failed to fetch schools", variant: "destructive" });
-      } else {
-        setSchools(schoolList);
-      }
-    };
-    fetchSchools();
-  }, [getSchoolList]);
+ 
 
   // ========================= HANDLE INPUT CHANGE =========================
   const handleInputChange = (field: string, value: string) => {
@@ -105,7 +91,7 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
       // Reset form
       setFormData({
-        schoolId: "",
+       schoolId: authUser.schoolId,
         candidateName: "",
         gender: "",
         addhar: "",
@@ -161,32 +147,6 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
                   onChange={(e) => handleInputChange("candidateName", e.target.value)}
                   required
                 />
-              </div>
-
-             {/* School Dropdown */}
-              <div className="space-y-2">
-                <Label htmlFor="school">School *</Label>
-                <Select
-                  value={formData.schoolId}
-                  onValueChange={(value) => setFormData({ ...formData, schoolId: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select school" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {schools.length > 0 ? (
-                      schools.map((school) => (
-                        <SelectItem key={school.id} value={school.id}>
-                          {school.name}
-                        </SelectItem>
-                      ))
-                    ) : (
-                      <SelectItem value="none" disabled>
-                        No schools available
-                      </SelectItem>
-                    )}
-                  </SelectContent>
-                </Select>
               </div>
 
             {/*  Aadhaar Number */}
