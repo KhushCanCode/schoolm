@@ -6,7 +6,8 @@ export const AppInitializer: React.FC<{ children: React.ReactNode }> = ({ childr
   const getUser = useAuthStore((state) => state.getUser);
 
   useEffect(() => {
-    getUser(); // fetch auth user on app load
+    const user = getUser(); 
+    console.log(user)
   }, [getUser]);
 
   return <>{children}</>;

@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 import { Book, Eye, EyeOff, Lock, Mail, School } from 'lucide-react';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import AuthPattern from '../../components/AuthPattern';
 import { useAuthStore } from '../../store/useAuthStore';
+=======
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { EyeOff, Eye, Mail, Lock, School, Book } from "lucide-react";
+import AuthPattern from "../../components/AuthPattern";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useNavigate, Link } from "react-router-dom";
+import { stat } from "fs";
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
 
 interface LoginForm {
   email: string;
@@ -18,21 +28,31 @@ export interface School {
   city: string;
 }
 
-
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<LoginForm>({
+<<<<<<< HEAD
     email: '',
     password: '',
     school_id: '',
     role: ''
+=======
+    email: "",
+    password: "",
+    schoolId: "",
+    role: "",
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   });
 
   const login = useAuthStore((state) => state.login);
+
   const navigate = useNavigate();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   // Fetch schools from backend
   const [schools, setSchools] = useState<School[]>([]);
   const { getSchoolList } = useAuthStore();
@@ -51,8 +71,12 @@ function LoginPage() {
     fetchSchools();
   }, []);
 
+<<<<<<< HEAD
 
   //Form Validation, checking email  and password
+=======
+  // Form Validation
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   const validateForm = () => {
     if (!formData.email.trim()) {
       toast.error("Email is required");
@@ -82,11 +106,10 @@ function LoginPage() {
     return true;
   };
 
-  //Login function
+  // Login function
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) toast.error("PLease fill all details");;
-
+    if (!validateForm()) return;
 
     const success = await login({
       email: formData.email,
@@ -127,6 +150,15 @@ function LoginPage() {
     }
   };
 
+  
+  const handleForgotPassword =async()=>{
+ 
+    navigate("/verify-otp");
+  
+  }
+
+
+  
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 text-blue-950">
@@ -138,8 +170,12 @@ function LoginPage() {
               <div className="size-12 rounded-xl bg-blue-200 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Book className="size-6 text-blue-500" />
               </div>
-              <h1 className="text-xl md:text-2xl font-bold mt-2">Login to your Account</h1>
-              <p className="text-sm md:text-base">Login to your account and access your dashboard</p>
+              <h1 className="text-xl md:text-2xl font-bold mt-2">
+                Login to your Account
+              </h1>
+              <p className="text-sm md:text-base">
+                Login to your account and access your dashboard
+              </p>
             </div>
           </div>
 
@@ -154,7 +190,9 @@ function LoginPage() {
                   className="grow outline-none"
                   placeholder="johndoe@gmail.com"
                   value={formData.email}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </label>
 
@@ -166,24 +204,55 @@ function LoginPage() {
                   className="grow outline-none"
                   placeholder="password"
                   value={formData.password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
                 <div className="flex items-center">
-                  <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-5" />
+                    ) : (
+                      <Eye className="size-5" />
+                    )}
                   </button>
                 </div>
               </label>
 
+<<<<<<< HEAD
+=======
+              {/* Forgot Password */}
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-sm text-blue-400 text-end hover:underline"
+              >
+                Forgot Password?
+              </button>
+
+
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
               {/* School Dropdown */}
               <label className="border-2 p-2 rounded-xl flex items-center gap-2">
                 <School className="size-5 text-gray-400" />
                 <select
                   className="grow outline-none bg-transparent"
+<<<<<<< HEAD
                   value={formData.school_id}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, school_id: e.target.value })}
+=======
+                  value={formData.schoolId}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                    setFormData({ ...formData, schoolId: e.target.value })
+                  }
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
                 >
-                  <option value="" disabled>Select School</option>
+                  <option value="" disabled>
+                    Select School
+                  </option>
                   {schools.map((school) => (
                     <option key={school.id} value={school.id}>
                       {school.name} /{school.city}
@@ -197,9 +266,17 @@ function LoginPage() {
                 <select
                   className="grow outline-none bg-transparent"
                   value={formData.role}
+<<<<<<< HEAD
                   onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, role: e.target.value })}
+=======
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
+>>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
                 >
-                  <option value="" disabled>Select Role</option>
+                  <option value="" disabled>
+                    Select Role
+                  </option>
                   <option value="admin">Admin</option>
                   <option value="accountant">Accountant</option>
                   <option value="principal">Principal</option>
@@ -212,7 +289,10 @@ function LoginPage() {
 
             {/* Login Button */}
             <div className="flex w-full justify-center">
-              <button type="submit" className="bg-blue-400 py-2 w-full hover:bg-blue-900 transition-all duration-300 text-white rounded-xl">
+              <button
+                type="submit"
+                className="bg-blue-400 py-2 w-full hover:bg-blue-900 transition-all duration-300 text-white rounded-xl"
+              >
                 Log in
               </button>
             </div>
