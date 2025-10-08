@@ -40,20 +40,20 @@ interface Stats {
 }
 
 interface ParentForm {
-  rollNo: string; 
+  rollNo: string;
   email: string;
   parentEmail: string;
-  fatherName: string; 
-  motherName: string; 
-  phone: string; 
-  address: string; 
+  fatherName: string;
+  motherName: string;
+  phone: string;
+  address: string;
 
 }
 
 //  Zustand store interface
 interface UsersState {
   registerStudent: (schoolId: string, data: StudentForm) => Promise<boolean>;
-   registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
+  registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
   getStats: (schoolId: string) => Promise<Stats | null>;
 }
 
@@ -83,7 +83,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-    //  Register Parent
+  //  Register Parent
   registerParent: async (schoolId, data) => {
     try {
       const res = await axiosInstance.post<ApiResponse<any>>(

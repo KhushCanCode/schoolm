@@ -77,117 +77,117 @@ const App = () => (
       <Routes>
 
         {/* <Route path="/signup" element={<SignupPage/>}/> */}
-        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/login" element={<LoginPage />} />
 
         {/* admin panel */}
         <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-        <Route path="/admin" element={<Layout />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="/admin" element={<Layout />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
 
-          <Route path="hostel" element={<Hostel />} />
-          <Route path="library" element={<Library />} />
-          <Route path="transport" element={<Transport />} />
-          <Route path="exam" element={<Exam />} />
-          <Route path="students/attendance" element={<Attendance />} />
-          <Route path="classes/subjects" element={<Subjects />} />
-          <Route path="classes/timetable" element={<TimeTable />} />
-          <Route path="classes/list" element={<ClassList />} />
-          <Route path="settings/roles" element={<Roles />} />
-          <Route path="settings/school-info" element={<SchoolInfo />} />
-          <Route path="settings/user-management" element={<UserManagement />} />
-          <Route path="communication" element={<Communication />} />
-          <Route path="teachers/list" element={<List />} />
-          <Route path="teachers/register" element={<Register />} />
-          <Route path="teachers/subject" element={<AssignSubject />} />
-          <Route path="reports/student" element={<StudentReports />} />
-          <Route path="reports/fee" element={<FeeReports />} />
-          <Route path="reports/attendance" element={<AttendanceReport />} />
-          <Route path="reports/exams" element={<ExamReport />} />
+            <Route path="hostel" element={<Hostel />} />
+            <Route path="library" element={<Library />} />
+            <Route path="transport" element={<Transport />} />
+            <Route path="exam" element={<Exam />} />
+            <Route path="students/attendance" element={<Attendance />} />
+            <Route path="classes/subjects" element={<Subjects />} />
+            <Route path="classes/timetable" element={<TimeTable />} />
+            <Route path="classes/list" element={<ClassList />} />
+            <Route path="settings/roles" element={<Roles />} />
+            <Route path="settings/school-info" element={<SchoolInfo />} />
+            <Route path="settings/user-management" element={<UserManagement />} />
+            <Route path="communication" element={<Communication />} />
+            <Route path="teachers/list" element={<List />} />
+            <Route path="teachers/register" element={<Register />} />
+            <Route path="teachers/subject" element={<AssignSubject />} />
+            <Route path="reports/student" element={<StudentReports />} />
+            <Route path="reports/fee" element={<FeeReports />} />
+            <Route path="reports/attendance" element={<AttendanceReport />} />
+            <Route path="reports/exams" element={<ExamReport />} />
 
-          <Route
-            path="students/attendance"
-            element={<Attendance />}
-          />
-         
-          <Route
-            path="students/attendance/mark-attendance"
-            element={<MarkAttendance />}
-          />
-         
-          <Route path="students/">
-            <Route path="list" element={<StudentList />} />
-            <Route path="records" element={<Records />} />
-            <Route path="records/:id" element={<Records />} />
-            <Route path="register" element={<StudentRegister />} />
+            <Route
+              path="students/attendance"
+              element={<Attendance />}
+            />
+
+            <Route
+              path="students/attendance/mark-attendance"
+              element={<MarkAttendance />}
+            />
+
+            <Route path="students/">
+              <Route path="list" element={<StudentList />} />
+              <Route path="records" element={<Records />} />
+              <Route path="records/:id" element={<Records />} />
+              <Route path="register" element={<StudentRegister />} />
+            </Route>
           </Route>
-        </Route>
         </Route>
 
         {/* teacher panel */}
         <Route element={<PrivateRoute allowedRoles={['teacher']} />}>
-        <Route path="/teacher" element={<Layout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="my-classes" element={<MyClasses />} />
-          <Route path="my-profile" element={<TeacherProfile />} />
-          <Route path="reports" element={<TeacherReports />} />
-          <Route path="assignments" element={<TeacherAssignments />} />
-          <Route path="communication" element={<TeacherCommunication />} />
-          <Route path="exam/marks-entry" element={<MarkEntry />} />
-          <Route path="exam/schedule" element={<ExamSchedule />} />
-          <Route path="student-attendance" element={<Attendance />} />
-        </Route>
+          <Route path="/teacher" element={<Layout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="my-classes" element={<MyClasses />} />
+            <Route path="my-profile" element={<TeacherProfile />} />
+            <Route path="reports" element={<TeacherReports />} />
+            <Route path="assignments" element={<TeacherAssignments />} />
+            <Route path="communication" element={<TeacherCommunication />} />
+            <Route path="exam/marks-entry" element={<MarkEntry />} />
+            <Route path="exam/schedule" element={<ExamSchedule />} />
+            <Route path="student-attendance" element={<Attendance />} />
+          </Route>
         </Route>
 
         {/* student panel */}
         <Route element={<PrivateRoute allowedRoles={['student']} />}>
-        <Route path="/student" element={<Layout />}>
-          <Route path="dashboard" element={<StudentDashboard />} />
-          <Route path="attendance" element={<StudentAttendance />} />
-          <Route path="messages" element={<StudentMessages />} />
-          <Route path="library" element={<StudentLibrary />} />
-          <Route path="profile" element={<StudentProfile />} />
-          <Route path="exams/result" element={<StudentExams />} />
-          <Route path="exams/reports-cards" element={<ReportCard />} />
-          <Route path="fees/due" element={<StudentFeesDue />} />
-          <Route
-            path="fees/payments-history"
-            element={<StudentPaymentHistory />}
-          />
-        </Route>
+          <Route path="/student" element={<Layout />}>
+            <Route path="dashboard" element={<StudentDashboard />} />
+            <Route path="attendance" element={<StudentAttendance />} />
+            <Route path="messages" element={<StudentMessages />} />
+            <Route path="library" element={<StudentLibrary />} />
+            <Route path="profile" element={<StudentProfile />} />
+            <Route path="exams/result" element={<StudentExams />} />
+            <Route path="exams/reports-cards" element={<ReportCard />} />
+            <Route path="fees/due" element={<StudentFeesDue />} />
+            <Route
+              path="fees/payments-history"
+              element={<StudentPaymentHistory />}
+            />
+          </Route>
         </Route>
 
         {/* parent panel  */}
         <Route element={<PrivateRoute allowedRoles={['parent']} />}>
-        <Route path="/parent" element={<Layout />}>
-          <Route path="attendance" element={<StudentAttendance />} />
-          <Route path="dashboard" element={<ParentDashboard />} />
-          <Route path="notices" element={<ParentNotices />} />
-          <Route path="exams/results" element={<StudentExams />} />
-          <Route path="exams/reports-cards" element={<ReportCard />} />
-          <Route path="fees/dues" element={<ParentFeesDue />} />
-          <Route
-            path="fees/payments-receipts"
-            element={<ParentPaymentReceipts />}
-          />
-          <Route path="children/academic" element={<StudentAcademic />} />
-          <Route path="children-personal-info" element={<StudentPersonal />} />
-        </Route>
+          <Route path="/parent" element={<Layout />}>
+            <Route path="attendance" element={<StudentAttendance />} />
+            <Route path="dashboard" element={<ParentDashboard />} />
+            <Route path="notices" element={<ParentNotices />} />
+            <Route path="exams/results" element={<StudentExams />} />
+            <Route path="exams/reports-cards" element={<ReportCard />} />
+            <Route path="fees/dues" element={<ParentFeesDue />} />
+            <Route
+              path="fees/payments-receipts"
+              element={<ParentPaymentReceipts />}
+            />
+            <Route path="children/academic" element={<StudentAcademic />} />
+            <Route path="children-personal-info" element={<StudentPersonal />} />
+          </Route>
         </Route>
 
         {/* accountant panel */}
-      <Route element={<PrivateRoute allowedRoles={['accountant']} />}>
-        <Route path="/accountant" element={<Layout/>}>
-          <Route path="dashboard" element={<AccountantDashboard/>}/>
-          <Route path="fees" element={<AccountantFees/>}/>
-          <Route path="payments" element={<AccountantPayments/>}/>
-          <Route path="extra-services" element={<AccountantExtraServices/>}/>
-          <Route path="monthly-dues" element={<AccountantMonthlyDue/>}/>
-          <Route path="fees-structure" element={<AccountantFeeStructure/>}/>
-          <Route path="report/dues-pending" element={<AccountantDues/>}/>
-          <Route path="report/transactions" element={<Transactions/>}/>
-          <Route path="report/fee" element={<AccountantFeeReports/>}/>
+        <Route element={<PrivateRoute allowedRoles={['accountant']} />}>
+          <Route path="/accountant" element={<Layout />}>
+            <Route path="dashboard" element={<AccountantDashboard />} />
+            <Route path="fees" element={<AccountantFees />} />
+            <Route path="payments" element={<AccountantPayments />} />
+            <Route path="extra-services" element={<AccountantExtraServices />} />
+            <Route path="monthly-dues" element={<AccountantMonthlyDue />} />
+            <Route path="fees-structure" element={<AccountantFeeStructure />} />
+            <Route path="report/dues-pending" element={<AccountantDues />} />
+            <Route path="report/transactions" element={<Transactions />} />
+            <Route path="report/fee" element={<AccountantFeeReports />} />
 
-        </Route>
+          </Route>
         </Route>
       </Routes>
     </TooltipProvider>

@@ -1,20 +1,21 @@
+import { Book, Eye, EyeOff, Lock, Mail, School } from 'lucide-react';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { EyeOff, Eye, Mail, Lock, School, Book } from 'lucide-react';
-import AuthPattern from '../../components/AuthPattern';
 import toast from 'react-hot-toast';
-import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import AuthPattern from '../../components/AuthPattern';
+import { useAuthStore } from '../../store/useAuthStore';
 
 interface LoginForm {
   email: string;
   password: string;
-  schoolId: string;
+  school_id: string;
   role: string;
 }
 
-interface School {
+export interface School {
   id: string;
   name: string;
+  city: string;
 }
 
 
@@ -24,21 +25,23 @@ function LoginPage() {
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: '',
-    schoolId: '',
+    school_id: '',
     role: ''
   });
-  
+
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
 
-   // Fetch schools from backend
+  // Fetch schools from backend
   const [schools, setSchools] = useState<School[]>([]);
-  const getSchoolList = useAuthStore((state) => state.getSchoolList);
+  const { getSchoolList } = useAuthStore();
 
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolList = await getSchoolList();
+      console.log(schoolList);
+
       if (schoolList.length === 0) {
         toast.error("Failed to fetch schools");
       } else {
@@ -46,10 +49,10 @@ function LoginPage() {
       }
     };
     fetchSchools();
-  }, [getSchoolList]);
+  }, []);
 
 
-//Form Validation, checking email  and password
+  //Form Validation, checking email  and password
   const validateForm = () => {
     if (!formData.email.trim()) {
       toast.error("Email is required");
@@ -68,7 +71,7 @@ function LoginPage() {
       toast.error("Password must be at least 6 characters long");
       return false;
     }
-    if (!formData.schoolId) {
+    if (!formData.school_id) {
       toast.error("Please select a school");
       return false;
     }
@@ -88,11 +91,11 @@ function LoginPage() {
     const success = await login({
       email: formData.email,
       password: formData.password,
-      schoolId: formData.schoolId,
+      school_id: formData.school_id,
       role: formData.role,
     });
 
-    if (!success) return; 
+    if (!success) return;
 
     const user = useAuthStore.getState().authUser;
     if (!user) {
@@ -172,18 +175,18 @@ function LoginPage() {
                 </div>
               </label>
 
-               {/* School Dropdown */}
+              {/* School Dropdown */}
               <label className="border-2 p-2 rounded-xl flex items-center gap-2">
                 <School className="size-5 text-gray-400" />
                 <select
                   className="grow outline-none bg-transparent"
-                  value={formData.schoolId}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, schoolId: e.target.value })}
+                  value={formData.school_id}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, school_id: e.target.value })}
                 >
                   <option value="" disabled>Select School</option>
                   {schools.map((school) => (
                     <option key={school.id} value={school.id}>
-                      {school.id} - {school.name}
+                      {school.name} /{school.city}
                     </option>
                   ))}
                 </select>
@@ -194,7 +197,7 @@ function LoginPage() {
                 <select
                   className="grow outline-none bg-transparent"
                   value={formData.role}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({...formData, role:e.target.value})}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, role: e.target.value })}
                 >
                   <option value="" disabled>Select Role</option>
                   <option value="admin">Admin</option>
