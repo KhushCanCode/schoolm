@@ -72,13 +72,13 @@ const UserRegister = () => {
           </div>
         </div>
 
-         <form onSubmit={handleSubmit} className="space-y-6  lg:w-1/2 ">
+         <form onSubmit={handleSubmit} className="space-y-6  ">
           {/* ---------------------- PERSONAL INFO ---------------------- */}
           <Card>
              <CardHeader className="text-sm">
               <CardTitle className="text-lg">Information</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+            <CardContent className="grid grid-cols-1 md:grid-cols-2  gap-4">
 
               
               <div className="space-y-2">
