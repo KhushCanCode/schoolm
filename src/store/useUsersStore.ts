@@ -168,6 +168,39 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
+
+    // Register Student Contoller ---------------------------------------------------------------------------------------------------
+  registerStudent: async (school_id, data) => {
+    const token = localStorage.getItem('token');
+    console.log("Register Student Data:", token);
+
+    try {
+      const res = await axiosInstance.post(
+        `/users/register-student/${school_id}`,
+        data,
+        {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        }
+      );
+
+      console.log("Register Student response:", res.data);
+
+      if (res.data.status) {
+        toast.success(res.data.message || "Student registered successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to register student");
+        return false;
+      }
+    } catch (error: any) {
+      console.error("Error registering student:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to register student");
+      return false;
+    }
+  },
+
   // Create Class Controller ---------------------------------------------------------------------------------------------------
   createClass: async (data: ClassForm) => {
     const token = localStorage.getItem('token');
@@ -215,35 +248,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Register Student Contoller ---------------------------------------------------------------------------------------------------
-  registerStudent: async (school_id, data) => {
-    const token = localStorage.getItem('token');
-    console.log("Register Student Data:", token);
 
-    try {
-      const res = await axiosInstance.post(
-        `/users/register-student/${school_id}`,
-        data,
-        {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        }
-      );
-
-      if (res.data.status) {
-        toast.success(res.data.message || "Student registered successfully");
-        return true;
-      } else {
-        toast.error(res.data.message || "Failed to register student");
-        return false;
-      }
-    } catch (error: any) {
-      console.error("Error registering student:", error?.response?.data?.message || error.message);
-      toast.error(error?.response?.data?.message || "Failed to register student");
-      return false;
-    }
-  },
 
 
 

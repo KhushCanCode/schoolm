@@ -317,7 +317,7 @@ const [formData, setFormData] = useState<StudentForm>({
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="true">Yes</SelectItem>
+                    <SelectItem value="true" className="">Yes</SelectItem>
                     <SelectItem value="false">No</SelectItem>
                   </SelectContent>
                 </Select>
