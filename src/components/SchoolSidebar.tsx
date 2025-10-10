@@ -179,6 +179,7 @@ const roleMenus: RoleMenus = {
       href: "/principal/users",
       submenu: [
         { title: "Register", icon: Users, href: "/principal/users/register" },
+        { title: "List", icon: Users, href: "/principal/users/list" },
       ],
     },
   ],

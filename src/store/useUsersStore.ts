@@ -68,10 +68,12 @@ interface ParentForm {
 
 
 interface UsersState {
-  registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
+  
   registerUser: (school_id: string, data: UserData)=> Promise<boolean>;
+  getAllUsers: (school_id: string) => Promise<UserData[] | null>;
   // registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
-  getStats: (schoolId: string) => Promise<Stats | null>;
+  getStats: (school_id: string) => Promise<Stats | null>;
+  registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
   createClass: ( data: ClassForm) => Promise<boolean>;
   getClasses: (school_id: string) => Promise<ClassForm[]>;
@@ -119,8 +121,7 @@ export const useUsersStore = create<UsersState>(() => ({
        
       );
 
-      console.log("Register User response:", res.data);
-      
+    
       if (res.data.status) {
         toast.success(res.data.message || "User registered successfully");
         return true;
@@ -138,7 +139,36 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Create Class Controller
+  //Get All Users Controller ---------------------------------------------------------------------------------------------------
+  getAllUsers: async (school_id) => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await axiosInstance.get(`/users/${school_id}`,
+         {
+        headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+       console.log("Get All Users response:", res.data);
+
+       if (res.data.status) {
+        toast.success(res.data.message || "Users fetched successfully");
+        return res.data.data;
+      } else {
+        toast.error(res.data.message || "Failed to fetch users");
+        return null;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error registering user:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to fetch user");
+      return null;
+    }
+  },
+
+  // Create Class Controller ---------------------------------------------------------------------------------------------------
   createClass: async (data: ClassForm) => {
     const token = localStorage.getItem('token');
     try {
@@ -162,7 +192,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // ✅ Fetch all classes for a school
+  // Fetch all classes for a school ---------------------------------------------------------------------------------------------------
   getClasses: async (school_id: string) => {
     const token = localStorage.getItem('token');
     try {
@@ -185,7 +215,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Register Student Contoller
+  // Register Student Contoller ---------------------------------------------------------------------------------------------------
   registerStudent: async (school_id, data) => {
     const token = localStorage.getItem('token');
     console.log("Register Student Data:", token);
@@ -241,7 +271,7 @@ export const useUsersStore = create<UsersState>(() => ({
   //   }
   // },
 
-  // Get Student Details Controller
+  // Get Student Details Controller  ---------------------------------------------------------------------------------------------
   getStudentDetails: async (schoolId) => {
     try {
       const res = await axiosInstance.get(
