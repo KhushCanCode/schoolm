@@ -2,6 +2,17 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 
+
+//User Response Type
+export interface UserData {
+  school_id: string;
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: string;
+}
+
 export interface ClassForm {
   school_id?: string;
   class?: string;                 
@@ -13,7 +24,7 @@ export interface ClassForm {
   notes?: string;                 
 }
 
-// Student form interface
+// Student response type
 export interface StudentForm {
   school_id?: string;
   candidate_name?: string;
@@ -42,6 +53,8 @@ export interface Stats {
   classCount: number;
 }
 
+
+
 interface ParentForm {
   rollNo: string;
   email: string;
@@ -56,6 +69,7 @@ interface ParentForm {
 
 interface UsersState {
   registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
+  registerUser: (school_id: string, data: UserData)=> Promise<boolean>;
   // registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
   getStats: (schoolId: string) => Promise<Stats | null>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
@@ -64,6 +78,65 @@ interface UsersState {
 }
 
 export const useUsersStore = create<UsersState>(() => ({
+
+  //  Get Stats Controller -------------------------------------------------------------------------------------------------------
+
+  getStats: async (school_id) => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const res = await axiosInstance.get(`/users/stats/${school_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data.status) {
+        return res.data.data;
+      } else {
+        toast.error(res.data.message || "Failed to fetch stats");
+        return null;
+      }
+    } catch (error: any) {
+      console.error("Error fetching stats:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to fetch stats");
+      return null;
+    }
+  },
+
+  //Register User Controller ---------------------------------------------------------------------------------------------------
+
+  registerUser: async (school_id, data) => {
+  const token = localStorage.getItem("token");
+   
+    try {
+      const res = await axiosInstance.post(
+        `/users/register/${school_id}`, 
+        data, 
+         {
+        headers: { Authorization: `Bearer ${token}` }
+        }
+       
+      );
+
+      console.log("Register User response:", res.data);
+      
+      if (res.data.status) {
+        toast.success(res.data.message || "User registered successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to register user");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error registering user:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to register user");
+      return false;
+    }
+  },
 
   // Create Class Controller
   createClass: async (data: ClassForm) => {
@@ -142,31 +215,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-    //  Get Stats Controller
-  getStats: async (school_id) => {
-    const token = localStorage.getItem('token');
 
-    try {
-      const res = await axiosInstance.get(`/users/stats/${school_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // console.log("Stats response:", res.data);
-
-      if (res.data.status) {
-        return res.data.data;
-      } else {
-        toast.error(res.data.message || "Failed to fetch stats");
-        return null;
-      }
-    } catch (error: any) {
-      console.error("Error fetching stats:", error?.response?.data?.message || error.message);
-      toast.error(error?.response?.data?.message || "Failed to fetch stats");
-      return null;
-    }
-  },
 
 
 
@@ -191,8 +240,6 @@ export const useUsersStore = create<UsersState>(() => ({
   //     return false;
   //   }
   // },
-
-
 
   // Get Student Details Controller
   getStudentDetails: async (schoolId) => {

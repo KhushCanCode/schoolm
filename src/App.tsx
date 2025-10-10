@@ -66,6 +66,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import RequestOtpPage from "./pages/auth/RequestOtpPage";
+import UserRegister from "./pages/principal/users/Register";
 
 
 
@@ -121,6 +122,10 @@ const App = () => (
               <Route path="records" element={<Records />} />
               <Route path="records/:id" element={<Records />} />
               <Route path="register" element={<StudentRegister />} />
+            </Route>
+
+            <Route path="users/">
+              <Route path="register" element={<UserRegister />} />
             </Route>
           </Route>
         </Route>

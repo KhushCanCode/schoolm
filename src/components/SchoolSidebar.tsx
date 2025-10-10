@@ -66,8 +66,9 @@ const roleMenus: RoleMenus = {
       icon: Home,
       href: "/principal/dashboard",
     },
+
     {
-      title: "Student ",
+      title: "Students ",
       icon: User,
       href: "/principal/students",
       submenu: [
@@ -170,6 +171,14 @@ const roleMenus: RoleMenus = {
           icon: MessageSquare,
           href: "/principal/settings/school-info",
         },
+      ],
+    },
+        {
+      title: "Users ",
+      icon: User,
+      href: "/principal/users",
+      submenu: [
+        { title: "Register", icon: Users, href: "/principal/users/register" },
       ],
     },
   ],

@@ -24,7 +24,7 @@ function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
-    email: '',
+    email: 'prasadashutosh048@gmail.com',
     password: '',
     school_id: '',
     role: ''
@@ -51,7 +51,6 @@ function LoginPage() {
   // Login function
   const handleLogin = async (e: React.FormEvent) => {
 
-    console.log("Clicked Login");
 
     e.preventDefault();
     // if (!validateForm()) return;
@@ -164,7 +163,7 @@ function LoginPage() {
                 <input
                   type="email"
                   className="grow outline-none"
-                  placeholder="prasadashutosh048@gmail.com"
+                  placeholder="example@gmail.com"
                   value={formData.email}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, email: e.target.value })
