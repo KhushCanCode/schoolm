@@ -1,6 +1,6 @@
+import { toast } from "sonner";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import { toast } from "sonner";
 
 // Generic API response structure
 interface ApiResponse<T> {
@@ -40,7 +40,6 @@ interface Stats {
   classCount: number;
 }
 
-<<<<<<< HEAD
 interface ParentForm {
   rollNo: string;
   email: string;
@@ -56,12 +55,6 @@ interface ParentForm {
 interface UsersState {
   registerStudent: (schoolId: string, data: StudentForm) => Promise<boolean>;
   registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
-=======
-// Zustand store interface
-interface UsersState {
-  registerStudent: (schoolId: string, data: StudentForm) => Promise<boolean>;
-  updateStudent: (studentId: string, schoolId: string, data: StudentForm) => Promise<boolean>;
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   getStats: (schoolId: string) => Promise<Stats | null>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
 }
@@ -89,26 +82,21 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-<<<<<<< HEAD
   //  Register Parent
   registerParent: async (schoolId, data) => {
-=======
-  //  Update student
-  updateStudent: async (studentId, schoolId, data) => {
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
     try {
-      const res = await axiosInstance.put<ApiResponse<any>>(
-        `/users/update-student/${studentId}/${schoolId}`,
-        data
-      );
+      // const res = await axiosInstance.put<ApiResponse<any>>(
+      //   `/users/update-student/${studentId}/${schoolId}`,
+      //   data
+      // );
 
-      if (res.data.status) {
-        toast.success(res.data.message || "Student updated successfully");
-        return true;
-      } else {
-        toast.error(res.data.message || "Failed to update student");
-        return false;
-      }
+      // if (res.data.status) {
+      //   toast.success(res.data.message || "Student updated successfully");
+      //   return true;
+      // } else {
+      //   toast.error(res.data.message || "Failed to update student");
+      //   return false;
+      // }
     } catch (error: any) {
       console.error("Error updating student:", error?.response?.data?.message || error.message);
       toast.error(error?.response?.data?.message || "Failed to update student");

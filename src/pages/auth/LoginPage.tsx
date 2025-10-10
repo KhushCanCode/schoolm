@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 import { Book, Eye, EyeOff, Lock, Mail, School } from 'lucide-react';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import AuthPattern from '../../components/AuthPattern';
 import { useAuthStore } from '../../store/useAuthStore';
-=======
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { EyeOff, Eye, Mail, Lock, School, Book } from "lucide-react";
-import AuthPattern from "../../components/AuthPattern";
-import toast from "react-hot-toast";
-import { useAuthStore } from "../../store/useAuthStore";
-import { useNavigate, Link } from "react-router-dom";
-import { stat } from "fs";
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
 
 interface LoginForm {
   email: string;
@@ -32,27 +22,16 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<LoginForm>({
-<<<<<<< HEAD
     email: '',
     password: '',
     school_id: '',
     role: ''
-=======
-    email: "",
-    password: "",
-    schoolId: "",
-    role: "",
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   });
 
-  const login = useAuthStore((state) => state.login);
+  const { getUser, login } = useAuthStore();
 
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
   // Fetch schools from backend
   const [schools, setSchools] = useState<School[]>([]);
   const { getSchoolList } = useAuthStore();
@@ -60,7 +39,7 @@ function LoginPage() {
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolList = await getSchoolList();
-      console.log(schoolList);
+      // console.log(schoolList);
 
       if (schoolList.length === 0) {
         toast.error("Failed to fetch schools");
@@ -71,45 +50,15 @@ function LoginPage() {
     fetchSchools();
   }, []);
 
-<<<<<<< HEAD
 
-  //Form Validation, checking email  and password
-=======
-  // Form Validation
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
-  const validateForm = () => {
-    if (!formData.email.trim()) {
-      toast.error("Email is required");
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) {
-      toast.error("Please enter a valid email address");
-      return false;
-    }
-    if (!formData.password) {
-      toast.error("Password is required");
-      return false;
-    }
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return false;
-    }
-    if (!formData.school_id) {
-      toast.error("Please select a school");
-      return false;
-    }
-    if (!formData.role) {
-      toast.error("Please select a role");
-      return false;
-    }
-    return true;
-  };
 
   // Login function
   const handleLogin = async (e: React.FormEvent) => {
+
+    console.log("Clicked Login");
+
     e.preventDefault();
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
 
     const success = await login({
       email: formData.email,
@@ -118,7 +67,12 @@ function LoginPage() {
       role: formData.role,
     });
 
-    if (!success) return;
+    if (success) {
+      await getUser();
+    } else {
+      return;
+    };
+
 
     const user = useAuthStore.getState().authUser;
     if (!user) {
@@ -150,15 +104,44 @@ function LoginPage() {
     }
   };
 
-  
-  const handleForgotPassword =async()=>{
- 
+
+  const handleForgotPassword = async () => {
+
     navigate("/verify-otp");
-  
+
   }
 
 
-  
+  //Form Validation, checking email  and password
+  const validateForm = () => {
+    if (!formData.email.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      toast.error("Please enter a valid email address");
+      return false;
+    }
+    if (!formData.password) {
+      toast.error("Password is required");
+      return false;
+    }
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return false;
+    }
+    if (!formData.school_id) {
+      toast.error("Please select a school");
+      return false;
+    }
+    if (!formData.role) {
+      toast.error("Please select a role");
+      return false;
+    }
+    return true;
+  };
+
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 text-blue-950">
@@ -222,33 +205,13 @@ function LoginPage() {
                 </div>
               </label>
 
-<<<<<<< HEAD
-=======
-              {/* Forgot Password */}
-              <button
-                type="button"
-                onClick={handleForgotPassword}
-                className="text-sm text-blue-400 text-end hover:underline"
-              >
-                Forgot Password?
-              </button>
-
-
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
               {/* School Dropdown */}
               <label className="border-2 p-2 rounded-xl flex items-center gap-2">
                 <School className="size-5 text-gray-400" />
                 <select
                   className="grow outline-none bg-transparent"
-<<<<<<< HEAD
                   value={formData.school_id}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, school_id: e.target.value })}
-=======
-                  value={formData.schoolId}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                    setFormData({ ...formData, schoolId: e.target.value })
-                  }
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
                 >
                   <option value="" disabled>
                     Select School
@@ -266,13 +229,7 @@ function LoginPage() {
                 <select
                   className="grow outline-none bg-transparent"
                   value={formData.role}
-<<<<<<< HEAD
                   onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, role: e.target.value })}
-=======
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                    setFormData({ ...formData, role: e.target.value })
-                  }
->>>>>>> 2db0dfb9ec277893aad1a53902b2da557da7f3b6
                 >
                   <option value="" disabled>
                     Select Role
