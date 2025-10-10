@@ -10,27 +10,7 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
-
-
-interface StudentRegisterForm {
-  candidateName: string;
-  schoolId: string;
-  gender: string;
-  addhar: string;
-  dob: string;
-  class: string;
-  section: string;
-  rollNo: string;
-  email: string;
-  parentEmail: string;
-  fatherName: string;
-  motherName: string;
-  phone: string;
-  address: string;
-  transportService: boolean;
-  libraryService: boolean;
-  computerService: boolean;
-}
+import { StudentForm } from "@/store/useUsersStore";
 
 interface School {
   id: string;
@@ -42,24 +22,24 @@ const StudentRegister = () => {
   const { toast } = useToast();
   const registerStudent = useUsersStore((state) => state.registerStudent);
 
-const [formData, setFormData] = useState<StudentRegisterForm>({
-  candidateName: "",
-  schoolId: authUser.schoolId,
+const [formData, setFormData] = useState<StudentForm>({
+  school_id: authUser.school_id,
+  candidate_name: "",
   gender: "",
   addhar: "",
   dob: "",
   class: "",
   section: "",
-  rollNo: "",
+  roll_no: "",
   email: "",
-  parentEmail: "",
-  fatherName: "",
-  motherName: "",
+  parent_email: "",
+  father_name: "",
+  mother_name: "",
   phone: "",
   address: "",
-  transportService: false,
-  libraryService: false,
-  computerService: false,
+  transport_service: false,
+  library_service: false,
+  computer_service: false,
 });
 
 
@@ -76,7 +56,7 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
   // ========================= HANDLE SUBMIT =========================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.schoolId) {
+    if (!formData.school_id) {
       toast({ title: "Select a school first", variant: "destructive" });
       return;
     }
@@ -86,29 +66,30 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
       return;
     }
 
-    const success = await registerStudent(formData.schoolId, formData);
+    const success = await registerStudent(formData.school_id, formData);
     if (success) {
 
-      // Reset form
-      setFormData({
-       schoolId: authUser.schoolId,
-        candidateName: "",
-        gender: "",
-        addhar: "",
-        dob: "",
-        class: "",
-        section: "",
-        rollNo: "",
-        email: "",
-        parentEmail: "",
-        fatherName: "",
-        motherName: "",
-        phone: "",
-        address: "",
-        transportService: false,
-        libraryService: false,
-        computerService: false,
-      });
+      console.log("Student registered successfully");
+      // // Reset form
+      // setFormData({
+      //  school_id: authUser.school_id,
+      //   candidate_name: "",
+      //   gender: "",
+      //   addhar: "",
+      //   dob: "",
+      //   class: "",
+      //   section: "",
+      //   roll_no: "",
+      //   email: "",
+      //   parent_email: "",
+      //   father_name: "",
+      //   mother_name: "",
+      //   phone: "",
+      //   address: "",
+      //   transport_service: false,
+      //   library_service: false,
+      //   computer_service: false,
+      // });
     }
   };
 
@@ -117,7 +98,7 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
       <div className=" space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4">
-          <Link to="/admin/students/list">
+          <Link to="/principal/students/list">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -140,11 +121,11 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               
               <div className="space-y-2">
-                <Label htmlFor="candidateName">Name *</Label>
+                <Label htmlFor="candidate_name">Name *</Label>
                 <Input
-                  id="candidateName"
-                  value={formData.candidateName}
-                  onChange={(e) => handleInputChange("candidateName", e.target.value)}
+                  id="candidate_name"
+                  value={formData.candidate_name}
+                  onChange={(e) => handleInputChange("candidate_name", e.target.value)}
                   required
                 />
               </div>
@@ -231,11 +212,11 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               {/*  Roll Number */}
               <div className="space-y-2">
-                <Label htmlFor="rollNo">Roll Number *</Label>
+                <Label htmlFor="roll_no">Roll Number *</Label>
                 <Input
-                  id="rollNo"
-                  value={formData.rollNo}
-                  onChange={(e) => handleInputChange("rollNo", e.target.value)}
+                  id="roll_no"
+                  value={formData.roll_no}
+                  onChange={(e) => handleInputChange("roll_no", e.target.value)}
                   required
                 />
               </div>
@@ -281,34 +262,34 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               {/*  Parent Email */}
               <div className="space-y-2">
-                <Label htmlFor="parentEmail">Parent Email</Label>
+                <Label htmlFor="parent_email">Parent Email</Label>
                 <Input
-                  id="parentEmail"
+                  id="parent_email"
                   type="email"
-                  value={formData.parentEmail}
-                  onChange={(e) => handleInputChange("parentEmail", e.target.value)}
+                  value={formData.parent_email}
+                  onChange={(e) => handleInputChange("parent_email", e.target.value)}
                   placeholder=""
                 />
               </div>
 
               {/*  Father Name */}
               <div className="space-y-2">
-                <Label htmlFor="fatherName">Father's Name *</Label>
+                <Label htmlFor="father_name">Father's Name *</Label>
                 <Input
-                  id="fatherName"
-                  value={formData.fatherName}
-                  onChange={(e) => handleInputChange("fatherName", e.target.value)}
+                  id="father_name"
+                  value={formData.father_name}
+                  onChange={(e) => handleInputChange("father_name", e.target.value)}
                   required
                 />
               </div>
 
               {/*  Mother Name */}
               <div className="space-y-2">
-                <Label htmlFor="motherName">Mother's Name *</Label>
+                <Label htmlFor="mother_name">Mother's Name *</Label>
                 <Input
-                  id="motherName"
-                  value={formData.motherName}
-                  onChange={(e) => handleInputChange("motherName", e.target.value)}
+                  id="mother_name"
+                  value={formData.mother_name}
+                  onChange={(e) => handleInputChange("mother_name", e.target.value)}
                   required
                 />
               </div>
@@ -325,11 +306,11 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               {/* Transport Service */}
               <div className="space-y-2">
-                <Label htmlFor="transportService">Transport Service</Label>
+                <Label htmlFor="transport_service">Transport Service</Label>
                 <Select
-                  value={formData.transportService ? "true" : "false"}
+                  value={formData.transport_service ? "true" : "false"}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, transportService: value === "true" })
+                    setFormData({ ...formData, transport_service: value === "true" })
                   }
                 >
                   <SelectTrigger>
@@ -344,11 +325,11 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               {/*  Library Service */}
               <div className="space-y-2">
-                <Label htmlFor="libraryService">Library Service</Label>
+                <Label htmlFor="library_service">Library Service</Label>
                 <Select
-                  value={formData.libraryService ? "true" : "false"}
+                  value={formData.library_service ? "true" : "false"}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, libraryService: value === "true" })
+                    setFormData({ ...formData, library_service: value === "true" })
                   }
                 >
                   <SelectTrigger>
@@ -363,11 +344,11 @@ const [formData, setFormData] = useState<StudentRegisterForm>({
 
               {/* Computer Service */}
               <div className="space-y-2">
-                <Label htmlFor="computerService">Computer Service</Label>
+                <Label htmlFor="computer_service">Computer Service</Label>
                 <Select
-                  value={formData.computerService ? "true" : "false"}
+                  value={formData.computer_service ? "true" : "false"}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, computerService: value === "true" })
+                    setFormData({ ...formData, computer_service: value === "true" })
                   }
                 >
                   <SelectTrigger>

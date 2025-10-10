@@ -3,30 +3,30 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
-import Index from "./pages/admin/Dashboard";
+import Index from "./pages/principal/Dashboard";
 import Layout from "./components/Layout";
-import Hostel from "./pages/admin/Hostel";
-import Library from "./pages/admin/Library";
-import Transport from "./pages/admin/Transport";
-import StudentList from "./pages/admin/students/List";
-import List from "./pages/admin/teachers/List";
-import Records from "./pages/admin/students/Records";
-import StudentRegister from "./pages/admin/students/Register";
-import Register from "./pages/admin/teachers/Register";
-import Attendance from "./pages/admin/students/attendance/Attendance";
-import MarkAttendance from "./pages/admin/students/attendance/Mark-attendance";
-import { Exam } from "./pages/admin/Exam";
-import { TimeTable } from "./pages/admin/classes/Time-table";
-import { Subjects } from "./pages/admin/classes/Subjects";
-import Roles from "./pages/admin/settings/Roles";
-import { SchoolInfo } from "./pages/admin/settings/School-info";
-import { UserManagement } from "./pages/admin/settings/User-management";
-import ClassList from "./pages/admin/classes/List";
-import AssignSubject from "./pages/admin/teachers/Assign-subject";
-import StudentReports from "./pages/admin/reports/Students";
-import FeeReports from "./pages/admin/reports/Fees";
-import AttendanceReport from "./pages/admin/reports/Attendance";
-import ExamReport from "./pages/admin/reports/Exams";
+import Hostel from "./pages/principal/Hostel";
+import Library from "./pages/principal/Library";
+import Transport from "./pages/principal/Transport";
+import StudentList from "./pages/principal/students/List";
+import List from "./pages/principal/teachers/List";
+import Records from "./pages/principal/students/Records";
+import StudentRegister from "./pages/principal/students/Register";
+import Register from "./pages/principal/teachers/Register";
+import Attendance from "./pages/principal/students/attendance/Attendance";
+import MarkAttendance from "./pages/principal/students/attendance/Mark-attendance";
+import { Exam } from "./pages/principal/Exam";
+import { TimeTable } from "./pages/principal/classes/Time-table";
+import { Subjects } from "./pages/principal/classes/Subjects";
+import Roles from "./pages/principal/settings/Roles";
+import { SchoolInfo } from "./pages/principal/settings/School-info";
+import { UserManagement } from "./pages/principal/settings/User-management";
+import ClassList from "./pages/principal/classes/List";
+import AssignSubject from "./pages/principal/teachers/Assign-subject";
+import StudentReports from "./pages/principal/reports/Students";
+import FeeReports from "./pages/principal/reports/Fees";
+import AttendanceReport from "./pages/principal/reports/Attendance";
+import ExamReport from "./pages/principal/reports/Exams";
 import Dashboard from "./pages/teacher/Dashboard";
 import MyClasses from "./pages/teacher/My-classes";
 import TeacherProfile from "./pages/teacher/My-profile";
@@ -35,7 +35,7 @@ import TeacherAssignments from "./pages/teacher/Assignments";
 import TeacherCommunication from "./pages/teacher/Communication";
 import MarkEntry from "./pages/teacher/Exam/Marks-entry";
 import ExamSchedule from "./pages/teacher/Exam/Schedule";
-import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from "./pages/principal/Dashboard";
 import StudentDashboard from "./pages/student/Student-dashboard";
 import StudentAttendance from "./pages/student/Attendance";
 import StudentMessages from "./pages/student/Messages";
@@ -51,7 +51,7 @@ import ParentFeesDue from "./pages/parent/Fees/Dues";
 import ParentPaymentReceipts from "./pages/parent/Fees/Payments-receipts";
 import StudentAcademic from "./pages/parent/student-profile/Academic";
 import StudentPersonal from "./pages/parent/student-profile/Personal-info";
-import { Communication } from "./pages/admin/Communication";
+import { Communication } from "./pages/principal/Communication";
 import AccountantDashboard from "./pages/accountant/Dashboard";
 import AccountantFees from "./pages/accountant/Fees";
 import AccountantPayments from "./pages/accountant/Payments";
@@ -82,8 +82,8 @@ const App = () => (
         <Route path="/login" element={<LoginPage />} />
 
         {/* admin panel */}
-        <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-          <Route path="/admin" element={<Layout />}>
+        <Route element={<PrivateRoute allowedRoles={['principal']} />}>
+          <Route path="/principal" element={<Layout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
 
             <Route path="hostel" element={<Hostel />} />

@@ -27,15 +27,15 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
   const navigate = useNavigate();
 
   const roles = [
-    { id: "admin", label: "Admin", color: "bg-red-500" },
+    { id: "principal", label: "Principal", color: "bg-red-500" },
     { id: "teacher", label: "Teacher", color: "bg-blue-500" },
     { id: "student", label: "Student", color: "bg-green-500" },
     { id: "parent", label: "Parent", color: "bg-purple-500" },
     { id: "accountant", label: "Accountant", color: "bg-orange-500" },
   ];
+  const currentRoleData = roles.find((role) => role.id === authUser.role);
 
-  const currentRoleData = roles.find((role) => role.id === authUser?.role);
-
+  //Logout Function
    const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -56,7 +56,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
         </div>
 
         <div className="flex items-center gap-6 ">
-          {/* Role Selector */}
+          {/* Role Show */}
           <Button
             variant="outline"
             size="sm"
@@ -83,7 +83,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
               </Button>
             </DropdownMenuTrigger>
              <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel>{authUser?.name}</DropdownMenuLabel>
+              <DropdownMenuLabel>{authUser.username}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile Settings</DropdownMenuItem>
               <DropdownMenuItem className="text-red-600" onClick={handleLogout}>

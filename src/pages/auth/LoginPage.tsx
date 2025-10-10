@@ -19,18 +19,16 @@ export interface School {
 }
 
 function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
+  const { getUser, login } = useAuthStore();
+  const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: '',
     school_id: '',
     role: ''
   });
-
-  const { getUser, login } = useAuthStore();
-
-  const navigate = useNavigate();
 
   // Fetch schools from backend
   const [schools, setSchools] = useState<School[]>([]);
@@ -39,7 +37,6 @@ function LoginPage() {
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolList = await getSchoolList();
-      // console.log(schoolList);
 
       if (schoolList.length === 0) {
         toast.error("Failed to fetch schools");
@@ -49,7 +46,6 @@ function LoginPage() {
     };
     fetchSchools();
   }, []);
-
 
 
   // Login function
@@ -81,8 +77,8 @@ function LoginPage() {
     }
 
     switch (user.role) {
-      case "admin":
-        navigate("/admin/dashboard");
+      case "principal":
+        navigate("/principal/dashboard");
         break;
       case "teacher":
         navigate("/teacher/dashboard");
@@ -95,9 +91,6 @@ function LoginPage() {
         break;
       case "accountant":
         navigate("/accountant/dashboard");
-        break;
-      case "principal":
-        navigate("/principal/dashboard");
         break;
       default:
         navigate("/login");
@@ -171,7 +164,7 @@ function LoginPage() {
                 <input
                   type="email"
                   className="grow outline-none"
-                  placeholder="johndoe@gmail.com"
+                  placeholder="prasadashutosh048@gmail.com"
                   value={formData.email}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -234,7 +227,7 @@ function LoginPage() {
                   <option value="" disabled>
                     Select Role
                   </option>
-                  <option value="admin">Admin</option>
+                  {/* <option value="admin">Admin</option> */}
                   <option value="accountant">Accountant</option>
                   <option value="principal">Principal</option>
                   <option value="student">Student</option>

@@ -3,30 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Users, Contact, BookOpen, MessageSquare, FileText, DollarSign, Calendar } from 'lucide-react';
 import { useUsersStore } from '@/store/useUsersStore';
 import { useAuthStore } from '@/store/useAuthStore';
-
-
-interface Stats {
-  totalUsers: number;
-  totalStudents: number;
-  pendingDues: number;
-  classCount: number;
-}
+import { Stats } from '@/store/useUsersStore';
 
 const AdminDashboard = () => {
 
-  const getStats = useUsersStore((state) => state.getStats);
-  const authUser = useAuthStore((state) => state.authUser);
-  const [stats, setStats] = useState<Stats | null>(null);
- const schoolId = authUser?.schoolId;
+const getStats = useUsersStore((state) => state.getStats);
+const authUser = useAuthStore((state) => state.authUser);
+const [stats, setStats] = useState<Stats | null>(null);
+
  
-  useEffect(() => {
-    
-    const fetchStats = async () => {
-      const data = await getStats(schoolId);
-      if (data) setStats(data);
-    };
-    fetchStats();
-  }, [getStats]);
+//Fetching stats -> getStats contoller is in useUsersStore
+useEffect(() => {
+  const fetchStats = async () => {
+    const data = await getStats(authUser.school_id);
+    if (data) setStats(data);
+  };
+  fetchStats();
+}, [getStats]);
+
 
 const statCards = [
       {

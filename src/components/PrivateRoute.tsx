@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
 interface PrivateRouteProps {
-  allowedRoles?: string[]; // optional: restrict by role
+  allowedRoles?: string[]; // Restrict by role
 }
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
@@ -21,7 +21,6 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // ✅ Optionally check role
   if (allowedRoles && !allowedRoles.includes(authUser.role)) {
     return <Navigate to="/login" replace />;
   }

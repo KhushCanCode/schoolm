@@ -3,28 +3,14 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 
+
 interface AuthUser {
-  id: string;   // changed `_id` → `id` to match response payload
-  name: string;
+    id: string;
+  username: string;
   email: string;
   school_id: string;
   role: string;
-}
-
-interface ApiResponse<T> {
-  status: boolean;
-  message: string;
-  data: T;
-  errors: Record<string, any>;
-  meta: Record<string, any>;
-}
-
-interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  schoolId: string;
-  role: string;
+  
 }
 
 interface AuthState {
@@ -45,6 +31,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoggingIn: false,
   isCheckingAuth: true,
 
+  //  Get User Controller
   getUser: async () => {
     const token = localStorage.getItem('token');
     try {
@@ -57,7 +44,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           Authorization: `Bearer ${token}`,
         }
       });
-      console.log(res);
+      console.log("User from getUser:" , res.data.data);
 
       if (res.data.status) {
         set({ authUser: res.data.data });
@@ -73,7 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  //  Login 
+  //  Login Controller
   login: async (data: { email: string; password: string; school_id: string; role: string }) => {
     set({ isLoggingIn: true });
     try {
@@ -87,7 +74,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       );
       const token = res.data.token;
       localStorage.setItem('token', token);
-      // console.log(res);
 
       toast.success(res.data.message || "Logged In Successfully");
       return true;
@@ -99,19 +85,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  // ==================== LOGOUT ====================
+  // Logout Controller
   logout: async () => {
     localStorage.clear;
   },
 
-  // ✅ Fetch Schools
+  // Get Schools Controller
   getSchoolList: async () => {
     try {
-      const res = await axiosInstance.get<ApiResponse<School[]>>("/auth/schools");
-      // console.log(res);
+      const res = await axiosInstance.get("/auth/schools");
 
       if (res.data.status) {
-        return res.data.data; // ✅ Access the schools array
+        return res.data.data; 
       } else {
         toast.error(res.data.message || "Failed to fetch schools");
         return [];

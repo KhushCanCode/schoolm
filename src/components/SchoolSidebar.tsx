@@ -60,38 +60,38 @@ interface RoleMenus {
 }
 
 const roleMenus: RoleMenus = {
-  admin: [
+  principal: [
     {
       title: "Dashboard",
       icon: Home,
-      href: "/admin/dashboard",
+      href: "/principal/dashboard",
     },
     {
       title: "Student ",
       icon: User,
-      href: "/admin/students",
+      href: "/principal/students",
       submenu: [
-        { title: "Register", icon: Users, href: "/admin/students/register" },
-        { title: "List", icon: UserCheck, href: "/admin/students/list" },
+        { title: "Register", icon: Users, href: "/principal/students/register" },
+        { title: "List", icon: UserCheck, href: "/principal/students/list" },
         {
           title: "Attendance",
           icon: Trophy,
-          href: "/admin/students/attendance",
+          href: "/principal/students/attendance",
         },
-        { title: "Records", icon: Users, href: "/admin/students/records" },
+        { title: "Records", icon: Users, href: "/principal/students/records" },
       ],
     },
     {
       title: "Teachers",
       icon: GraduationCap,
-      href: "/admin/teachers",
+      href: "/principal/teachers",
       submenu: [
-        { title: "Register", icon: Users, href: "/admin/teachers/register" },
-        { title: "List", icon: Users, href: "/admin/teachers/list" },
+        { title: "Register", icon: Users, href: "/principal/teachers/register" },
+        { title: "List", icon: Users, href: "/principal/teachers/list" },
         {
           title: "Assign Subjects",
           icon: CreditCard,
-          href: "/admin/teachers/subject",
+          href: "/principal/teachers/subject",
         },
       ],
     },
@@ -99,42 +99,42 @@ const roleMenus: RoleMenus = {
     {
       title: "Classes",
       icon: BookOpen,
-      href: "/admin/classes/class",
+      href: "/principal/classes/class",
       submenu: [
-        { title: "List", icon: School, href: "/admin/classes/list" },
-        { title: "Subjects", icon: BookOpen, href: "/admin/classes/subjects" },
+        { title: "List", icon: School, href: "/principal/classes/list" },
+        { title: "Subjects", icon: BookOpen, href: "/principal/classes/subjects" },
         {
           title: "Timetable",
           icon: BookOpen,
-          href: "/admin/classes/timetable",
+          href: "/principal/classes/timetable",
         },
       ],
     },
     {
       title: "Exam",
       icon: Users,
-      href: "/admin/exam",
+      href: "/principal/exam",
     },
 
     {
       title: "Library",
       icon: BookOpen,
-      href: "/admin/library",
+      href: "/principal/library",
     },
     {
       title: "Transport",
       icon: Car,
-      href: "/admin/transport",
+      href: "/principal/transport",
     },
     {
       title: "Hostel",
       icon: Home,
-      href: "/admin/hostel",
+      href: "/principal/hostel",
     },
     {
       title: "Communication",
       icon: MessageSquare,
-      href: "/admin/communication",
+      href: "/principal/communication",
       
        
     
@@ -142,33 +142,33 @@ const roleMenus: RoleMenus = {
     {
       title: "Reports",
       icon: BarChart3,
-      href: "/admin/reports",
+      href: "/principal/reports",
       submenu: [
         {
           title: "Student ",
           icon: GraduationCap,
-          href: "/admin/reports/student",
+          href: "/principal/reports/student",
         },
-        { title: "Fees", icon: PieChart, href: "/admin/reports/fee" },
-        { title: "Attendance", icon: Clock, href: "/admin/reports/attendance" },
-        { title: "Exams", icon: Clock, href: "/admin/reports/exams" },
+        { title: "Fees", icon: PieChart, href: "/principal/reports/fee" },
+        { title: "Attendance", icon: Clock, href: "/principal/reports/attendance" },
+        { title: "Exams", icon: Clock, href: "/principal/reports/exams" },
       ],
     },
     {
       title: "Settings",
       icon: Settings,
-      href: "/admin/settings",
+      href: "/principal/settings",
       submenu: [
         {
           title: "User Management",
           icon: Settings,
-          href: "/admin/settings/user-management",
+          href: "/principal/settings/user-management",
         },
-        { title: "Roles", icon: CreditCard, href: "/admin/settings/roles" },
+        { title: "Roles", icon: CreditCard, href: "/principal/settings/roles" },
         {
           title: "School info",
           icon: MessageSquare,
-          href: "/admin/settings/school-info",
+          href: "/principal/settings/school-info",
         },
       ],
     },
