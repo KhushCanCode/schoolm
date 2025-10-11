@@ -24,7 +24,7 @@ function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
-    email: 'prasadashutosh048@gmail.com',
+    email: '',
     password: '',
     school_id: '',
     role: ''
@@ -37,7 +37,7 @@ function LoginPage() {
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolList = await getSchoolList();
-
+      
       if (schoolList.length === 0) {
         toast.error("Failed to fetch schools");
       } else {

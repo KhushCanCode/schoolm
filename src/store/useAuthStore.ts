@@ -14,8 +14,8 @@ interface AuthUser {
 }
 
 interface AuthState {
+
   authUser: AuthUser | null;
-  school_id: string | null;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
 
@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = localStorage.getItem('token');
     try {
       if (!token) {
-        toast.error("Token missing");
+        toast.error("Please login first");
         return null;
       }
       const res = await axiosInstance.get("/auth/user", {
@@ -87,8 +87,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   // Logout Controller
   logout: async () => {
-    localStorage.clear;
+    localStorage.removeItem("token");
+
+    set({ authUser: null });
+
+    toast.success("Logged out successfully");
   },
+
 
   // Get Schools Controller
   getSchoolList: async () => {

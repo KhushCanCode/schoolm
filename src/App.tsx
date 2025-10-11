@@ -64,7 +64,8 @@ import AccountantFeeStructure from "./pages/accountant/FeesStructure";
 import SignupPage from "./pages/auth/SignupPage";
 import LoginPage from "./pages/auth/LoginPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
-import { PrivateRoute } from "./components/PrivateRoute";
+import { PrivateRoute } from "./components/routes/PrivateRoute";
+import { PublicRoute } from "./components/routes/PublicRoute";
 import RequestOtpPage from "./pages/auth/RequestOtpPage";
 import UserRegister from "./pages/principal/users/Register";
 import UserList from "./pages/principal/users/List";
@@ -81,7 +82,9 @@ const App = () => (
       <Routes>
 
         {/* <Route path="/signup" element={<SignupPage/>}/> */}
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
 
         {/* admin panel */}
         <Route element={<PrivateRoute allowedRoles={['principal']} />}>

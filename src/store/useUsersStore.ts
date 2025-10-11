@@ -5,23 +5,28 @@ import { axiosInstance } from "../lib/axios";
 
 //User Response Type
 export interface UserData {
-  school_id: string;
-  username: string;
-  email: string;
-  password: string;
-  phone: string;
-  role: string;
+  school_id?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  role?: string;
 }
 
-export interface ClassForm {
+//Teacher Response Type
+export interface TeacherForm {
   school_id?: string;
-  class?: string;
-  section?: string;
-  room_no?: string;
-  teacher_in_charge?: string;
-  capacity?: number;
-  status?: 'active' | 'inactive';
-  notes?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  qualification?: string;
+  dob?: Date;
+  gender?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  employee_code?: string;
+  subjects?: number[];
 }
 
 // Student response type
@@ -75,14 +80,20 @@ interface UsersState {
   getStats: (school_id: string) => Promise<Stats | null>;
   registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
-  createClass: (data: ClassForm) => Promise<boolean>;
-  getClasses: (school_id: string) => Promise<ClassForm[]>;
+
+
+  //Teacher Controllers
+  registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
+  // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
+  // deleteTeacher: (teacherId: string, school_id: string) => Promise<boolean>;
+  // getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
+
+  
 }
 
 export const useUsersStore = create<UsersState>(() => ({
 
   //  Get Stats Controller -------------------------------------------------------------------------------------------------------
-
   getStats: async (school_id) => {
     const token = localStorage.getItem('token');
 
@@ -106,8 +117,11 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  //Register User Controller ---------------------------------------------------------------------------------------------------
 
+
+  //USER CONTROLLERS ---------------------------------------------------------------------------------------------------
+
+  //Register User 
   registerUser: async (school_id, data) => {
     const token = localStorage.getItem("token");
 
@@ -139,7 +153,13 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  //Get All Users Controller ---------------------------------------------------------------------------------------------------
+  //Update User
+
+
+  // Delete User
+
+
+  //Get All Users
   getAllUsers: async (school_id) => {
     const token = localStorage.getItem('token');
     try {
@@ -169,7 +189,10 @@ export const useUsersStore = create<UsersState>(() => ({
   },
 
 
-  // Register Student Contoller ---------------------------------------------------------------------------------------------------
+
+  //STUDENT CONTROLLERS ---------------------------------------------------------------------------------------------------
+
+  // Register Student
   registerStudent: async (school_id, data) => {
     const token = localStorage.getItem('token');
     console.log("Register Student Data:", token);
@@ -201,82 +224,7 @@ export const useUsersStore = create<UsersState>(() => ({
     }
   },
 
-  // Create Class Controller ---------------------------------------------------------------------------------------------------
-  createClass: async (data: ClassForm) => {
-    const token = localStorage.getItem('token');
-    try {
-      const res = await axiosInstance.post(`/principal/class/create`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.data.status) {
-        toast.success(res.data.message || 'Class created successfully');
-        return true;
-      } else {
-        toast.error(res.data.message || 'Failed to create class');
-        return false;
-      }
-    } catch (error: any) {
-      console.error('Error creating class:', error?.response?.data?.message || error.message);
-      toast.error(error?.response?.data?.message || 'Failed to create class');
-      return false;
-    }
-  },
-
-  // Fetch all classes for a school ---------------------------------------------------------------------------------------------------
-  getClasses: async (school_id: string) => {
-    const token = localStorage.getItem('token');
-    try {
-      const res = await axiosInstance.get(`/principal/class/getall/${school_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.data.status) {
-        return res.data.data;
-      } else {
-        toast.error(res.data.message || 'Failed to fetch classes');
-        return [];
-      }
-    } catch (error: any) {
-      console.error('Error fetching classes:', error?.response?.data?.message || error.message);
-      toast.error(error?.response?.data?.message || 'Failed to fetch classes');
-      return [];
-    }
-  },
-
-
-
-
-
-
-
-  //  Register Parent Controller
-  // registerParent: async (schoolId, data) => {
-  //   try {
-  //     // const res = await axiosInstance.put<ApiResponse<any>>(
-  //     //   `/principal/update-student/${studentId}/${schoolId}`,
-  //     //   data
-  //     // );
-
-  //     // if (res.data.status) {
-  //     //   toast.success(res.data.message || "Student updated successfully");
-  //     //   return true;
-  //     // } else {
-  //     //   toast.error(res.data.message || "Failed to update student");
-  //     //   return false;
-  //     // }
-  //   } catch (error: any) {
-  //     console.error("Error updating student:", error?.response?.data?.message || error.message);
-  //     toast.error(error?.response?.data?.message || "Failed to update student");
-  //     return false;
-  //   }
-  // },
-
-  // Get Student Details Controller  ---------------------------------------------------------------------------------------------
+    // Get Student Details
   getStudentDetails: async (schoolId) => {
     try {
       const res = await axiosInstance.get(
@@ -296,4 +244,51 @@ export const useUsersStore = create<UsersState>(() => ({
       return null;
     }
   },
+
+
+
+  //TEACHER CONTROLLERS ---------------------------------------------------------------------------------------------------
+
+  // Register Teacher
+  registerTeacher: async (school_id, data) => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await axiosInstance.post(`/principal/teacher/register/${school_id}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Register Teacher response:", res.data);
+      
+     if (res.data.status) {
+        toast.success(res.data.message || "Teacher registered successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to register teacher");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error registering teacher:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to register teacher");
+      return false;
+    }
+  },
+
+  //Update Teacher
+
+  // Delete Teacher
+
+  // Get All Teachers
+
+
+
+  //  Register Parent Controller ---------------------------------------------------------------------------------------------------
+
+
+
+
 }));

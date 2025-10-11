@@ -27,6 +27,18 @@ import {
   ChevronRight,
   User,
   BookA,
+  Users2,
+  Contact,
+  NotebookPen,
+  Presentation,
+  UserPlus,
+  List,
+  ClipboardList,
+  Archive,
+  BookCheck,
+  BookCopy,
+  CalendarHeart,
+  Calendar1,
 } from "lucide-react";
 import {
   Sidebar,
@@ -68,18 +80,28 @@ const roleMenus: RoleMenus = {
     },
 
     {
+      title: "Users ",
+      icon: Users,
+      href: "/principal/users",
+      submenu: [
+        { title: "Register", icon: UserPlus, href: "/principal/users/register" },
+        { title: "List", icon: ClipboardList, href: "/principal/users/list" },
+      ],
+    },
+
+    {
       title: "Students ",
-      icon: User,
+      icon: Contact,
       href: "/principal/students",
       submenu: [
-        { title: "Register", icon: Users, href: "/principal/students/register" },
-        { title: "List", icon: UserCheck, href: "/principal/students/list" },
+        { title: "Register", icon: UserPlus, href: "/principal/students/register" },
+        { title: "List", icon: ClipboardList, href: "/principal/students/list" },
         {
           title: "Attendance",
-          icon: Trophy,
+          icon: BookA,
           href: "/principal/students/attendance",
         },
-        { title: "Records", icon: Users, href: "/principal/students/records" },
+        { title: "Records", icon: Archive, href: "/principal/students/records" },
       ],
     },
     {
@@ -87,11 +109,11 @@ const roleMenus: RoleMenus = {
       icon: GraduationCap,
       href: "/principal/teachers",
       submenu: [
-        { title: "Register", icon: Users, href: "/principal/teachers/register" },
-        { title: "List", icon: Users, href: "/principal/teachers/list" },
+        { title: "Register", icon: UserPlus, href: "/principal/teachers/register" },
+        { title: "List", icon: ClipboardList, href: "/principal/teachers/list" },
         {
           title: "Assign Subjects",
-          icon: CreditCard,
+          icon: BookCheck,
           href: "/principal/teachers/subject",
         },
       ],
@@ -99,21 +121,21 @@ const roleMenus: RoleMenus = {
 
     {
       title: "Classes",
-      icon: BookOpen,
+      icon: Presentation,
       href: "/principal/classes/class",
       submenu: [
-        { title: "List", icon: School, href: "/principal/classes/list" },
-        { title: "Subjects", icon: BookOpen, href: "/principal/classes/subjects" },
+        { title: "List", icon: ClipboardList, href: "/principal/classes/list" },
+        { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjects" },
         {
           title: "Timetable",
-          icon: BookOpen,
+          icon: Calendar1,
           href: "/principal/classes/timetable",
         },
       ],
     },
     {
       title: "Exam",
-      icon: Users,
+      icon: NotebookPen,
       href: "/principal/exam",
     },
 
@@ -173,15 +195,7 @@ const roleMenus: RoleMenus = {
         },
       ],
     },
-        {
-      title: "Users ",
-      icon: User,
-      href: "/principal/users",
-      submenu: [
-        { title: "Register", icon: Users, href: "/principal/users/register" },
-        { title: "List", icon: Users, href: "/principal/users/list" },
-      ],
-    },
+        
   ],
   teacher: [
     {

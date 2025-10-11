@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../../store/useAuthStore";
 
 interface PrivateRouteProps {
   allowedRoles?: string[]; // Restrict by role
@@ -11,8 +11,9 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
   if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg font-medium">Not authenticated</p>
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
+
     );
   }
   

@@ -19,32 +19,36 @@ import {
 } from '@/components/ui/dialog';
 import { Plus, Edit, Trash2, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUsersStore, ClassForm } from '@/store/useUsersStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import {ClassForm, useClassStore } from '@/store/useClassStore';
+
+// Type that allows empty string for controlled input
+export type ClassFormState = Omit<ClassForm, 'capacity'> & { capacity?: number | '' };
 
 const ClassList = () => {
   const { authUser } = useAuthStore();
+  const { toast } = useToast();
+  const { createClass, getClasses, deleteClass, updateClass } = useClassStore();
+
   const [classes, setClasses] = useState<ClassForm[]>([]);
-  
-  const [formData, setFormData] = useState<ClassForm>({
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
+
+  //  Form state that supports both empty string and number
+  const [formData, setFormData] = useState<ClassFormState>({
     school_id: authUser.school_id,
     class: '',
     section: '',
-    capacity: 0,
+    capacity: '',
     teacher_in_charge: '',
     room_no: '',
     status: 'active',
     notes: '',
   });
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [open, setOpen] = useState(false);
-  const { toast } = useToast();
-  const { createClass, getClasses } = useUsersStore();
 
   // Fetch classes from backend
   const fetchClasses = async () => {
     const schoolId = authUser.school_id;
-    
     if (!schoolId) return;
     const data = await getClasses(schoolId);
     if (data) setClasses(data);
@@ -54,43 +58,73 @@ const ClassList = () => {
     fetchClasses();
   }, []);
 
-  // Create or update
+  // Create or update class
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.class || !formData.teacher_in_charge) return;
 
-    if (editingIndex !== null) {
+    const payload: ClassForm = {
+      ...formData,
+      capacity: formData.capacity === '' ? 0 : Number(formData.capacity),
+    };
+
+        if (editingIndex !== null) {
+      const classId = (classes[editingIndex] as ClassForm & { id: string }).id;
+
+      const success = await updateClass(classId, payload);
+      if (!success) return;
+
+      // Update local state while preserving id
       const updated = [...classes];
-      updated[editingIndex] = { ...formData };
+      updated[editingIndex] = { ...payload, id: classId }; 
       setClasses(updated);
+
       toast({ title: 'Class Updated', description: 'Class updated successfully.' });
     } else {
-      const success = await createClass(formData);
+      const success = await createClass(payload);
       if (success) {
         fetchClasses();
         toast({ title: 'Class Created', description: 'Class created successfully.' });
       }
     }
 
-    setFormData({school_id: authUser.school_id, class: '', section: '', capacity: 0, teacher_in_charge: '', room_no: '', status: 'active', notes: '' });
+
+    // Reset form
+    setFormData({
+      school_id: authUser.school_id,
+      class: '',
+      section: '',
+      capacity: '',
+      teacher_in_charge: '',
+      room_no: '',
+      status: 'active',
+      notes: '',
+    });
     setEditingIndex(null);
     setOpen(false);
   };
 
-  const handleEdit = (index: number) => {
-   setFormData({
-  ...classes[index],
-  school_id: authUser.school_id,
-});
+  const handleEdit = (iclassId: string , index: number) => {
+    const cls = classes[index];
+    setFormData({
+      ...cls,
+      school_id: authUser.school_id,
+      capacity: cls.capacity ?? '',
+    });
     setEditingIndex(index);
     setOpen(true);
   };
 
-  const handleDelete = (index: number) => {
-    const updated = [...classes];
-    updated.splice(index, 1);
-    setClasses(updated);
-    toast({ title: 'Class Deleted', description: 'Class deleted successfully.' });
+  const handleDelete = async (classId: string , index: number) => {
+    const success = await deleteClass(classId); 
+    
+  if (success) {
+    setClasses((prev) => {
+      const updated = [...prev];
+      updated.splice(index, 1);
+      return updated;
+    });
+  }
   };
 
   return (
@@ -123,7 +157,7 @@ const ClassList = () => {
                   <Input
                     id="class"
                     value={formData.class || ''}
-                    onChange={e => setFormData(prev => ({ ...prev, class: e.target.value }))}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, class: e.target.value }))}
                     placeholder="e.g., 10"
                     required
                   />
@@ -133,7 +167,7 @@ const ClassList = () => {
                   <Input
                     id="section"
                     value={formData.section || ''}
-                    onChange={e => setFormData(prev => ({ ...prev, section: e.target.value }))}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, section: e.target.value }))}
                     placeholder="e.g., A"
                   />
                 </div>
@@ -145,8 +179,14 @@ const ClassList = () => {
                   <Input
                     id="capacity"
                     type="number"
-                    value={formData.capacity || 0}
-                    onChange={e => setFormData(prev => ({ ...prev, capacity: parseInt(e.target.value) || 0 }))}
+                    value={formData.capacity}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        capacity: value === '' ? '' : parseInt(value, 10),
+                      }));
+                    }}
                     placeholder="Maximum students"
                   />
                 </div>
@@ -155,7 +195,7 @@ const ClassList = () => {
                   <Input
                     id="room_no"
                     value={formData.room_no || ''}
-                    onChange={e => setFormData(prev => ({ ...prev, room_no: e.target.value }))}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, room_no: e.target.value }))}
                     placeholder="e.g., R-101"
                   />
                 </div>
@@ -166,7 +206,9 @@ const ClassList = () => {
                 <Input
                   id="teacher_in_charge"
                   value={formData.teacher_in_charge || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, teacher_in_charge: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, teacher_in_charge: e.target.value }))
+                  }
                   placeholder="e.g., John Doe"
                   required
                 />
@@ -177,7 +219,12 @@ const ClassList = () => {
                 <select
                   id="status"
                   value={formData.status || 'active'}
-                  onChange={e => setFormData(prev => ({ ...prev, status: e.target.value as 'active' | 'inactive' }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      status: e.target.value as 'active' | 'inactive',
+                    }))
+                  }
                   className="w-full border rounded-md p-2"
                 >
                   <option value="active">Active</option>
@@ -191,13 +238,15 @@ const ClassList = () => {
                   id="notes"
                   className="w-full border rounded-md p-2"
                   value={formData.notes || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, notes: e.target.value }))}
                   placeholder="Optional remarks about the class"
                 />
               </div>
 
               <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
                 <Button type="submit">{editingIndex !== null ? 'Update' : 'Create'} Class</Button>
               </div>
             </form>
@@ -207,8 +256,11 @@ const ClassList = () => {
 
       {/* Class Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {classes.map((cls, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow border">
+        {classes.map((cls, index) => {
+          const classWithId = cls as ClassForm & { id: string };
+          return (
+          
+          <Card key={classWithId.id} className="hover:shadow-lg transition-shadow border">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -223,25 +275,34 @@ const ClassList = () => {
               </div>
             </CardHeader>
 
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-gray-500 text-xs" />
-                  <span className="text-sm">Teacher: {cls.teacher_in_charge || 'N/A'}</span>
-                </div>
+           <CardContent>
+                <div className="space-y-3">
+                  <div className='flex items-center justify-between mb-6'>
+                    <div className="flex items-center space-x-2">
+                    <span className="text-sm"> <span className='font-semibold'>Teachers:</span> {cls.teacher_in_charge || 'N/A'}</span>
+                  </div>
 
-                <div className="flex items-center justify-end space-x-2 pt-2">
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(index)}>
-                    <Edit className="h-4" />
-                  </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleDelete(index)}>
-                    <Trash2 className="h-4 text-white" />
-                  </Button>
+                  {/* Display capacity */}
+                  <div className="text-sm">{cls.capacity || 0} seats</div>
+                  </div>
+
+                  {/* Display notes */}
+                  {cls.notes && (
+                    <div className="text-sm text-gray-600 pt-2 border-t border-dashed italic ">"{cls.notes}"</div>
+                  )}
+
+                  <div className="flex items-center justify-end space-x-2 pt-2">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(classWithId.id, index)}>
+                      <Edit className="h-4" />
+                    </Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(classWithId.id, index)}>
+                      <Trash2 className="h-4 text-white" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
+              </CardContent>
           </Card>
-        ))}
+)})}
       </div>
     </div>
   );

@@ -1,36 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save, Upload } from "lucide-react";
+import { ArrowLeft, Save, School, Upload } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { TeacherForm, useUsersStore } from "@/store/useUsersStore";
+import { useAuthStore } from "@/store/useAuthStore";
+
+interface Subject {
+  id: number;
+  name: string;
+}
 
 const Register = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    dateOfBirth: "",
-    class: "",
-    experience:"",
-    specialization:"",
-    section: "",
-    admissionDate: "",
-    bloodGroup: "",
-    degree:"",
-    
-    emergencyContact: "",
-    previousSchool: "",
-    parentOccupation: "",
-    medicalConditions: ""
-  });
+  const { authUser } = useAuthStore();
+  const registerTeacher = useUsersStore((state) => state.registerTeacher);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+
+    useEffect(() => {
+    // Simulated subjects list (replace with your API)
+    setSubjects([
+      { id: 1, name: "Mathematics" },
+      { id: 2, name: "Science" },
+      { id: 3, name: "English" },
+      { id: 4, name: "History" },
+    ]);
+  }, []);
+
+    const handleToggle = (id: number) => {
+    setFormData((prev) => {
+      const selected = prev.subjects || [];
+      const updated = selected.includes(id)
+        ? selected.filter((s) => s !== id)
+        : [...selected, id];
+
+      return { ...prev, subjects: updated };
+    });
+  };
+
+  const [formData, setFormData] = useState<TeacherForm>({
+  school_id: authUser.school_id,        
+  name: '',
+  email: '',
+  phone: '',
+  qualification: '',
+  dob: undefined,       
+  gender: '',
+  address: '',
+  city: '',
+  state: '',
+  employee_code: '',
+  subjects: [],         
+});
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -39,32 +65,26 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Student Registration Data:", formData);
-    toast({
-      title: "Student Registered Successfully!",
-      description: `${formData.firstName} ${formData.lastName} has been added to the system.`,
-    });
+
+    const success = await registerTeacher(authUser.school_id, formData);
+ 
     // Reset form
     setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      experience:"",
-    specialization:"",
-      address: "",
-      dateOfBirth: "",
-      class: "",
-      section: "",
-      degree:"",
-      admissionDate: "",
-      bloodGroup: "",
-      parentOccupation: "",
-      emergencyContact: "",
-      previousSchool: "",
-      medicalConditions: ""
+      school_id: authUser.school_id,        
+      name: '',
+      email: '',
+      phone: '',
+      qualification: '',
+      dob: undefined,       
+      gender: '',
+      address: '',
+      city: '',
+      state: '',
+      employee_code: '',
+      subjects: [],  
     });
   };
 
@@ -73,7 +93,7 @@ const Register = () => {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4">
-          <Link to="/admin/teachers/list">
+          <Link to="/principal/teachers/list">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -92,23 +112,15 @@ const Register = () => {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="name">Name *</Label>
                 <Input
-                  id="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange("firstName", e.target.value)}
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name *</Label>
-                <Input
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange("lastName", e.target.value)}
-                  required
-                />
-              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -127,42 +139,75 @@ const Register = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                <Label htmlFor="dob">Date of Birth *</Label>
                 <Input
-                  id="dateOfBirth"
+                  id="dob"
                   type="date"
-                  value={formData.dateOfBirth}
-                  onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                  value={formData.dob ? formData.dob.toISOString().split("T")[0] : ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      dob: e.target.value ? new Date(e.target.value) : undefined,
+                    }))
+                  }
                   required
                 />
               </div>
+
+              {/*  Gender */}
               <div className="space-y-2">
-                <Label htmlFor="bloodGroup">Blood Group</Label>
-                <Select onValueChange={(value) => handleInputChange("bloodGroup", value)}>
+                <Label htmlFor="gender">Gender *</Label>
+                <Select onValueChange={(value) => handleInputChange("gender", value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select blood group" />
+                    <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="A+">A+</SelectItem>
-                    <SelectItem value="A-">A-</SelectItem>
-                    <SelectItem value="B+">B+</SelectItem>
-                    <SelectItem value="B-">B-</SelectItem>
-                    <SelectItem value="AB+">AB+</SelectItem>
-                    <SelectItem value="AB-">AB-</SelectItem>
-                    <SelectItem value="O+">O+</SelectItem>
-                    <SelectItem value="O-">O-</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Textarea
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
-                  rows={3}
-                />
-              </div>
+
+
+            </CardContent>
+          </Card>
+
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="text-lg">Address Information</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input
+                    id="address"
+                    value={formData.address}
+                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    id="state"
+                    value={formData.state}
+                    onChange={(e) => handleInputChange("state", e.target.value)}
+                    required
+                  />
+                </div>
+
+                 <div className="space-y-2">
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange("city", e.target.value)}
+                    required
+                  />
+                </div>
+
             </CardContent>
           </Card>
 
@@ -171,17 +216,44 @@ const Register = () => {
             <CardHeader>
               <CardTitle className="text-lg">Teacher Education</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="degree">Degree *</Label>
+                <Label htmlFor="qualification">Qualification *</Label>
                 <Input
-                  id="degree"
-                  value={formData.degree}
-                  onChange={(e) => handleInputChange("degree", e.target.value)}
+                  id="qualification"
+                  value={formData.qualification}
+                  onChange={(e) => handleInputChange("qualification", e.target.value)}
                   required
                 />
               </div>
-              <div className="space-y-2">
+               <div className="space-y-2">
+               <Label htmlFor="qualification">Subjects</Label>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {subjects.map((subject) => (
+                    <div
+                      key={subject.id}
+                      className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer transition ${
+                        formData.subjects?.includes(subject.id)
+                          ? "bg-blue-100 border-blue-500"
+                          : "hover:bg-gray-50"
+                      }`}
+                      onClick={() => handleToggle(subject.id)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.subjects?.includes(subject.id) || false}
+                        onChange={() => handleToggle(subject.id)}
+                        className="accent-blue-500 w-4 h-4 cursor-pointer"
+                      />
+                      <span className="text-sm">{subject.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+
+              {/* <div className="space-y-2">
                 <Label htmlFor="experience">Experience *</Label>
                 
                 <Input
@@ -190,7 +262,8 @@ const Register = () => {
                   onChange={(e) => handleInputChange("experience", e.target.value)}
                   required
                 />
-              </div>
+              </div> */}
+{/*               
               <div className="   space-y-2">
                 <Label htmlFor="specialization">Specialization *</Label>
                 <Input
@@ -198,8 +271,9 @@ const Register = () => {
                   value={formData.specialization}
                   onChange={(e) => handleInputChange("specialization", e.target.value)}
                 />
-              </div>
-              <div className="space-y-2">
+              </div> */}
+
+              {/* <div className="space-y-2">
                 <Label htmlFor="admissionDate">Admission Date *</Label>
                 <Input
                   id="admissionDate"
@@ -208,22 +282,23 @@ const Register = () => {
                   onChange={(e) => handleInputChange("admissionDate", e.target.value)}
                   required
                 />
-              </div>
-              <div className="md:col-span-2 space-y-2">
+              </div> */}
+
+              {/* <div className="md:col-span-2 space-y-2">
                 <Label htmlFor="previousSchool">Previous School</Label>
                 <Input
                   id="previousSchool"
                   value={formData.previousSchool}
                   onChange={(e) => handleInputChange("previousSchool", e.target.value)}
                 />
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
         
 
           {/* Medical Information */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="text-lg">Medical Information</CardTitle>
             </CardHeader>
@@ -239,11 +314,11 @@ const Register = () => {
                 />
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4">
-            <Link to="/admin/teachers/list">
+            <Link to="/principal/teachers/list">
               <Button variant="outline" className="hover:bg-destructive hover:text-accent">Cancel</Button>
             </Link>
             <Button type="submit" className="flex items-center gap-2">

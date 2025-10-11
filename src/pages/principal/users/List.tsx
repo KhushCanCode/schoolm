@@ -9,7 +9,7 @@ const UserList = () => {
   const [users, setUsers] = useState<UserData[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const school_id = useAuthStore((state) => state.authUser.school_id); // replace with actual school_id
+  const school_id = useAuthStore((state) => state.authUser.school_id); 
 
   useEffect(() => {
     const fetchUsers = async () => {
