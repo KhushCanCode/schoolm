@@ -15,13 +15,13 @@ export interface UserData {
 
 export interface ClassForm {
   school_id?: string;
-  class?: string;                 
-  section?: string;               
-  room_no?: string;               
-  teacher_in_charge?: string;     
-  capacity?: number;              
-  status?: 'active' | 'inactive'; 
-  notes?: string;                 
+  class?: string;
+  section?: string;
+  room_no?: string;
+  teacher_in_charge?: string;
+  capacity?: number;
+  status?: 'active' | 'inactive';
+  notes?: string;
 }
 
 // Student response type
@@ -68,14 +68,14 @@ interface ParentForm {
 
 
 interface UsersState {
-  
-  registerUser: (school_id: string, data: UserData)=> Promise<boolean>;
+
+  registerUser: (school_id: string, data: UserData) => Promise<boolean>;
   getAllUsers: (school_id: string) => Promise<UserData[] | null>;
   // registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
   getStats: (school_id: string) => Promise<Stats | null>;
   registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
-  createClass: ( data: ClassForm) => Promise<boolean>;
+  createClass: (data: ClassForm) => Promise<boolean>;
   getClasses: (school_id: string) => Promise<ClassForm[]>;
 }
 
@@ -87,7 +87,7 @@ export const useUsersStore = create<UsersState>(() => ({
     const token = localStorage.getItem('token');
 
     try {
-      const res = await axiosInstance.get(`/users/stats/${school_id}`, {
+      const res = await axiosInstance.get(`/principal/stats/${school_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,20 +109,19 @@ export const useUsersStore = create<UsersState>(() => ({
   //Register User Controller ---------------------------------------------------------------------------------------------------
 
   registerUser: async (school_id, data) => {
-  const token = localStorage.getItem("token");
-   console.log("Register User Data:", data);
-   
+    const token = localStorage.getItem("token");
+
     try {
       const res = await axiosInstance.post(
-        `/users/register/${school_id}`, 
-        data, 
-         {
-        headers: { Authorization: `Bearer ${token}` }
+        `/principal/user/register/${school_id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
         }
-       
+
       );
 
-    
+
       if (res.data.status) {
         toast.success(res.data.message || "User registered successfully");
         return true;
@@ -144,15 +143,15 @@ export const useUsersStore = create<UsersState>(() => ({
   getAllUsers: async (school_id) => {
     const token = localStorage.getItem('token');
     try {
-      const res = await axiosInstance.get(`/users/${school_id}`,
-         {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await axiosInstance.get(`/principal/user/getall/${school_id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
         }
       );
 
-       console.log("Get All Users response:", res.data);
+      console.log("Get All Users response:", res.data);
 
-       if (res.data.status) {
+      if (res.data.status) {
         toast.success(res.data.message || "Users fetched successfully");
         return res.data.data;
       } else {
@@ -170,19 +169,19 @@ export const useUsersStore = create<UsersState>(() => ({
   },
 
 
-    // Register Student Contoller ---------------------------------------------------------------------------------------------------
+  // Register Student Contoller ---------------------------------------------------------------------------------------------------
   registerStudent: async (school_id, data) => {
     const token = localStorage.getItem('token');
     console.log("Register Student Data:", token);
 
     try {
       const res = await axiosInstance.post(
-        `/users/register-student/${school_id}`,
+        `/principal/student/register-student/${school_id}`,
         data,
         {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -206,7 +205,7 @@ export const useUsersStore = create<UsersState>(() => ({
   createClass: async (data: ClassForm) => {
     const token = localStorage.getItem('token');
     try {
-      const res = await axiosInstance.post(`/users/class/create`, data, {
+      const res = await axiosInstance.post(`/principal/class/create`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -230,7 +229,7 @@ export const useUsersStore = create<UsersState>(() => ({
   getClasses: async (school_id: string) => {
     const token = localStorage.getItem('token');
     try {
-      const res = await axiosInstance.get(`/users/class/${school_id}`, {
+      const res = await axiosInstance.get(`/principal/class/getall/${school_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -259,7 +258,7 @@ export const useUsersStore = create<UsersState>(() => ({
   // registerParent: async (schoolId, data) => {
   //   try {
   //     // const res = await axiosInstance.put<ApiResponse<any>>(
-  //     //   `/users/update-student/${studentId}/${schoolId}`,
+  //     //   `/principal/update-student/${studentId}/${schoolId}`,
   //     //   data
   //     // );
 
@@ -281,7 +280,7 @@ export const useUsersStore = create<UsersState>(() => ({
   getStudentDetails: async (schoolId) => {
     try {
       const res = await axiosInstance.get(
-        `/users/students/${schoolId}`
+        `/principal/students/getstudents/${schoolId}`
       );
 
       if (res.data.status) {
