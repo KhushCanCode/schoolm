@@ -1,20 +1,20 @@
-import React, { ChangeEvent } from 'react'
-import { UserData, useUsersStore } from '@/store/useUsersStore';
-import { useToast } from '@/hooks/use-toast';
-import { useAuthStore } from '@/store/useAuthStore';
-import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Save } from 'lucide-react';
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from '@/hooks/use-toast';
+import { useAuthStore } from '@/store/useAuthStore';
+import { UserData, useUsersStore } from '@/store/useUsersStore';
+import { ArrowLeft, Save } from 'lucide-react';
+import React from 'react';
+import { Link } from "react-router-dom";
 
 
 const UserRegister = () => {
   const { toast } = useToast();
 
-  const {authUser} = useAuthStore();
+  const { authUser } = useAuthStore();
   const registerUser = useUsersStore((state) => state.registerUser);
 
   const [formData, setFormData] = React.useState<UserData>({
@@ -33,7 +33,9 @@ const UserRegister = () => {
     }));
   };
 
-   const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log(formData);
+
     e.preventDefault();
 
     if (!formData.email) {
@@ -44,7 +46,7 @@ const UserRegister = () => {
     const success = await registerUser(authUser.school_id, formData);
     if (success) {
 
-        console.log("User registered successfully");
+      console.log("User registered successfully");
       // Reset form
       setFormData({
         school_id: authUser.school_id,
@@ -72,15 +74,15 @@ const UserRegister = () => {
           </div>
         </div>
 
-         <form onSubmit={handleSubmit} className="space-y-6  ">
+        <form onSubmit={handleSubmit} className="space-y-6  ">
           {/* ---------------------- PERSONAL INFO ---------------------- */}
           <Card>
-             <CardHeader className="text-sm">
+            <CardHeader className="text-sm">
               <CardTitle className="text-lg">Information</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2  gap-4">
 
-              
+
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
@@ -91,7 +93,7 @@ const UserRegister = () => {
                 />
               </div>
 
-            {/*  Email */}
+              {/*  Email */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -103,7 +105,7 @@ const UserRegister = () => {
                 />
               </div>
 
-            {/*  Password */}
+              {/*  Password */}
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -113,26 +115,26 @@ const UserRegister = () => {
                 />
               </div>
 
-             {/* Role Dropdown */}
-             <div className="space-y-2">
+              {/* Role Dropdown */}
+              <div className="space-y-2">
 
-              <Label htmlFor="gender">Role</Label>
-              <Select
+                <Label htmlFor="gender">Role</Label>
+                <Select
                   onValueChange={(value) => setFormData({ ...formData, role: value })}
-              >
-                 <SelectTrigger>
+                >
+                  <SelectTrigger>
                     <SelectValue placeholder="Select Role" />
                   </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="accountant">Accountant</SelectItem>
-                  <SelectItem value="principal">Principal</SelectItem>
-                  <SelectItem value="student">Student</SelectItem>
-                  <SelectItem value="teacher">Teacher</SelectItem>
-                  <SelectItem value="parent">Parent</SelectItem>
-                </SelectContent>
-              </Select>
-             </div>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="accountant">Accountant</SelectItem>
+                    <SelectItem value="principal">Principal</SelectItem>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="parent">Parent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
 
               {/*  Phone Number */}
@@ -162,7 +164,7 @@ const UserRegister = () => {
           </div>
         </form>
       </div>
-      
+
     </div>
   )
 }

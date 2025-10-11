@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useUsersStore, UserData } from '@/store/useUsersStore'; // adjust path
+import { useAuthStore } from '@/store/useAuthStore';
+import { UserData, useUsersStore } from '@/store/useUsersStore'; // adjust path
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const UserList = () => {
@@ -8,7 +9,7 @@ const UserList = () => {
   const [users, setUsers] = useState<UserData[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const school_id = '123'; // replace with actual school_id
+  const school_id = useAuthStore((state) => state.authUser.school_id); // replace with actual school_id
 
   useEffect(() => {
     const fetchUsers = async () => {
