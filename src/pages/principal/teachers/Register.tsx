@@ -92,17 +92,16 @@ const Register = () => {
     <div className="min-h-screen bg-background ">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <Link to="/principal/teachers/list">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-lg font-bold text-foreground">Teacher Registration</h1>
-            <p className="text-muted-foreground text-xs">Add a new teacher to the system</p>
-          </div>
-        </div>
+         <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-lg font-bold">Teacher Registration</h1>
+              <p className="text-gray-500 text-xs mt-2">Add a new teacher to the system</p>
+            </div>
+              <Link to="/principal/dashboard">
+                <Button variant="outline" className="hover:bg-accent ">Back to Dashboard</Button>
+              </Link>
+              
+            </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 ">
           {/* Personal Information */}

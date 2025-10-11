@@ -11,6 +11,7 @@ export interface UserData {
   password?: string;
   phone?: string;
   role?: string;
+  id?:number;
 }
 
 //Teacher Response Type
@@ -172,7 +173,6 @@ export const useUsersStore = create<UsersState>(() => ({
       console.log("Get All Users response:", res.data);
 
       if (res.data.status) {
-        toast.success(res.data.message || "Users fetched successfully");
         return res.data.data;
       } else {
         toast.error(res.data.message || "Failed to fetch users");

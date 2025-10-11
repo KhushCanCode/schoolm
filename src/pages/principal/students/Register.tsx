@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save, Loader2, School } from "lucide-react";
+import { ArrowLeft, Save, Loader2, School, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useUsersStore } from "@/store/useUsersStore";
@@ -97,16 +97,19 @@ const [formData, setFormData] = useState<StudentForm>({
     <div className="min-h-screen bg-background ">
       <div className=" space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <Link to="/principal/students/list">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
+        <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-lg font-bold">Student Registration</h1>
-            <p className="text-gray-500 text-xs">Add a new student to the system</p>
+            <h1 className="text-lg font-bold">Students Registration</h1>
+            <p className="text-gray-500 text-xs mt-2">
+              Add a new user to the system
+            </p>
           </div>
+            <Link to="/principal/dashboard">
+              <Button variant="outline" className="hover:bg-sidebar hover:text-white">
+                Back to Dashboard
+              </Button>
+            </Link>
+
         </div>
 
        
@@ -366,7 +369,7 @@ const [formData, setFormData] = useState<StudentForm>({
 
           {/* ---------------------- SUBMIT ---------------------- */}
           <div className="flex justify-end gap-4">
-            <Link to="/admin/students/list">
+            <Link to="/principal/students/list">
               <Button variant="outline" className="hover:bg-destructive hover:text-white">Cancel</Button>
             </Link>
             <Button type="submit" className="flex items-center gap-2">
