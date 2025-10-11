@@ -110,6 +110,7 @@ export const useUsersStore = create<UsersState>(() => ({
 
   registerUser: async (school_id, data) => {
   const token = localStorage.getItem("token");
+   console.log("Register User Data:", data);
    
     try {
       const res = await axiosInstance.post(

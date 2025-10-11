@@ -26,12 +26,17 @@ const UserRegister = () => {
     role: "",
   })
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+    const handleInputChange = (field: string, value: string) => {
+     
+      if (field === "school_id") return;
+
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+        school_id: prev.school_id, 
+      }));
+    };
+
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
