@@ -39,6 +39,7 @@ import {
   BookCopy,
   CalendarHeart,
   Calendar1,
+  SquareLibrary,
 } from "lucide-react";
 import {
   Sidebar,
@@ -125,6 +126,7 @@ const roleMenus: RoleMenus = {
       href: "/principal/classes/class",
       submenu: [
         { title: "List", icon: ClipboardList, href: "/principal/classes/list" },
+        { title: "SubjectList", icon: SquareLibrary, href: "/principal/classes/subjectlist" },
         { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjects" },
         {
           title: "Timetable",

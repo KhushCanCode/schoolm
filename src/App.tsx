@@ -69,6 +69,7 @@ import { PublicRoute } from "./components/routes/PublicRoute";
 import RequestOtpPage from "./pages/auth/RequestOtpPage";
 import UserRegister from "./pages/principal/users/Register";
 import UserList from "./pages/principal/users/List";
+import SubjectList from "./pages/principal/classes/SubjectList";
 
 
 
@@ -97,6 +98,7 @@ const App = () => (
             <Route path="exam" element={<Exam />} />
             <Route path="students/attendance" element={<Attendance />} />
             <Route path="classes/subjects" element={<Subjects />} />
+            <Route path="classes/subjectlist" element={<SubjectList />} />
             <Route path="classes/timetable" element={<TimeTable />} />
             <Route path="classes/list" element={<ClassList />} />
             <Route path="settings/roles" element={<Roles />} />

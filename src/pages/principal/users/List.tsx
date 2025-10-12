@@ -29,7 +29,6 @@ const UserList = () => {
         }
       } catch (error: any) {
         console.error("Failed to fetch users:", error);
-        toast.error("Failed to fetch users");
       } finally {
         setLoading(false);
       }
@@ -83,8 +82,7 @@ const UserList = () => {
           <Card className="w-[250px]">
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-green-600">
-                {/* {users.filter(u => u.status === "active").length} */}
-                no
+                {users.filter(u => u.status === "active").length}
               </div>
               <div className="text-sm text-gray-500">Active Users</div>
             </CardContent>
@@ -111,7 +109,7 @@ const UserList = () => {
           </CardHeader>
           <CardContent>
             {loading ? (
-              <p>Loading users...</p>
+              <p className="text-sm">Loading...</p>
             ) : filteredUsers.length === 0 ? (
               <p>No users found.</p>
             ) : (
@@ -130,9 +128,19 @@ const UserList = () => {
                       <TableCell>{user.username}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
-                      <TableCell>No</TableCell>
                       <TableCell>
-                        <div className="flex gap-2 justify-end">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          user.status === "active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-200 text-gray-600"
+                        }`}
+                      >
+                        {user.status}
+                      </span>
+                    </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2 justify-center">
                           <Button variant="ghost" size="sm">
                             <Eye className="h-4 w-4" />
                           </Button>

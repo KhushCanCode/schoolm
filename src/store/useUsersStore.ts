@@ -5,17 +5,21 @@ import { axiosInstance } from "../lib/axios";
 
 //User Response Type
 export interface UserData {
+  id?:number;
+  status?: string;
   school_id?: string;
   username?: string;
   email?: string;
   password?: string;
   phone?: string;
   role?: string;
-  id?:number;
+  
 }
 
 //Teacher Response Type
 export interface TeacherForm {
+  id?: number
+  status?: string;
   school_id?: string;
   name?: string;
   email?: string;
@@ -87,7 +91,7 @@ interface UsersState {
   registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
   // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
   // deleteTeacher: (teacherId: string, school_id: string) => Promise<boolean>;
-  // getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
+  getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
 
   
 }
@@ -283,7 +287,31 @@ export const useUsersStore = create<UsersState>(() => ({
   // Delete Teacher
 
   // Get All Teachers
+ getAllTeachers: async (school_id) => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await axiosInstance.get(`/principal/teacher/getall/${school_id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
 
+
+      if (res.data.status) {
+        return res.data.data;
+      } else {
+        toast.error(res.data.message || "Failed to fetch teachers");
+        return null;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error registering user:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to fetch teachers");
+      return null;
+    }
+  },
 
 
   //  Register Parent Controller ---------------------------------------------------------------------------------------------------
