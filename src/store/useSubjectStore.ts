@@ -23,7 +23,7 @@ export const useSubjectStore = create<SubjectState>(() => ({
     const token = localStorage.getItem("token");
     console.log("Creating subject with data:", data); 
     try {
-      const res = await axiosInstance.post(`/principal/subject/create`, data, {
+      const res = await axiosInstance.post(`/principal/subject/create/${data.school_id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
