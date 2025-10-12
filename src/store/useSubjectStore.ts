@@ -3,9 +3,9 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 
 export interface SubjectForm {
-  id?: string;
-  school_id: number;
-  subject_name: string;
+  id?: number;
+  school_id?: number;
+  subject_name?: string;
   description?: string;
 }
 

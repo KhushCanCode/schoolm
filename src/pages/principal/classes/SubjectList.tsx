@@ -43,6 +43,7 @@ const SubjectList = () => {
     if (!schoolId) return;
     const data = await getSubjects(schoolId);
     if (data) setSubjects(data);
+    console.log("Fetched subjects:", data);
   };
 
   useEffect(() => {
@@ -63,12 +64,10 @@ const SubjectList = () => {
       updated[editingIndex] = { ...formData, id: subjectId };
       setSubjects(updated);
 
-      toast({ title: 'Subject Updated', description: 'Subject updated successfully.' });
     } else {
       const success = await createSubject(formData);
       if (success) {
         fetchSubjects();
-        toast({ title: 'Subject Created', description: 'Subject created successfully.' });
       }
     }
 
@@ -178,14 +177,14 @@ const SubjectList = () => {
                 <div className="flex justify-between items-start">
                   <div>
                     <CardTitle className="text-xl flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-blue-500" />
+                      <BookOpen className="h-5 w-5 text-primary" />
                       {subj.subject_name}
                     </CardTitle>
                     {subj.description && (
                       <CardDescription>{subj.description}</CardDescription>
                     )}
                   </div>
-                  <Badge>Subject</Badge>
+                  
                 </div>
               </CardHeader>
 

@@ -10,26 +10,26 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { TeacherForm, useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
-
-interface Subject {
-  id: number;
-  name: string;
-}
+import { SubjectForm, useSubjectStore } from "@/store/useSubjectStore";
+import SubjectSelect from "@/components/SubjectSelect";
 
 const Register = () => {
   const { toast } = useToast();
   const { authUser } = useAuthStore();
+  const { getSubjects } = useSubjectStore();
   const registerTeacher = useUsersStore((state) => state.registerTeacher);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [subjects, setSubjects] = useState<SubjectForm[]>([]);
 
+
+
+  const fetchSubjects = async () => {
+    const schoolId = Number(authUser.school_id);
+    if (!schoolId) return;
+    const data = await getSubjects(schoolId);
+    if (data) setSubjects(data);
+  }
     useEffect(() => {
-    // Simulated subjects list (replace with your API)
-    setSubjects([
-      { id: 1, name: "Mathematics" },
-      { id: 2, name: "Science" },
-      { id: 3, name: "English" },
-      { id: 4, name: "History" },
-    ]);
+    fetchSubjects();
   }, []);
 
     const handleToggle = (id: number) => {
@@ -67,7 +67,7 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Student Registration Data:", formData);
+    console.log("Teacher Registration Data:", formData);
 
     const success = await registerTeacher(authUser.school_id, formData);
  
@@ -91,6 +91,7 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-background ">
       <div className="space-y-6">
+
         {/* Header */}
          <div className="flex justify-between items-center mb-8">
             <div>
@@ -104,6 +105,7 @@ const Register = () => {
             </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 ">
+
           {/* Personal Information */}
           <Card className="w-full  ">
             <CardHeader>
@@ -228,92 +230,16 @@ const Register = () => {
                <div className="space-y-2">
                <Label htmlFor="qualification">Subjects</Label>
 
-                <div className="grid grid-cols-2 gap-2">
-                  {subjects.map((subject) => (
-                    <div
-                      key={subject.id}
-                      className={`flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer transition ${
-                        formData.subjects?.includes(subject.id)
-                          ? "bg-blue-100 border-blue-500"
-                          : "hover:bg-gray-50"
-                      }`}
-                      onClick={() => handleToggle(subject.id)}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.subjects?.includes(subject.id) || false}
-                        onChange={() => handleToggle(subject.id)}
-                        className="accent-blue-500 w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-sm">{subject.name}</span>
-                    </div>
-                  ))}
-                </div>
+                <SubjectSelect
+                    subjects={subjects}
+                    selected={formData.subjects || []}
+                    onChange={(newSubjects) =>
+                      setFormData((prev) => ({ ...prev, subjects: newSubjects }))
+                    }
+                  />
               </div>
-
-
-              {/* <div className="space-y-2">
-                <Label htmlFor="experience">Experience *</Label>
-                
-                <Input
-                  id="experience"
-                  value={formData.experience}
-                  onChange={(e) => handleInputChange("experience", e.target.value)}
-                  required
-                />
-              </div> */}
-{/*               
-              <div className="   space-y-2">
-                <Label htmlFor="specialization">Specialization *</Label>
-                <Input
-                  id="specialization"
-                  value={formData.specialization}
-                  onChange={(e) => handleInputChange("specialization", e.target.value)}
-                />
-              </div> */}
-
-              {/* <div className="space-y-2">
-                <Label htmlFor="admissionDate">Admission Date *</Label>
-                <Input
-                  id="admissionDate"
-                  type="date"
-                  value={formData.admissionDate}
-                  onChange={(e) => handleInputChange("admissionDate", e.target.value)}
-                  required
-                />
-              </div> */}
-
-              {/* <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="previousSchool">Previous School</Label>
-                <Input
-                  id="previousSchool"
-                  value={formData.previousSchool}
-                  onChange={(e) => handleInputChange("previousSchool", e.target.value)}
-                />
-              </div> */}
             </CardContent>
           </Card>
-
-        
-
-          {/* Medical Information */}
-          {/* <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Medical Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="medicalConditions">Medical Conditions/Allergies</Label>
-                <Textarea
-                  id="medicalConditions"
-                  value={formData.medicalConditions}
-                  onChange={(e) => handleInputChange("medicalConditions", e.target.value)}
-                  rows={3}
-                  placeholder="Any medical conditions, allergies, or special requirements..."
-                />
-              </div>
-            </CardContent>
-          </Card> */}
 
           {/* Submit Button */}
           <div className="flex justify-end gap-4">
