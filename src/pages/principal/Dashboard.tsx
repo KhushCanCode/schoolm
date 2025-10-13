@@ -4,6 +4,9 @@ import { Users, Contact, BookOpen, MessageSquare, FileText, DollarSign, Calendar
 import { useUsersStore } from '@/store/useUsersStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Stats } from '@/store/useUsersStore';
+import { Skeleton } from "@/components/ui/skeleton";
+import Heading from '@/components/common/Heading';
+
 
 const AdminDashboard = () => {
 
@@ -78,28 +81,41 @@ const quickActions = [
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-lg font-bold ">Dashboard</h2>
-        <p className="text-gray-500 text-xs">Welcome to your school management dashboard</p>
-      </div>
+      <Heading 
+          title="Dashboard" 
+          description="Welcome to your school management dashboard" 
+        />
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
+          const isLoading = !stats;
+
           return (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card key={index} className="hover:shadow-md transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
               </CardHeader>
               <CardContent>
-                <div className="text-lg font-bold">{stat.value}</div>
-                <p className="text-xs text-gray-500">{stat.description}</p>
+                {isLoading ? (
+                  <div className="space-y-2">
+                    <Skeleton className="h-5 w-16" />
+                    <Skeleton className="h-3 w-24 " />
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-lg font-bold">{stat.value}</div>
+                    <p className="text-xs text-gray-500">{stat.description}</p>
+                  </>
+                )}
               </CardContent>
             </Card>
           );
         })}
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>

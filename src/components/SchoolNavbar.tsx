@@ -1,4 +1,4 @@
-import { Search, User, Menu, Star, User2, Bell } from "lucide-react";
+import { Search, User, Menu, Star, User2, Bell, Sun, SunDim } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -42,47 +42,36 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full   bg-navbar text-navbar-foreground -ml-1">
-      <div className="flex h-16 items-center justify-between  px-4">
+    <header className="sticky top-0 z-50 w-full   bg-sidebar-primary text-sidebar-primary-foreground -ml-1">
+      <div className="flex h-16 items-center justify-end gap-2 px-4">
+
         <div className="flex items-center gap-4">
           <SidebarTrigger className="md:hidden" />
         </div>
 
-        <div className="flex items-center gap-2 flex-1 max-w-md mx-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-            <Input placeholder="Search..." className="pl-9  text-gray-500" />
+        <div className="flex items-center gap-2  flex-1 max-w-md mx-4">
+          <div className="relative flex-1 ">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Input placeholder="Search..." className="pl-9 h-9 bg-foreground border-muted-foreground" />
           </div>
         </div>
 
-        <div className="flex items-center gap-6 ">
-          {/* Role Show */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2 text-gray-500 hover:text-gray-500 cursor-default"
-          >
-            <div className={`h-2 w-2 rounded-full ${currentRoleData?.color}`} />
-            <span className="hidden sm:inline">{currentRoleData?.label}</span>
-          </Button>
-
-          <Bell className="size-5 " />
 
           {/* User Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-8 w-8   rounded-full text-gray-500 hover:text-gray-500"
-              >
-                <Avatar className="h-8 w-8 bg-accent">
+              
+              <div className="w-8">
+                 <Avatar className="h-6 text-gray-400 cursor-pointer w-6 bg-accent">
                   <AvatarFallback>
                     <User className="h-4 w-4 " />
                   </AvatarFallback>
                 </Avatar>
-              </Button>
+              </div>
+               
+
             </DropdownMenuTrigger>
-             <DropdownMenuContent className="w-56" align="end" forceMount>
+             <DropdownMenuContent className="w-56 " align="end" forceMount>
               <DropdownMenuLabel>{authUser.username}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile Settings</DropdownMenuItem>
@@ -91,7 +80,16 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+
+            <div className="border-l mr-2 h-5 border-gray-700">
+
+            </div>
+
+            <div className="">
+              <SunDim className="size-5 " />
+            </div>
+          
+
       </div>
     </header>
   );

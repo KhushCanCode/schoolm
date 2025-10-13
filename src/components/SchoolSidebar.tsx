@@ -462,7 +462,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
                   <SidebarMenuSubItem key={subItem.href}>
                     <SidebarMenuSubButton asChild>
                       <Link to={subItem.href}>
-                        <subItem.icon className="h-4 w-4" />
+                        <subItem.icon className="h-4 w-4 " />
                         <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuSubButton>

@@ -27,7 +27,7 @@ export default function Layout() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen font-[JetBrains Mono] w-full">
         {/* Sidebar based on authenticated user's role */}
         <Sidebar>
           <SchoolSidebar currentRole={authUser.role} />
@@ -36,9 +36,9 @@ export default function Layout() {
         <div className="flex-1 flex flex-col">
           <SchoolNavbar
             currentRole={authUser.role}
-            onRoleChange={() => {}} // optional: role shouldn't change manually
+            onRoleChange={() => {}} 
           />
-          <div className="py-10 px-10">
+          <div className="py-6 px-6">
             <Outlet />
           </div>
         </div>
