@@ -31,28 +31,28 @@ const statCards = [
       value: stats ? stats.totalUsers : 'Loading...',
       description: 'Active users',
       icon: Users,
-      color: 'text-yellow-600',
+      color: 'text-primary',
     },
     {
       title: 'Total Students',
       value: stats ? stats.totalStudents : 'Loading...',
       description: 'Active students',
       icon: Contact,
-      color: 'text-blue-600',
+      color: 'text-green-500',
     },
     {
       title: 'Total Classes',
       value: stats ? stats.classCount : 'Loading...',
       description: 'Active classes',
       icon: BookOpen,
-      color: 'text-green-600',
+      color: 'text-yellow-500',
     },
     {
       title: 'Pending Dues',
       value: stats ? `₹${stats.pendingDues}` : 'Loading...',
       description: 'Amount pending',
       icon: DollarSign,
-      color: 'text-red-600',
+      color: 'text-red-500',
     },
     
   ];
@@ -94,7 +94,7 @@ const quickActions = [
 
           return (
             <Card key={index} className="hover:shadow-md transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 ">
                 <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
               </CardHeader>
@@ -106,8 +106,8 @@ const quickActions = [
                   </div>
                 ) : (
                   <>
-                    <div className="text-lg font-bold">{stat.value}</div>
-                    <p className="text-xs text-gray-500">{stat.description}</p>
+                    <div className="text-2xl font-bold">{stat.value}</div>
+                    <p className="text-xs text-slate-500">{stat.description}</p>
                   </>
                 )}
               </CardContent>
@@ -121,7 +121,7 @@ const quickActions = [
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Recent Activities</CardTitle>
-            <CardDescription className="text-xs text-gray-500">
+            <CardDescription className="text-xs text-slate-500">
               Latest updates from your school
             </CardDescription>
           </CardHeader>
@@ -132,7 +132,7 @@ const quickActions = [
                   <div className={`w-2 h-2 rounded-full ${activity.color}`}></div>
                   <div className="flex-1">
                     <p className="text-sm font-medium">{activity.title}</p>
-                    <p className="text-xs text-gray-500">{activity.time}</p>
+                    <p className="text-xs text-slate-500">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -143,7 +143,7 @@ const quickActions = [
        <Card>
         <CardHeader>
           <CardTitle className="text-lg">Quick Actions</CardTitle>
-          <CardDescription className="text-xs text-gray-500">
+          <CardDescription className="text-xs text-slate-500">
             Frequently used actions
           </CardDescription>
         </CardHeader>
@@ -152,10 +152,10 @@ const quickActions = [
             {quickActions.map((action, index) => (
               <button
                 key={index}
-                className="w-full text-left p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+                className="w-full text-left p-3 border border-border border-dashed rounded-lg hover:bg-muted/80 transition-colors"
               >
                 <p className="font-medium text-sm">{action.title}</p>
-                <p className="text-gray-500 text-xs">{action.description}</p>
+                <p className="text-slate-500 text-xs">{action.description}</p>
               </button>
             ))}
           </div>

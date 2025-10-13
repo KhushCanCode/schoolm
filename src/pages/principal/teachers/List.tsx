@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUsersStore, TeacherForm } from "@/store/useUsersStore";
+import { Head } from "react-day-picker";
+import Heading from "@/components/common/Heading";
 
 const List = () => {
   const school_id = useAuthStore((state) => state.authUser.school_id);
@@ -49,18 +51,16 @@ const List = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background ">
+    <div className="min-h-screen   ">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-lg font-bold">Teachers Management</h1>
-            <p className="text-gray-500 text-xs mt-2">Manage all teacher records and information</p>
-          </div>
-          <div className="flex gap-2 mx-9">
+          <Heading title="Teachers Management" description="Manage all teacher records and information"/>
+          
+          <div className="flex gap-2 ">
             <Link to="/principal/dashboard">
-              <Button variant="outline" className="hover:bg-sidebar hover:text-white">Back to Dashboard</Button>
+              <Button variant="outline" className="">Back to Dashboard</Button>
             </Link>
             <Link to ="/principal/teachers/register">
             <Button>
@@ -77,7 +77,7 @@ const List = () => {
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{teachers.length}</div>
-              <div className="text-sm text-gray-500">Total Teachers</div>
+              <div className="text-sm text-slate-500">Total Teachers</div>
             </CardContent>
           </Card>
           <Card className="w-[250px]">
@@ -85,7 +85,7 @@ const List = () => {
               <div className="text-2xl font-bold text-green-600">
                 {teachers.filter(u => u.status === "active").length}
               </div>
-              <div className="text-sm text-gray-500">Active Teachers</div>
+              <div className="text-sm text-slate-500">Active Teachers</div>
             </CardContent>
           </Card>
         </div>
@@ -96,7 +96,7 @@ const List = () => {
               <CardTitle className="text-lg">All Teachers</CardTitle>
               <div className="relative w-64">
                 <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-gray-500" />
+                  <Search className="h-4 w-4 text-slate-500" />
                 </span>
                 <Input
                   placeholder="Search teachers..."
@@ -134,10 +134,10 @@ const List = () => {
                     <TableCell  className="font-medium text-xs">{teacher.phone}</TableCell>
                     <TableCell>
                       <span
-                        className={`px-2 py-1 rounded-full font-medium text-xs ${
+                        className={`px-2 py-1 rounded-full text-xs ${
                           teacher.status === "active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-gray-200 text-gray-600"
+                            ? "bg-accent  text-primary "
+                            : "bg-muted text-gray-600"
                         }`}
                       >
                         {teacher.status}

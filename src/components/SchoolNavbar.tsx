@@ -15,6 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { useAuthStore } from "@/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "./theme/ThemeToggle";
 
 interface SchoolNavbarProps {
   currentRole: string;
@@ -42,8 +43,8 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full   bg-sidebar-primary text-sidebar-primary-foreground -ml-1">
-      <div className="flex h-16 items-center justify-end gap-2 px-4">
+    <header className="sticky top-0 z-50 w-full  bg-sidebar-primary-foreground text-sidebar-foreground border-b border-border">
+      <div className="flex h-16 items-center justify-end gap-0 md:gap-2 px-4">
 
         <div className="flex items-center gap-4">
           <SidebarTrigger className="md:hidden" />
@@ -52,7 +53,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
         <div className="flex items-center gap-2  flex-1 max-w-md mx-4">
           <div className="relative flex-1 ">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input placeholder="Search..." className="pl-9 h-9 bg-foreground border-muted-foreground" />
+            <Input placeholder="Search..." className="pl-9 h-9 " />
           </div>
         </div>
 
@@ -61,10 +62,10 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               
-              <div className="w-8">
-                 <Avatar className="h-6 text-gray-400 cursor-pointer w-6 bg-accent">
+              <div className="w-10">
+                 <Avatar className="h-8 cursor-pointer w-8 ">
                   <AvatarFallback>
-                    <User className="h-4 w-4 " />
+                    <User className="h-4 w-4 text-slate-500" />
                   </AvatarFallback>
                 </Avatar>
               </div>
@@ -85,9 +86,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
 
             </div>
 
-            <div className="">
-              <SunDim className="size-5 " />
-            </div>
+            <ThemeToggle/>
           
 
       </div>

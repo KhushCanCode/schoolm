@@ -1,6 +1,7 @@
 // AppInitializer.tsx
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { ThemeProvider } from "../theme/ThemeProvider";
 
 export const AppInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getUser = useAuthStore((state) => state.getUser);
@@ -10,5 +11,5 @@ export const AppInitializer: React.FC<{ children: React.ReactNode }> = ({ childr
     console.log(user)
   }, [getUser]);
 
-  return <>{children}</>;
+  return <ThemeProvider>{children}</ThemeProvider>;
 };

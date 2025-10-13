@@ -91,6 +91,7 @@ interface UsersState {
   registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
   // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
   // deleteTeacher: (teacherId: string, school_id: string) => Promise<boolean>;
+  getTeacherById: (teacherId: number) => Promise<TeacherForm | null>;
   getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
 
   
@@ -262,8 +263,6 @@ export const useUsersStore = create<UsersState>(() => ({
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log("Register Teacher response:", res.data);
       
      if (res.data.status) {
         toast.success(res.data.message || "Teacher registered successfully");
@@ -285,6 +284,34 @@ export const useUsersStore = create<UsersState>(() => ({
   //Update Teacher
 
   // Delete Teacher
+
+  //Get Teacher By ID
+getTeacherById: async (teacherId) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await axiosInstance.get(`/principal/teacher/get/${teacherId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Get Teacher By ID response:", res.data);
+
+    if (res.data.status) {
+      toast.success(res.data.message || "Teacher Fetched successfully");
+      return res.data.data as TeacherForm; // ✅ Return teacher object
+    } else {
+      toast.error(res.data.message || "Failed to fetch teacher");
+      return null;
+    }
+  } catch (error: any) {
+    console.error(
+      "Error fetching teacher:",
+      error?.response?.data?.message || error.message
+    );
+    toast.error(error?.response?.data?.message || "Failed to fetch teacher");
+    return null;
+  }
+},
 
   // Get All Teachers
  getAllTeachers: async (school_id) => {

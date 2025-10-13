@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { StudentForm } from "@/store/useUsersStore";
+import Heading from "@/components/common/Heading";
 
 interface School {
   id: string;
@@ -94,18 +95,14 @@ const [formData, setFormData] = useState<StudentForm>({
   };
 
   return (
-    <div className="min-h-screen bg-background ">
+    <div className="min-h-screen  ">
       <div className=" space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-lg font-bold">Students Registration</h1>
-            <p className="text-gray-500 text-xs mt-2">
-              Add a new user to the system
-            </p>
-          </div>
+          <Heading title="Student Registration" description="Add a new user to the system"/>
+          
             <Link to="/principal/dashboard">
-              <Button variant="outline" className="hover:bg-sidebar hover:text-white">
+              <Button variant="outline" className="">
                 Back to Dashboard
               </Button>
             </Link>
@@ -370,7 +367,7 @@ const [formData, setFormData] = useState<StudentForm>({
           {/* ---------------------- SUBMIT ---------------------- */}
           <div className="flex justify-end gap-4">
             <Link to="/principal/students/list">
-              <Button variant="outline" className="hover:bg-destructive hover:text-white">Cancel</Button>
+              <Button variant="outline" className="">Cancel</Button>
             </Link>
             <Button type="submit" className="flex items-center gap-2">
               <Save className="h-4 w-4" />

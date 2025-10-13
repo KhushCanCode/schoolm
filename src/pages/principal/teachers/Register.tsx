@@ -12,6 +12,7 @@ import { TeacherForm, useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { SubjectForm, useSubjectStore } from "@/store/useSubjectStore";
 import SubjectSelect from "@/components/SubjectSelect";
+import Heading from "@/components/common/Heading";
 
 const Register = () => {
   const { toast } = useToast();
@@ -32,16 +33,6 @@ const Register = () => {
     fetchSubjects();
   }, []);
 
-    const handleToggle = (id: number) => {
-    setFormData((prev) => {
-      const selected = prev.subjects || [];
-      const updated = selected.includes(id)
-        ? selected.filter((s) => s !== id)
-        : [...selected, id];
-
-      return { ...prev, subjects: updated };
-    });
-  };
 
   const [formData, setFormData] = useState<TeacherForm>({
   school_id: authUser.school_id,        
@@ -55,7 +46,6 @@ const Register = () => {
   city: '',
   state: '',
   employee_code: '',
-  subjects: [],         
 });
 
   const handleInputChange = (field: string, value: string) => {
@@ -84,22 +74,19 @@ const Register = () => {
       city: '',
       state: '',
       employee_code: '',
-      subjects: [],  
     });
   };
 
   return (
-    <div className="min-h-screen bg-background ">
+    <div className="min-h-screen  ">
       <div className="space-y-6">
 
         {/* Header */}
-         <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-lg font-bold">Teacher Registration</h1>
-              <p className="text-gray-500 text-xs mt-2">Add a new teacher to the system</p>
-            </div>
+         <div className="flex flex-col md:flex-row items-start justify-between md:items-center mb-8">
+          <Heading title='Teacher Registration' description="Add a new teacher to the system"/>
+            
               <Link to="/principal/dashboard">
-                <Button variant="outline" className="hover:bg-accent ">Back to Dashboard</Button>
+                <Button variant="outline" className="">Back to Dashboard</Button>
               </Link>
               
             </div>
@@ -227,7 +214,7 @@ const Register = () => {
                   required
                 />
               </div>
-               <div className="space-y-2">
+               {/* <div className="space-y-2">
                <Label htmlFor="qualification">Subjects</Label>
 
                 <SubjectSelect
@@ -237,7 +224,7 @@ const Register = () => {
                       setFormData((prev) => ({ ...prev, subjects: newSubjects }))
                     }
                   />
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 

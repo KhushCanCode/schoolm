@@ -70,6 +70,9 @@ import RequestOtpPage from "./pages/auth/RequestOtpPage";
 import UserRegister from "./pages/principal/users/Register";
 import UserList from "./pages/principal/users/List";
 import SubjectList from "./pages/principal/classes/SubjectList";
+import Details from "./pages/principal/teachers/Details";
+import NotFound from "./components/common/NotFound";
+import Landing from "./pages/landing/Landing";
 
 
 
@@ -81,6 +84,10 @@ const App = () => (
       <Toaster />
       <Sonner />
       <Routes>
+
+        <Route path="/" element={<Landing />} />
+
+        <Route path="*" element={<NotFound />} />
 
         {/* <Route path="/signup" element={<SignupPage/>}/> */}
         <Route element={<PublicRoute />}>
@@ -107,7 +114,8 @@ const App = () => (
             <Route path="communication" element={<Communication />} />
             <Route path="teachers/list" element={<List />} />
             <Route path="teachers/register" element={<Register />} />
-            <Route path="teachers/subject" element={<AssignSubject />} />
+            {/* <Route path="teachers/subject" element={<AssignSubject />} /> */}
+            <Route path="teachers/details" element={<Details />} />
             <Route path="reports/student" element={<StudentReports />} />
             <Route path="reports/fee" element={<FeeReports />} />
             <Route path="reports/attendance" element={<AttendanceReport />} />

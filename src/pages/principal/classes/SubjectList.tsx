@@ -21,6 +21,8 @@ import { Plus, Edit, Trash2, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthStore } from '@/store/useAuthStore';
 import { SubjectForm, useSubjectStore } from '@/store/useSubjectStore';
+import Heading from '@/components/common/Heading';
+import { Textarea } from '@/components/ui/textarea';
 
 const SubjectList = () => {
   const { authUser } = useAuthStore();
@@ -106,12 +108,7 @@ const SubjectList = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-bold">Subject Management</h2>
-          <p className="text-gray-500 text-xs">
-            Manage subjects and their descriptions
-          </p>
-        </div>
+        <Heading title='Subject Management' description='Manage subjects and their descriptions' />
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
@@ -143,14 +140,14 @@ const SubjectList = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
-                <textarea
+                <Textarea
                   id="description"
-                  className="w-full border rounded-md p-2"
-                  value={formData.description || ''}
+                  value={formData.description || ""}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, description: e.target.value }))
                   }
                   placeholder="Optional short description"
+                  className="w-full"
                 />
               </div>
 
@@ -172,12 +169,11 @@ const SubjectList = () => {
         {subjects.map((subj, index) => {
           const subjectWithId = subj as SubjectForm & { id: string };
           return (
-            <Card key={subjectWithId.id} className="hover:shadow-lg transition-shadow border">
+            <Card key={subjectWithId.id} className='h-fit'>
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-primary" />
+                    <CardTitle className='text-lg'>
                       {subj.subject_name}
                     </CardTitle>
                     {subj.description && (
@@ -189,20 +185,20 @@ const SubjectList = () => {
               </CardHeader>
 
               <CardContent>
-                <div className="flex justify-end space-x-2 pt-2">
+                <div className="flex justify-end space-x-1 pt-2 ">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => handleEdit(subjectWithId.id, index)}
                   >
                     <Edit className="h-4" />
                   </Button>
                   <Button
-                    variant="destructive"
+                    variant="ghost"
                     size="sm"
                     onClick={() => handleDelete(subjectWithId.id, index)}
                   >
-                    <Trash2 className="h-4 text-white" />
+                    <Trash2 className="h-4 text-destructive" />
                   </Button>
                 </div>
               </CardContent>

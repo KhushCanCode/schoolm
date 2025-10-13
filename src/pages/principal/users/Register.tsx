@@ -1,3 +1,4 @@
+import Heading from "@/components/common/Heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -65,17 +66,15 @@ const UserRegister = () => {
   };
 
   return (
-    <div className='min-h-screen bg-background'>
+    <div className=' '>
       <div className='space-y-6'>
 
 
-         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-lg font-bold">User Registration</h1>
-            <p className="text-gray-500 text-xs mt-2">Add a new user to the system</p>
-          </div>
+         <div className="flex justify-between items-center ">
+          <Heading title="User Registration" description="Add a new user to the system"/>
+        
             <Link to="/principal/dashboard">
-              <Button variant="outline" className="hover:bg-accent ">Back to Dashboard</Button>
+              <Button variant="outline" className=" ">Back to Dashboard</Button>
             </Link>
             
           </div>
@@ -158,9 +157,9 @@ const UserRegister = () => {
           {/* ---------------------- SUBMIT ---------------------- */}
           <div className="flex justify-end gap-4">
             <Link to="/principal/dashboard">
-              <Button variant="outline" className="hover:bg-destructive hover:text-white">Cancel</Button>
+              <Button variant="outline" className="">Cancel</Button>
             </Link>
-            <Button type="submit" className="flex items-center gap-2">
+            <Button type="submit" variant="default" className="flex items-center gap-2">
               <Save className="h-4 w-4" />
               Register User
             </Button>

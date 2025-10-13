@@ -21,6 +21,15 @@ import { Plus, Edit, Trash2, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthStore } from '@/store/useAuthStore';
 import {ClassForm, useClassStore } from '@/store/useClassStore';
+import Heading from '@/components/common/Heading';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from '@/components/ui/textarea';
 
 // Type that allows empty string for controlled input
 export type ClassFormState = Omit<ClassForm, 'capacity'> & { capacity?: number | '' };
@@ -128,13 +137,11 @@ const ClassList = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-bold">Class Management</h2>
-          <p className="text-gray-500 text-xs">Manage classes, sections, and capacity</p>
-        </div>
+      <div className="flex justify-between items-center ">
+        <Heading title="Classes Management" description="Manage classes, sections, and capacity" />
+        
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
@@ -150,7 +157,7 @@ const ClassList = () => {
             </DialogHeader>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 ">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="class">Class</Label>
@@ -216,31 +223,36 @@ const ClassList = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
-                <select
-                  id="status"
-                  value={formData.status || 'active'}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      status: e.target.value as 'active' | 'inactive',
-                    }))
-                  }
-                  className="w-full border rounded-md p-2"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
+                <Select
+                value={formData.status || "active"}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    status: value as "active" | "inactive",
+                  }))
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="notes">Notes</Label>
-                <textarea
-                  id="notes"
-                  className="w-full border rounded-md p-2"
-                  value={formData.notes || ''}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Optional remarks about the class"
-                />
+                <Textarea
+                    id="notes"
+                    value={formData.notes || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, notes: e.target.value }))
+                    }
+                    placeholder="Optional remarks about the class"
+                    className="w-full"
+                  />
               </div>
 
               <div className="flex justify-end space-x-2">
@@ -260,7 +272,7 @@ const ClassList = () => {
           const classWithId = cls as ClassForm & { id: string };
           return (
           
-          <Card key={classWithId.id} className="hover:shadow-lg transition-shadow border">
+          <Card key={classWithId.id} className=" border">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -288,15 +300,15 @@ const ClassList = () => {
 
                   {/* Display notes */}
                   {cls.notes && (
-                    <div className="text-sm text-gray-600 pt-2 border-t border-dashed italic ">"{cls.notes}"</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-dashed border-border italic ">"{cls.notes}"</div>
                   )}
 
-                  <div className="flex items-center justify-end space-x-2 pt-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(classWithId.id, index)}>
+                  <div className="flex items-center justify-end space-x-1 pt-2">
+                    <Button variant="ghost" size="sm" onClick={() => handleEdit(classWithId.id, index)}>
                       <Edit className="h-4" />
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(classWithId.id, index)}>
-                      <Trash2 className="h-4 text-white" />
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(classWithId.id, index)}>
+                      <Trash2 className="h-4 text-destructive/60" />
                     </Button>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUsersStore, UserData } from "@/store/useUsersStore";
+import Heading from "@/components/common/Heading";
 
 const UserList = () => {
   const school_id = useAuthStore((state) => state.authUser.school_id);
@@ -50,17 +51,15 @@ const UserList = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto ">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-lg font-bold">Users Management</h1>
-            <p className="text-gray-500 text-xs mt-2">Manage all user records and information</p>
-          </div>
+          <Heading title="User Management" description="Manage all user records and information" />
+          
           <div className="flex gap-2">
             <Link to="/principal/dashboard">
-              <Button variant="outline" className="hover:bg-accent ">Back to Dashboard</Button>
+              <Button variant="outline" className=" ">Back to Dashboard</Button>
             </Link>
             <Link to="/principal/users/register">
               <Button>
@@ -96,7 +95,7 @@ const UserList = () => {
               <CardTitle className="text-lg">All Users</CardTitle>
               <div className="relative w-64">
                 <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-gray-500" />
+                  <Search className="h-4 w-4 text-slate-400" />
                 </span>
                 <Input
                   placeholder="Search users..."
@@ -119,7 +118,7 @@ const UserList = () => {
                     <TableHead>Username</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead className="flex items-center justify-center">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -128,12 +127,12 @@ const UserList = () => {
                       <TableCell>{user.username}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
-                      <TableCell>
+                      <TableCell className="flex items-center justify-center">
                       <span
                         className={`px-2 py-1 rounded-full text-xs ${
                           user.status === "active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-gray-200 text-gray-600"
+                            ? "bg-accent  text-primary "
+                            : "bg-muted text-gray-600"
                         }`}
                       >
                         {user.status}
@@ -148,7 +147,7 @@ const UserList = () => {
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
-                            <Trash2 className="h-4 w-4 text-destructive" />
+                            <Trash2 className="h-4 w-4 text-destructive/60" />
                           </Button>
                         </div>
                       </TableCell>

@@ -112,11 +112,12 @@ const roleMenus: RoleMenus = {
       submenu: [
         { title: "Register", icon: UserPlus, href: "/principal/teachers/register" },
         { title: "List", icon: ClipboardList, href: "/principal/teachers/list" },
-        {
-          title: "Assign Subjects",
-          icon: BookCheck,
-          href: "/principal/teachers/subject",
-        },
+        // {
+        //   title: "Assign Subjects",
+        //   icon: BookCheck,
+        //   href: "/principal/teachers/subject",
+        // },
+        {title: "Details", icon: List, href: "/principal/teachers/details" },
       ],
     },
 
@@ -491,7 +492,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
     <Sidebar className="border-r ">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold mb-4">
+          <SidebarGroupLabel className="text-lg font-semibold mb-4 text-sidebar-primary-foreground dark:text-foreground">
             {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)} Panel
           </SidebarGroupLabel>
           <SidebarGroupContent>
