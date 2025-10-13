@@ -298,7 +298,7 @@ getTeacherById: async (teacherId) => {
 
     if (res.data.status) {
       toast.success(res.data.message || "Teacher Fetched successfully");
-      return res.data.data as TeacherForm; // ✅ Return teacher object
+      return res.data.data; 
     } else {
       toast.error(res.data.message || "Failed to fetch teacher");
       return null;
