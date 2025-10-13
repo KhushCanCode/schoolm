@@ -117,7 +117,6 @@ const roleMenus: RoleMenus = {
         //   icon: BookCheck,
         //   href: "/principal/teachers/subject",
         // },
-        {title: "Details", icon: List, href: "/principal/teachers/details" },
       ],
     },
 

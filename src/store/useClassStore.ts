@@ -11,7 +11,7 @@ export interface ClassForm {
   capacity?: number;
   status?: 'active' | 'inactive';
   notes?: string;
-  id?: string;
+  id?: number;
 }
 
 interface ClassState {

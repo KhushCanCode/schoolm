@@ -134,7 +134,7 @@ const List = () => {
                     <TableCell  className="font-medium text-xs">{teacher.phone}</TableCell>
                     <TableCell>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs ${
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
                           teacher.status === "active"
                             ? "bg-accent  text-primary "
                             : "bg-muted text-gray-600"
@@ -145,8 +145,10 @@ const List = () => {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2 justify-center">
-                        <Button variant="ghost" size="sm">
-                          <Eye className="h-4 w-4" />
+                        <Button asChild variant="ghost" size="sm">
+                          <Link to={`/principal/teachers/list/details/${teacher.id}`}>
+                            <Eye className="h-4 w-4" />
+                          </Link>
                         </Button>
                         <Button variant="ghost" size="sm">
                           <Edit className="h-4 w-4" />

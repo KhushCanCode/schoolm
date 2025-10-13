@@ -1,6 +1,8 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
+import {  AssignSubjectsRequest } from "@/pages/principal/teachers/SubjectClassGrid";
+import { TeacherSubject } from "@/pages/principal/teachers/Details";
 
 
 //User Response Type
@@ -18,7 +20,7 @@ export interface UserData {
 
 //Teacher Response Type
 export interface TeacherForm {
-  id?: number
+    id?: number
   status?: string;
   school_id?: string;
   name?: string;
@@ -31,7 +33,8 @@ export interface TeacherForm {
   city?: string;
   state?: string;
   employee_code?: string;
-  subjects?: number[];
+  subjects?: TeacherSubject[]; 
+  
 }
 
 // Student response type
@@ -83,6 +86,8 @@ interface UsersState {
   getAllUsers: (school_id: string) => Promise<UserData[] | null>;
   // registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
   getStats: (school_id: string) => Promise<Stats | null>;
+
+
   registerStudent: (school_id: string, data: StudentForm) => Promise<boolean>;
   getStudentDetails: (schoolId: string) => Promise<StudentForm[] | null>;
 
@@ -91,6 +96,7 @@ interface UsersState {
   registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
   // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
   // deleteTeacher: (teacherId: string, school_id: string) => Promise<boolean>;
+  assignSubClasstoTeacher: (teacherId:number, data: AssignSubjectsRequest) => Promise<boolean>;
   getTeacherById: (teacherId: number) => Promise<TeacherForm | null>;
   getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
 
@@ -175,7 +181,6 @@ export const useUsersStore = create<UsersState>(() => ({
         }
       );
 
-      console.log("Get All Users response:", res.data);
 
       if (res.data.status) {
         return res.data.data;
@@ -294,11 +299,11 @@ getTeacherById: async (teacherId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Get Teacher By ID response:", res.data);
+
+        
 
     if (res.data.status) {
-      toast.success(res.data.message || "Teacher Fetched successfully");
-      return res.data.data; 
+      return res.data.data.data as TeacherForm; 
     } else {
       toast.error(res.data.message || "Failed to fetch teacher");
       return null;
@@ -340,6 +345,32 @@ getTeacherById: async (teacherId) => {
     }
   },
 
+  //Assign Subjects and Classes
+  assignSubClasstoTeacher: async (teacherId, data)=>{
+
+   const token = localStorage.getItem('token');
+    try {
+      const res = await axiosInstance.post(`/principal/teacher/assign-subjects/${teacherId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+     if (res.data.status) {
+        toast.success(res.data.message || "Assignment successfull");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to assign");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error assigning...",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to assign");
+      return false;
+    }
+  },
 
   //  Register Parent Controller ---------------------------------------------------------------------------------------------------
 

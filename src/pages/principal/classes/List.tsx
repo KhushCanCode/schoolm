@@ -88,12 +88,10 @@ const ClassList = () => {
       updated[editingIndex] = { ...payload, id: classId }; 
       setClasses(updated);
 
-      toast({ title: 'Class Updated', description: 'Class updated successfully.' });
     } else {
       const success = await createClass(payload);
       if (success) {
         fetchClasses();
-        toast({ title: 'Class Created', description: 'Class created successfully.' });
       }
     }
 
@@ -300,7 +298,10 @@ const ClassList = () => {
 
                   {/* Display notes */}
                   {cls.notes && (
-                    <div className="text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-dashed border-border italic ">"{cls.notes}"</div>
+                                      <div className="text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-dashed border-border italic">
+                    "{cls.notes && cls.notes.trim() !== "" ? cls.notes : "No notes yet"}"
+                  </div>
+
                   )}
 
                   <div className="flex items-center justify-end space-x-1 pt-2">
