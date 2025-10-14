@@ -20,7 +20,7 @@ const Register = () => {
   const { getSubjects } = useSubjectStore();
   const registerTeacher = useUsersStore((state) => state.registerTeacher);
   const [subjects, setSubjects] = useState<SubjectForm[]>([]);
-
+  const [loading, setLoading] = useState(false);
 
 
   const fetchSubjects = async () => {
@@ -56,11 +56,13 @@ const Register = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    
     e.preventDefault();
     console.log("Teacher Registration Data:", formData);
 
+    setLoading(true);
     const success = await registerTeacher(authUser.school_id, formData);
- 
+    setLoading(false);
     // Reset form
     setFormData({
       school_id: authUser.school_id,        
@@ -235,7 +237,7 @@ const Register = () => {
             </Link>
             <Button type="submit" className="flex items-center gap-2">
               <Save className="h-4 w-4" />
-              Register Teacher
+              {loading? "Registering..." : "Register Teacher"}
             </Button>
           </div>
         </form>

@@ -2,21 +2,46 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Plus, Eye, Edit, Trash2 } from "lucide-react";
+import { Search, Plus, Eye, Edit, Trash2, ToggleLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUsersStore, UserData } from "@/store/useUsersStore";
 import Heading from "@/components/common/Heading";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 const UserList = () => {
-  const school_id = useAuthStore((state) => state.authUser.school_id);
-  const getAllUsers = useUsersStore((state) => state.getAllUsers);
+  const {authUser}  = useAuthStore();
+  const school_id = authUser.school_id;
 
+  const {getAllUsers, updateUser, toggleStatus} = useUsersStore();
   const [users, setUsers] = useState<UserData[]>([]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
+    const [open, setOpen] = useState(false);
+
+    const [status, setStatus] = useState();
+
+  const [formData, setFormData] = React.useState<UserData>({
+      username: "",
+      phone: "",
+    })
+
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingUser, setEditingUser] = useState<number | null>(null);
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,6 +62,25 @@ const UserList = () => {
 
     fetchUsers();
   }, [getAllUsers, school_id]);
+
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const success = await updateUser(editingUser, formData);
+  if (success) {
+    console.log("User updated successfully");
+
+    // Reset form
+    setFormData({
+      username: "",
+      phone: "",
+    });
+    setEditingUser(null);
+    setEditingIndex(null)
+    setOpen(false);
+  }
+};
 
   const handleDelete = (id: number) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
@@ -68,6 +112,47 @@ const UserList = () => {
               </Button>
             </Link>
           </div>
+        </div>
+
+        {/* Edit Form */}
+        <div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="text-lg text-center">Edit User</DialogTitle>
+              </DialogHeader>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    value={formData.username || ''}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, username: e.target.value }))}
+                    placeholder="e.g., John Doe"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    value={formData.phone || ''}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
+                    placeholder="e.g., +1234567890"
+                  />
+                </div>
+
+                <div className="flex justify-end space-x-2">
+                  <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Update User</Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Stats */}
@@ -117,6 +202,7 @@ const UserList = () => {
                   <TableRow>
                     <TableHead>Username</TableHead>
                     <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
                     <TableHead>Role</TableHead>
                     <TableHead className="flex items-center justify-center">Status</TableHead>
                   </TableRow>
@@ -126,29 +212,51 @@ const UserList = () => {
                     <TableRow key={user.id} className="font-medium text-xs">
                       <TableCell>{user.username}</TableCell>
                       <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.phone}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell className="flex items-center justify-center">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          user.status === "active"
-                            ? "bg-accent  text-primary "
-                            : "bg-muted text-gray-600"
-                        }`}
-                      >
-                        {user.status}
-                      </span>
-                    </TableCell>
+                          <div className="flex items-center gap-2">
+                            <Switch
+                              checked={user.status === "active"}
+                              onCheckedChange={async (checked) => {
+                                const newStatus = checked ? "active" : "inactive";
+                                const updatedUser = { ...user, status: newStatus };
+
+                                const success = await toggleStatus(user.id, updatedUser);
+                                if (success) {
+                                  setUsers((prev) =>
+                                    prev.map((u) =>
+                                      u.id === user.id ? { ...u, status: newStatus } : u
+                                    )
+                                  );
+                                  
+                                }
+                              }}
+                            />
+                          </div>
+                        </TableCell>
+
+
                       <TableCell>
                         <div className="flex gap-2 justify-center">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
+
+                          {/* Edit Button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setEditingUser(user.id);
+                              setFormData(user); 
+                              setOpen(true);    
+                            }}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
+
+                          {/* Edit Delete */}
+                          {/* <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
                             <Trash2 className="h-4 w-4 text-destructive/60" />
-                          </Button>
+                          </Button> */}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -156,6 +264,7 @@ const UserList = () => {
                 </TableBody>
               </Table>
             )}
+       
           </CardContent>
         </Card>
       </div>

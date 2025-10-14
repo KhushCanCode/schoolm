@@ -22,7 +22,6 @@ import Roles from "./pages/principal/settings/Roles";
 import { SchoolInfo } from "./pages/principal/settings/School-info";
 import { UserManagement } from "./pages/principal/settings/User-management";
 import ClassList from "./pages/principal/classes/List";
-import AssignSubject from "./pages/principal/teachers/Assign-subject";
 import StudentReports from "./pages/principal/reports/Students";
 import FeeReports from "./pages/principal/reports/Fees";
 import AttendanceReport from "./pages/principal/reports/Attendance";

@@ -12,12 +12,25 @@ import Heading from "@/components/common/Heading";
 
 const List = () => {
   const school_id = useAuthStore((state) => state.authUser.school_id);
-  const getAllTeachers = useUsersStore((state) => state.getAllTeachers);
+const {getAllTeachers, deleteTeacher} = useUsersStore();
 
   const [teachers, setTeachers] = useState<TeacherForm[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
- 
+
+const handleDelete = async (index: number, id: number) => {
+  
+  const success = await deleteTeacher(id); 
+  if (success) {
+    setTeachers((prev) => {
+      const updated = [...prev];
+      updated.splice(index, 1);
+      return updated;
+    });
+  }
+};
+
+
   useEffect(() => {
     const fetchTeachers = async () => {
       setLoading(true);
@@ -38,10 +51,8 @@ const List = () => {
     fetchTeachers();
   }, [getAllTeachers, school_id]);
 
-  // const handleDelete = (id:number) => {
-  //   if (!window.confirm("Are you sure you want to delete this teacher?")) return;
-  //   setTeachers(prev => prev.filter(t => t.id !== id));
-  // }
+
+
 
   const filteredTeachers = teachers.filter(
     u =>
@@ -125,7 +136,7 @@ const List = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {teachers.map((teacher) => (
+                {teachers.map((teacher, index) => (
                   <TableRow key={teacher.id}>
                     <TableCell className="font-medium text-xs">EMP00{teacher.id}</TableCell>
                     <TableCell  className="font-medium text-xs">{teacher.name}</TableCell>
@@ -153,7 +164,7 @@ const List = () => {
                         <Button variant="ghost" size="sm">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" >
+                        <Button variant="ghost" size="sm" onClick={()=>(handleDelete(index, teacher.id))}>
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
                       </div>

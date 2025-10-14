@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import {  AssignSubjectsRequest } from "@/pages/principal/teachers/SubjectClassGrid";
 import { TeacherSubject } from "@/pages/principal/teachers/Details";
+import { useId } from "react";
 
 
 //User Response Type
@@ -82,7 +83,12 @@ interface ParentForm {
 interface UsersState {
 
   registerUser: (school_id: string, data: UserData) => Promise<boolean>;
+  updateUser: (userId: number, data:UserData) => Promise<boolean>;
+  toggleStatus: (userId:number, data:UserData) => Promise<boolean>;
   getAllUsers: (school_id: string) => Promise<UserData[] | null>;
+
+
+
   // registerParent: (schoolId: string, data: ParentForm) => Promise<boolean>;
   getStats: (school_id: string) => Promise<Stats | null>;
 
@@ -94,7 +100,7 @@ interface UsersState {
   //Teacher Controllers
   registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
   // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
-  // deleteTeacher: (teacherId: string, school_id: string) => Promise<boolean>;
+  deleteTeacher: (teacherId: number) => Promise<boolean>;
   assignSubClasstoTeacher: (teacherId:number, data: AssignSubjectsRequest) => Promise<boolean>;
   getTeacherById: (teacherId: number) => Promise<TeacherForm | null>;
   getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
@@ -165,10 +171,68 @@ export const useUsersStore = create<UsersState>(() => ({
   },
 
   //Update User
+  updateUser: async (userId, data) =>{
+  const token = localStorage.getItem("token");
+
+    try {
+      const res = await axiosInstance.put(
+        `/principal/user/update/${userId}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+
+      );
 
 
-  // Delete User
+      if (res.data.status) {
+        toast.success(res.data.message || "User updated successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to update user");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error updating user:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to update user");
+      return false;
+    }
+  },
 
+  //Toggle Status
+  toggleStatus: async(userId, data)=>{
+     const token = localStorage.getItem("token");
+
+    try {
+      const res = await axiosInstance.patch(
+        `/principal/user/toggle-status/${userId}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+
+      );
+      console.log("togglestatus: ", res);
+
+      if (res.data.status) {
+        toast.success(res.data.message || "Status updated successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to update status");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error updating status:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to update status");
+      return false;
+    }
+  },
 
   //Get All Users
   getAllUsers: async (school_id) => {
@@ -180,6 +244,7 @@ export const useUsersStore = create<UsersState>(() => ({
         }
       );
 
+      console.log("getAllUsers: ", res)
 
       if (res.data.status) {
         return res.data.data;
@@ -288,6 +353,34 @@ export const useUsersStore = create<UsersState>(() => ({
   //Update Teacher
 
   // Delete Teacher
+  deleteTeacher: async(teacherId) =>{
+     const token = localStorage.getItem("token");
+
+    try {
+      const res = await axiosInstance.delete(
+        `/principal/teacher/delete/${teacherId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message || "Teacher Deleted successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to delete teacher");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error deleting teacher:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to delete teacher");
+      return false;
+    }
+  },
 
   //Get Teacher By ID
 getTeacherById: async (teacherId) => {
@@ -326,7 +419,6 @@ getTeacherById: async (teacherId) => {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
-
 
       if (res.data.status) {
         return res.data.data;
