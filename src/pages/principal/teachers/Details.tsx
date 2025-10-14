@@ -127,23 +127,23 @@ const { getSubjects } = useSubjectStore();
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <span className="text-sm font-medium">Subjects</span>
-             {teacher?.subjects?.map((item) => (
-                <li key={item.id} className="list-none ml-4">
-                  {item.subject?.subject_name}
-                </li>
-              ))}
+           <div>
+              {teacher?.subjects && teacher.subjects.length > 0 ? (
+                <ul className="mt-1 ml-4 space-y-1 text-sm">
+                  {teacher.subjects.map((item) => (
+                    <li key={item.id} className="list-none  list-inside">
+                      {item.subject?.subject_name || "Unknown Subject"}{" "}
+                      <span className="text-muted-foreground">
+                        – {item.class?.class} {item.class?.section}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm ml-2">No subjects/classes assigned</p>
+              )}
             </div>
 
-            <div>
-              <span className="text-sm font-medium">Classes</span>
-              {teacher?.subjects?.map((item) => (
-                <li key={item.id} className="list-none ml-4">
-                  {item.class?.class} {item.class?.section}
-                </li>
-              ))}
-            </div>
           </CardContent>
         </Card>
       </div>

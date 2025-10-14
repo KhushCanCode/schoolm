@@ -44,8 +44,7 @@ export interface StudentForm {
   gender?: string;
   addhar?: string;
   dob?: string;
-  class?: string;
-  section?: string;
+  class?: {};
   roll_no?: string;
   email?: string;
   parent_email?: string;
@@ -53,9 +52,9 @@ export interface StudentForm {
   mother_name?: string;
   phone?: string;
   address?: string;
-  transport_service?: boolean;
-  library_service?: boolean;
-  computer_service?: boolean;
+  // transport_service?: boolean;
+  // library_service?: boolean;
+  // computer_service?: boolean;
 }
 
 // Stats response type

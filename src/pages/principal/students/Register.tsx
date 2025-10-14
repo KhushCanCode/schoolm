@@ -12,6 +12,7 @@ import { useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { StudentForm } from "@/store/useUsersStore";
 import Heading from "@/components/common/Heading";
+import { ClassForm, useClassStore } from "@/store/useClassStore";
 
 interface School {
   id: string;
@@ -20,6 +21,10 @@ interface School {
 
 const StudentRegister = () => {
    const { authUser } = useAuthStore();
+
+   const {getClasses} = useClassStore();
+   const [classes, setClasses] = useState<ClassForm[]>([]);
+
   const { toast } = useToast();
   const registerStudent = useUsersStore((state) => state.registerStudent);
 
@@ -29,8 +34,7 @@ const [formData, setFormData] = useState<StudentForm>({
   gender: "",
   addhar: "",
   dob: "",
-  class: "",
-  section: "",
+  class: {},
   roll_no: "",
   email: "",
   parent_email: "",
@@ -38,21 +42,31 @@ const [formData, setFormData] = useState<StudentForm>({
   mother_name: "",
   phone: "",
   address: "",
-  transport_service: false,
-  library_service: false,
-  computer_service: false,
+  // transport_service: false,
+  // library_service: false,
+  // computer_service: false,
 });
 
+const fetchClasses = async () => {
+    const schoolId = authUser?.school_id;
+    if (!schoolId) return;
+    const data = await getClasses(schoolId);
+    if (data?.length) setClasses(data);
+  };
 
+useEffect(()=>{
+  fetchClasses();
+},[])
  
 
   // ========================= HANDLE INPUT CHANGE =========================
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const handleInputChange = (field: string, value: any) => {
+  setFormData((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+};
+
 
   // ========================= HANDLE SUBMIT =========================
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,8 +84,9 @@ const [formData, setFormData] = useState<StudentForm>({
     const success = await registerStudent(formData.school_id, formData);
     if (success) {
 
+      console.log("fromdata: ", formData);
       console.log("Student registered successfully");
-      // // Reset form
+      // Reset form
       // setFormData({
       //  school_id: authUser.school_id,
       //   candidate_name: "",
@@ -87,9 +102,9 @@ const [formData, setFormData] = useState<StudentForm>({
       //   mother_name: "",
       //   phone: "",
       //   address: "",
-      //   transport_service: false,
-      //   library_service: false,
-      //   computer_service: false,
+      //   // transport_service: false,
+      //   // library_service: false,
+      //   // computer_service: false,
       // });
     }
   };
@@ -99,7 +114,7 @@ const [formData, setFormData] = useState<StudentForm>({
       <div className=" space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <Heading title="Student Registration" description="Add a new user to the system"/>
+          <Heading title="Student Registration" description="Add a new student to the system"/>
           
             <Link to="/principal/dashboard">
               <Button variant="outline" className="">
@@ -224,13 +239,21 @@ const [formData, setFormData] = useState<StudentForm>({
               {/*  Class */}
               <div className="space-y-2">
                 <Label htmlFor="class">Class *</Label>
-                <Select onValueChange={(value) => handleInputChange("class", value)}>
+                <Select onValueChange={(value) => {
+                const selectedClass = classes.find((c) => String(c.id) === value);
+                if (selectedClass) {
+                  handleInputChange("class", selectedClass.id); 
+                  handleInputChange("section", selectedClass.section || "");
+                }
+              }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select class" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["1st","2nd","3rd","4th","5th","6th","7th","8th","9th","10th","11th","12th"].map(cls => (
-                      <SelectItem key={cls} value={cls}>{cls}</SelectItem>
+                    {classes.map((cls) => (
+                      <SelectItem key={cls.id} value={String(cls.id)}>
+                        {cls.class} {cls.section && `(${cls.section})`}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -239,14 +262,16 @@ const [formData, setFormData] = useState<StudentForm>({
               {/*  Section */}
               <div className="space-y-2">
                 <Label htmlFor="section">Section *</Label>
-                <Select onValueChange={(value) => handleInputChange("section", value)}>
+                <Select >
                   <SelectTrigger>
                     <SelectValue placeholder="Select section" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["A","B","C","D"].map(sec => (
-                      <SelectItem key={sec} value={sec}>{sec}</SelectItem>
-                    ))}
+                    {classes.map((cls) => (
+                    <SelectItem key={cls.id} value={String(cls.id)}>
+                      {cls.section}
+                    </SelectItem>
+                  ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -298,14 +323,14 @@ const [formData, setFormData] = useState<StudentForm>({
 
           {/* ---------------------- STUDENT SERVICES ---------------------- */}
 
-          <Card>
-            <CardHeader>
+          {/* <Card> */}
+            {/* <CardHeader>
               <CardTitle className="text-lg">Services Information</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </CardHeader> */}
+            {/* <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
 
               {/* Transport Service */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="transport_service">Transport Service</Label>
                 <Select
                   value={formData.transport_service ? "true" : "false"}
@@ -321,10 +346,10 @@ const [formData, setFormData] = useState<StudentForm>({
                     <SelectItem value="false">No</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               {/*  Library Service */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="library_service">Library Service</Label>
                 <Select
                   value={formData.library_service ? "true" : "false"}
@@ -340,10 +365,10 @@ const [formData, setFormData] = useState<StudentForm>({
                     <SelectItem value="false">No</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               {/* Computer Service */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="computer_service">Computer Service</Label>
                 <Select
                   value={formData.computer_service ? "true" : "false"}
@@ -359,10 +384,10 @@ const [formData, setFormData] = useState<StudentForm>({
                     <SelectItem value="false">No</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
-            </CardContent>
-          </Card>
+            {/* </CardContent> */}
+          {/* </Card> */}
 
           {/* ---------------------- SUBMIT ---------------------- */}
           <div className="flex justify-end gap-4">

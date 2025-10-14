@@ -27,7 +27,7 @@ export default function Layout() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen  font-[JetBrains Mono] w-full">
+      <div className="flex min-h-screen   font-[JetBrains Mono] w-full">
         {/* Sidebar based on authenticated user's role */}
         <Sidebar>
           <SchoolSidebar currentRole={authUser.role} />
@@ -38,7 +38,7 @@ export default function Layout() {
             currentRole={authUser.role}
             onRoleChange={() => {}} 
           />
-          <div className="p-6 bg-primary-foreground  h-full ">
+          <div className="p-6  bg-background h-full ">
             <Outlet />
           </div>
         </div>

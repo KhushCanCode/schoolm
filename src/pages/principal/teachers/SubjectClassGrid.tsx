@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useUsersStore} from "@/store/useUsersStore"; // ✅ import TeacherSubject
 import { toast } from "sonner";
 import { TeacherSubject } from "./Details";
+import Heading from "@/components/common/Heading";
 
 export interface AssignSubjectsRequest {
   school_id: string;
@@ -34,23 +35,23 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchSubClass = () => {
-    if (teacherSubjects && teacherSubjects.length > 0) {
-      const grouped = teacherSubjects.reduce((acc, curr) => {
-        const existing = acc.find((a) => a.class_id === Number(curr.class_id));
-        if (existing) {
-          existing.subject_ids.push(Number(curr.subject_id));
-        } else {
-          acc.push({
-            class_id: Number(curr.class_id),
-            subject_ids: [Number(curr.subject_id)],
-          });
-        }
-        return acc;
-      }, [] as Assignment[]);
-      setAssignments(grouped);
-    }
-  };
+ useEffect(() => {
+  if (teacherSubjects && teacherSubjects.length && assignments.length === 0) {
+    const grouped = teacherSubjects.reduce((acc, curr) => {
+      const existing = acc.find((a) => a.class_id === Number(curr.class_id));
+      if (existing) {
+        existing.subject_ids.push(Number(curr.subject_id));
+      } else {
+        acc.push({
+          class_id: Number(curr.class_id),
+          subject_ids: [Number(curr.subject_id)],
+        });
+      }
+      return acc;
+    }, [] as Assignment[]);
+    setAssignments(grouped);
+  }
+}, [teacherSubjects]);
 
   const fetchClasses = async () => {
     const schoolId = authUser?.school_id;
@@ -70,12 +71,6 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
     fetchClasses();
     fetchSubjects();
   }, []);
-
-  useEffect(() => {
-    if (teacherSubjects) {
-      fetchSubClass();
-    }
-  }, [teacherSubjects]);
 
     
 
@@ -132,7 +127,7 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
   return (
     <div className="overflow-auto mt-10">
       
-      <Table className="w-full text-center border border-border ">
+      <Table className="w-full text-center border border-border  ">
         <TableHeader>
           <TableRow>
             <TableHead className="text-left">Subjects / Classes</TableHead>
@@ -157,7 +152,7 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
                   <TableCell key={cls.id}>
                     <div
                       className={`w-6 h-6 cursor-pointer rounded ${
-                        assigned ? "bg-green-500" : "bg-gray-200"
+                        assigned ? "bg-green-500" : "bg-slate-200 dark:bg-slate-700 "
                       }`}
                       onClick={() => toggleAssignment(sub.id, Number(cls.id))}
                     />
@@ -174,6 +169,8 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
           {loading ? "Assigning..." : "Assign Subjects & Classes"}
         </Button>
       </div>
+
+     <pre>{JSON.stringify(assignments, null, 2)}</pre>
     </div>
   );
 };

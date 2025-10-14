@@ -112,7 +112,7 @@ const UserList = () => {
             ) : filteredUsers.length === 0 ? (
               <p>No users found.</p>
             ) : (
-              <Table>
+              <Table className="">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Username</TableHead>
