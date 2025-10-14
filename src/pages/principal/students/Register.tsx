@@ -1,18 +1,17 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import Heading from "@/components/common/Heading";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save, Loader2, School, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useUsersStore } from "@/store/useUsersStore";
 import { useAuthStore } from "@/store/useAuthStore";
-import { StudentForm } from "@/store/useUsersStore";
-import Heading from "@/components/common/Heading";
 import { ClassForm, useClassStore } from "@/store/useClassStore";
+import { StudentForm, useUsersStore } from "@/store/useUsersStore";
+import { Save, School } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface School {
   id: string;
@@ -20,52 +19,52 @@ interface School {
 }
 
 const StudentRegister = () => {
-   const { authUser } = useAuthStore();
+  const { authUser } = useAuthStore();
 
-   const {getClasses} = useClassStore();
-   const [classes, setClasses] = useState<ClassForm[]>([]);
+  const { getClasses } = useClassStore();
+  const [classes, setClasses] = useState<ClassForm[]>([]);
 
   const { toast } = useToast();
   const registerStudent = useUsersStore((state) => state.registerStudent);
 
-const [formData, setFormData] = useState<StudentForm>({
-  school_id: authUser.school_id,
-  candidate_name: "",
-  gender: "",
-  addhar: "",
-  dob: "",
-  class: {},
-  roll_no: "",
-  email: "",
-  parent_email: "",
-  father_name: "",
-  mother_name: "",
-  phone: "",
-  address: "",
-  // transport_service: false,
-  // library_service: false,
-  // computer_service: false,
-});
+  const [formData, setFormData] = useState<StudentForm>({
+    school_id: authUser.school_id,
+    candidate_name: "",
+    gender: "",
+    addhar: "",
+    dob: "",
+    class: {},
+    roll_no: "",
+    email: "",
+    parent_email: "",
+    father_name: "",
+    mother_name: "",
+    phone: "",
+    address: "",
+    // transport_service: false,
+    // library_service: false,
+    // computer_service: false,
+  });
 
-const fetchClasses = async () => {
+  const fetchClasses = async () => {
     const schoolId = authUser?.school_id;
     if (!schoolId) return;
     const data = await getClasses(schoolId);
     if (data?.length) setClasses(data);
   };
 
-useEffect(()=>{
-  fetchClasses();
-},[])
- 
+  useEffect(() => {
+    fetchClasses();
+  }, [])
+
 
   // ========================= HANDLE INPUT CHANGE =========================
   const handleInputChange = (field: string, value: any) => {
-  setFormData((prev) => ({
-    ...prev,
-    [field]: value,
-  }));
-};
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
 
   // ========================= HANDLE SUBMIT =========================
@@ -114,17 +113,17 @@ useEffect(()=>{
       <div className=" space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <Heading title="Student Registration" description="Add a new student to the system"/>
-          
-            <Link to="/principal/dashboard">
-              <Button variant="outline" className="">
-                Back to Dashboard
-              </Button>
-            </Link>
+          <Heading title="Student Registration" description="Add a new student to the system" />
+
+          <Link to="/principal/dashboard">
+            <Button variant="outline" className="">
+              Back to Dashboard
+            </Button>
+          </Link>
 
         </div>
 
-       
+
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* ---------------------- PERSONAL INFO ---------------------- */}
@@ -134,7 +133,7 @@ useEffect(()=>{
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-              
+
               <div className="space-y-2">
                 <Label htmlFor="candidate_name">Name *</Label>
                 <Input
@@ -145,18 +144,18 @@ useEffect(()=>{
                 />
               </div>
 
-            {/*  Aadhaar Number */}
-            <div className="space-y-2">
-              <Label htmlFor="addhar">Aadhaar Number</Label>
-              <Input
-                id="addhar"
-                value={formData.addhar}
-                onChange={(e) => handleInputChange("addhar", e.target.value)}
-                placeholder=""
-              />
-            </div>
+              {/*  Aadhaar Number */}
+              <div className="space-y-2">
+                <Label htmlFor="addhar">Aadhaar Number</Label>
+                <Input
+                  id="addhar"
+                  value={formData.addhar}
+                  onChange={(e) => handleInputChange("addhar", e.target.value)}
+                  placeholder=""
+                />
+              </div>
 
-            {/*  Email */}
+              {/*  Email */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email *</Label>
                 <Input
@@ -236,16 +235,22 @@ useEffect(()=>{
                 />
               </div>
 
-              {/*  Class */}
+              {/* Class */}
               <div className="space-y-2">
                 <Label htmlFor="class">Class *</Label>
-                <Select onValueChange={(value) => {
-                const selectedClass = classes.find((c) => String(c.id) === value);
-                if (selectedClass) {
-                  handleInputChange("class", selectedClass.id); 
-                  handleInputChange("section", selectedClass.section || "");
-                }
-              }}>
+                <Select
+                  onValueChange={(value) => {
+                    const selectedClass = classes.find((c) => String(c.id) === value);
+                    if (selectedClass) {
+                      // ✅ store complete class object instead of just id
+                      handleInputChange("class", {
+                        id: selectedClass.id,
+                        class: selectedClass.class,
+                        section: selectedClass.section || "",
+                      });
+                    }
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select class" />
                   </SelectTrigger>
@@ -259,6 +264,8 @@ useEffect(()=>{
                 </Select>
               </div>
 
+
+
               {/*  Section */}
               <div className="space-y-2">
                 <Label htmlFor="section">Section *</Label>
@@ -268,10 +275,10 @@ useEffect(()=>{
                   </SelectTrigger>
                   <SelectContent>
                     {classes.map((cls) => (
-                    <SelectItem key={cls.id} value={String(cls.id)}>
-                      {cls.section}
-                    </SelectItem>
-                  ))}
+                      <SelectItem key={cls.id} value={String(cls.id)}>
+                        {cls.section}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -324,13 +331,13 @@ useEffect(()=>{
           {/* ---------------------- STUDENT SERVICES ---------------------- */}
 
           {/* <Card> */}
-            {/* <CardHeader>
+          {/* <CardHeader>
               <CardTitle className="text-lg">Services Information</CardTitle>
             </CardHeader> */}
-            {/* <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
+          {/* <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
 
-              {/* Transport Service */}
-              {/* <div className="space-y-2">
+          {/* Transport Service */}
+          {/* <div className="space-y-2">
                 <Label htmlFor="transport_service">Transport Service</Label>
                 <Select
                   value={formData.transport_service ? "true" : "false"}
@@ -348,8 +355,8 @@ useEffect(()=>{
                 </Select>
               </div> */}
 
-              {/*  Library Service */}
-              {/* <div className="space-y-2">
+          {/*  Library Service */}
+          {/* <div className="space-y-2">
                 <Label htmlFor="library_service">Library Service</Label>
                 <Select
                   value={formData.library_service ? "true" : "false"}
@@ -367,8 +374,8 @@ useEffect(()=>{
                 </Select>
               </div> */}
 
-              {/* Computer Service */}
-              {/* <div className="space-y-2">
+          {/* Computer Service */}
+          {/* <div className="space-y-2">
                 <Label htmlFor="computer_service">Computer Service</Label>
                 <Select
                   value={formData.computer_service ? "true" : "false"}
@@ -386,7 +393,7 @@ useEffect(()=>{
                 </Select>
               </div> */}
 
-            {/* </CardContent> */}
+          {/* </CardContent> */}
           {/* </Card> */}
 
           {/* ---------------------- SUBMIT ---------------------- */}
