@@ -8,6 +8,8 @@ import {
   Download,
   Filter
 } from "lucide-react";
+import Heading from "@/components/common/Heading";
+import { Link } from "react-router-dom";
 
 export const TimeTable= () => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -48,13 +50,13 @@ export const TimeTable= () => {
 
   return (
     <div className="space-y-6 ">
-      <div className="flex justify-between items-start">
-        <div>
-          <h2 className="text-lg font-bold">Class Timetable</h2>
-          <p className="text-gray-500 text-xs">Weekly schedule and class timings</p>
-        </div>
-        <div className="flex gap-3 mx-9">
-          <Button variant="outline">
+
+      {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Heading title="Class Timetable" description="Weekly schedule and class timings"/>
+
+          <div className="flex gap-2">
+            <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
             Export PDF
           </Button>
@@ -62,12 +64,14 @@ export const TimeTable= () => {
             <Filter className="mr-2 h-4 w-4" />
             Filter Grade
           </Button>
-          <Button >
-            <Plus className=" h-4 w-4" />
-            Add Class
-          </Button>
+            <Link to="/principal/classes/list">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Class
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">

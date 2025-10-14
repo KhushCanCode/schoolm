@@ -1,58 +1,77 @@
-import { Book, Eye, EyeOff, Lock, Mail, School } from 'lucide-react';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import AuthPattern from '../../components/AuthPattern';
-import { useAuthStore } from '../../store/useAuthStore';
+import {
+  Book,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  School as SchoolIcon,
+} from "lucide-react"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import AuthPattern from "../../components/AuthPattern"
+import { useAuthStore } from "../../store/useAuthStore"
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card"
 
 interface LoginForm {
-  email: string;
-  password: string;
-  school_id: string;
-  role: string;
+  email: string
+  password: string
+  school_id: string
+  role: string
 }
 
 export interface School {
-  id: string;
-  name: string;
-  city: string;
+  id: string
+  name: string
+  city: string
 }
 
 function LoginPage() {
-  const { getUser, login } = useAuthStore();
-  const navigate = useNavigate();
+  const { getUser, login, getSchoolList } = useAuthStore()
+  const navigate = useNavigate()
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState<LoginForm>({
-    email: '',
-    password: '',
-    school_id: '',
-    role: ''
-  });
+    email: "",
+    password: "",
+    school_id: "",
+    role: "",
+  })
 
-  // Fetch schools from backend
-  const [schools, setSchools] = useState<School[]>([]);
-  const { getSchoolList } = useAuthStore();
+  const [schools, setSchools] = useState<School[]>([])
 
   useEffect(() => {
     const fetchSchools = async () => {
-      const schoolList = await getSchoolList();
-      
+      const schoolList = await getSchoolList()
+
       if (schoolList.length === 0) {
-        toast.error("Failed to fetch schools");
+        toast.error("Failed to fetch schools")
       } else {
-        setSchools(schoolList);
+        setSchools(schoolList)
       }
-    };
-    fetchSchools();
-  }, []);
+    }
+    fetchSchools()
+  }, [getSchoolList])
 
-
-  // Login function
   const handleLogin = async (e: React.FormEvent) => {
-
-
-    e.preventDefault();
+    e.preventDefault()
     // if (!validateForm()) return;
 
     const success = await login({
@@ -60,133 +79,99 @@ function LoginPage() {
       password: formData.password,
       school_id: formData.school_id,
       role: formData.role,
-    });
+    })
 
     if (success) {
-      await getUser();
+      await getUser()
     } else {
-      return;
-    };
+      return
+    }
 
-
-    const user = useAuthStore.getState().authUser;
+    const user = useAuthStore.getState().authUser
     if (!user) {
-      toast.error("Unable to fetch user details after login");
-      return;
+      toast.error("Unable to fetch user details after login")
+      return
     }
 
     switch (user.role) {
       case "principal":
-        navigate("/principal/dashboard");
-        break;
+        navigate("/principal/dashboard")
+        break
       case "teacher":
-        navigate("/teacher/dashboard");
-        break;
+        navigate("/teacher/dashboard")
+        break
       case "student":
-        navigate("/student/dashboard");
-        break;
+        navigate("/student/dashboard")
+        break
       case "parent":
-        navigate("/parent/dashboard");
-        break;
+        navigate("/parent/dashboard")
+        break
       case "accountant":
-        navigate("/accountant/dashboard");
-        break;
+        navigate("/accountant/dashboard")
+        break
       default:
-        navigate("/login");
+        navigate("/login")
     }
-  };
-
-
-  const handleForgotPassword = async () => {
-
-    navigate("/verify-otp");
-
   }
 
-
-  //Form Validation, checking email  and password
-  const validateForm = () => {
-    if (!formData.email.trim()) {
-      toast.error("Email is required");
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) {
-      toast.error("Please enter a valid email address");
-      return false;
-    }
-    if (!formData.password) {
-      toast.error("Password is required");
-      return false;
-    }
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return false;
-    }
-    if (!formData.school_id) {
-      toast.error("Please select a school");
-      return false;
-    }
-    if (!formData.role) {
-      toast.error("Please select a role");
-      return false;
-    }
-    return true;
-  };
-
+  const handleForgotPassword = () => navigate("/verify-otp")
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 text-blue-950">
+    <div className="min-h-screen grid lg:grid-cols-2 bg-card text-slate-800 dark:text-slate-200">
       {/* Left Side */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center mb-8">
+      <div className="flex flex-col justify-center items-center ">
+        <Card className="w-full max-w-md border-none shadow-none">
+          <CardHeader className="text-center space-y-3">
             <div className="flex flex-col items-center gap-2 group">
-              <div className="size-12 rounded-xl bg-blue-200 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Book className="size-6 text-blue-500" />
-              </div>
-              <h1 className="text-xl md:text-2xl font-bold mt-2">
+              
+              <CardTitle className="text-xl md:text-2xl font-bold">
                 Login to your Account
-              </h1>
-              <p className="text-sm md:text-base">
+              </CardTitle>
+              <CardDescription>
                 Login to your account and access your dashboard
-              </p>
+              </CardDescription>
             </div>
-          </div>
+          </CardHeader>
 
-          {/* FORM */}
-          <form className="flex flex-col gap-6" onSubmit={handleLogin}>
-            <div className="form-control flex flex-col gap-4">
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleLogin}>
               {/* Email */}
-              <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-                <Mail className="size-5 text-gray-400" />
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="size-4 text-muted-foreground" />
+                  Email
+                </Label>
+                <Input
+                  id="email"
                   type="email"
-                  className="grow outline-none"
                   placeholder="example@gmail.com"
                   value={formData.email}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                 />
-              </label>
+              </div>
 
               {/* Password */}
-              <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-                <Lock className="size-4 text-gray-400" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="grow outline-none"
-                  placeholder="password"
-                  value={formData.password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <div className="flex items-center">
+              <div className="space-y-2">
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <Lock className="size-4 text-muted-foreground" />
+                  Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                  />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
                   >
                     {showPassword ? (
                       <EyeOff className="size-5" />
@@ -195,64 +180,87 @@ function LoginPage() {
                     )}
                   </button>
                 </div>
-              </label>
+              </div>
 
               {/* School Dropdown */}
-              <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-                <School className="size-5 text-gray-400" />
-                <select
-                  className="grow outline-none bg-transparent"
-                  value={formData.school_id}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, school_id: e.target.value })}
-                >
-                  <option value="" disabled>
-                    Select School
-                  </option>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <SchoolIcon className="size-4 text-muted-foreground" />
+                  School
+                </Label>
+                <Select
+                value={formData.school_id ? String(formData.school_id) : ""}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, school_id:value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select School">
+                    {formData.school_id
+                      ? schools.find((s) => s.id === formData.school_id)?.name
+                      : "Select School"}
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
                   {schools.map((school) => (
-                    <option key={school.id} value={school.id}>
-                      {school.name} /{school.city}
-                    </option>
+                    <SelectItem key={school.id} value={String(school.id)}>
+                      {school.name} / {school.city}
+                    </SelectItem>
                   ))}
-                </select>
-              </label>
+                </SelectContent>
+              </Select>
+
+              </div>
 
               {/* Role Dropdown */}
-              <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-                <select
-                  className="grow outline-none bg-transparent"
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <Book className="size-4 text-muted-foreground" />
+                  Role
+                </Label>
+                <Select
                   value={formData.role}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, role: e.target.value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, role: value })
+                  }
                 >
-                  <option value="" disabled>
-                    Select Role
-                  </option>
-                  {/* <option value="admin">Admin</option> */}
-                  <option value="accountant">Accountant</option>
-                  <option value="principal">Principal</option>
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="parent">Parent</option>
-                </select>
-              </label>
-            </div>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="accountant">Accountant</SelectItem>
+                    <SelectItem value="principal">Principal</SelectItem>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="parent">Parent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Login Button */}
-            <div className="flex w-full justify-center">
-              <button
-                type="submit"
-                className="bg-blue-400 py-2 w-full hover:bg-blue-900 transition-all duration-300 text-white rounded-xl"
-              >
+              {/* Submit Button */}
+              <Button type="submit" className="w-full">
                 Log in
-              </button>
-            </div>
-          </form>
-        </div>
+              </Button>
+
+              {/* Forgot Password */}
+              <Button
+                type="button"
+                variant="link"
+                onClick={handleForgotPassword}
+                className="w-full text-sm text-primary hover:underline"
+              >
+                Forgot Password?
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Right Side */}
       <AuthPattern />
     </div>
-  );
+  )
 }
 
-export default LoginPage;
+export default LoginPage

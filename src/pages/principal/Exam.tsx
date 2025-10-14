@@ -24,6 +24,8 @@ import {
   Edit,
   FileText
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import Heading from "@/components/common/Heading";
 
 export const Exam = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -132,23 +134,23 @@ export const Exam = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-start ">
-        <div>
-          <h2 className="text-lg font-bold">Exams Management</h2>
-          <p className="text-gray-500 text-xs">Schedule exams, manage results, and generate reports</p>
+
+             {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Heading title="Exams Management" description="Schedule exams, manage results, and generate reports" />
+
+          <div className="flex gap-2">
+            
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Export Results
+            </Button>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Schedule Exam
+              </Button>
+          </div>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export Results
-          </Button>
-          <Button >
-            <Plus className=" h-4 w-4" />
-            Schedule Exam
-          </Button>
-        </div>
-      </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

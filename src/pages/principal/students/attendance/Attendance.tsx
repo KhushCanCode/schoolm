@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import Heading from "@/components/common/Heading";
 
 interface Student {
   id: number;
@@ -96,19 +97,23 @@ const Attendance = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background ">
+    <div className="min-h-screen ">
       <div className="">
-        <div className="mb-8">
-          <h1 className="text-lg font-bold text-foreground mb-2">
-            Attendance Management
-          </h1>
-          <p className="text-muted-foreground text-xs">
-            Mark student attendance for today
-          </p>
+        
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Heading title="Attendance Management" description="Mark student attendance for today"/>
+          
+            <Link to="/principal/dashboard">
+              <Button variant="outline" className=" text-slate-800 dark:text-slate-300">
+                Back to Dashboard
+              </Button>
+            </Link>
+
         </div>
 
         <div className="mb-6 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-violet-400 h-4 w-4" />
           <Input
             placeholder="Search students..."
             value={searchTerm}

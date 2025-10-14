@@ -10,8 +10,11 @@ import {
   Clock,
   MapPin,
   Search,
-  Filter
+  Filter,
+  Edit
 } from "lucide-react";
+import Heading from "@/components/common/Heading";
+import { Link } from "react-router-dom";
 
 export const Subjects= () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,17 +70,23 @@ export const Subjects= () => {
 
   return (
     <div className="space-y-6 ">
-      {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h2 className="text-lg font-bold text-foreground">Classes Management</h2>
-          <p className="text-muted-foreground text-xs">Organize and manage class schedules and assignments</p>
+     
+       {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Heading title="Classes Management" description="Organize and manage class schedules and assignments"/>
+
+          <div className="flex gap-2">
+            <Link to="/principal/dashboard">
+              <Button variant="outline">Back to Dashboard</Button>
+            </Link>
+            <Link to="/principal/classes/list">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Create Class
+              </Button>
+            </Link>
+          </div>
         </div>
-        <Button className="mx-9">
-          <Plus className="mr-2 h-4 w-4" />
-          Create Class
-        </Button>
-      </div>
 
       {/* Search */}
       <Card className="bg-gradient-card shadow-soft w-[1030px] overflow-hidden">

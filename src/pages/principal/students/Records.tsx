@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Edit, Phone, Mail, MapPin, Calendar, User, GraduationCap, Heart, Users } from "lucide-react";
+import { ArrowLeft, Edit, Phone, Mail, MapPin, Calendar, User, GraduationCap, Heart, Users, Pen } from "lucide-react";
+import Heading from "@/components/common/Heading";
 
 interface StudentRecord {
   id: number;
@@ -103,25 +104,24 @@ const Records = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background ">
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <Link to="/admin/students/list">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <div className="flex-1">
-            <h1 className="text-lg font-bold text-foreground">{student.name}</h1>
-            <p className="text-muted-foreground text-xs">Roll Number: {student.rollNumber}</p>
+    <div className="min-h-screen  ">
+      <div className="max-w-7xl mx-auto space-y-6">
+        
+         {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Heading title={student.name} description={student.rollNumber} />
+
+          <div className="flex gap-2">
+            <Link to="/principal/dashboard">
+              <Button variant="outline">Back to Dashboard</Button>
+            </Link>
+            <Link to="/principal/students/register">
+              <Button>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Student
+              </Button>
+            </Link>
           </div>
-          <Link to="/admin/students/register">
-          <Button className="flex items-center gap-2">
-            <Edit className="h-4 w-4" />
-            Edit Student
-          </Button>
-          </Link>
         </div>
 
         {/* Student Overview Cards */}

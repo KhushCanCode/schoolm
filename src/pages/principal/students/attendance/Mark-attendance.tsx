@@ -57,10 +57,10 @@ const MarkAttendance = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-assent  overflow-hidden ">
+    <div className="flex h-screen  overflow-hidden ">
      
 
-      <div className="flex-1  w-full ">
+      <div className="flex-1  w-full  ">
        
 
         <div className="px-6 py-6">

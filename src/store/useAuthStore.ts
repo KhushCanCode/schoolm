@@ -6,7 +6,8 @@ import { axiosInstance } from "../lib/axios";
 
 interface AuthUser {
   id: string;
-  username: string;
+  username?: string;
+  name?: string;
   email: string;
   school_id: string;
   role: string;
