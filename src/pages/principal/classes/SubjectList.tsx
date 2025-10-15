@@ -9,7 +9,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -17,12 +16,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Plus, Edit, Trash2, BookOpen } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthStore } from '@/store/useAuthStore';
 import { SubjectForm, useSubjectStore } from '@/store/useSubjectStore';
 import Heading from '@/components/common/Heading';
 import { Textarea } from '@/components/ui/textarea';
+import SubjectDescription from '@/components/common/SubjectDescription';
 
 const SubjectList = () => {
   const { authUser } = useAuthStore();
@@ -45,7 +45,6 @@ const SubjectList = () => {
     if (!schoolId) return;
     const data = await getSubjects(schoolId);
     if (data) setSubjects(data);
-    console.log("Fetched subjects:", data);
   };
 
   useEffect(() => {
@@ -65,12 +64,9 @@ const SubjectList = () => {
       const updated = [...subjects];
       updated[editingIndex] = { ...formData, id: subjectId };
       setSubjects(updated);
-
     } else {
       const success = await createSubject(formData);
-      if (success) {
-        fetchSubjects();
-      }
+      if (success) fetchSubjects();
     }
 
     // Reset form
@@ -104,15 +100,21 @@ const SubjectList = () => {
     }
   };
 
+  // 🔹 Helper function to limit text length
+  const limitText = (text: string, maxLength: number) => {
+    if (!text) return '';
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 mx-auto max-w-7xl">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <Heading title='Subject Management' description='Manage subjects and their descriptions' />
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8">
+        <Heading title="Subject Management" description="Manage subjects and their descriptions" />
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className='w-fit'>
               <Plus className="h-4 w-4" /> New Subject
             </Button>
           </DialogTrigger>
@@ -165,27 +167,25 @@ const SubjectList = () => {
       </div>
 
       {/* Subject Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {subjects.map((subj, index) => {
           const subjectWithId = subj as SubjectForm & { id: string };
           return (
-            <Card key={subjectWithId.id} className='h-fit'>
+            <Card key={subjectWithId.id} className="h-fit">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className='text-lg'>
+                    <CardTitle className="text-lg font-semibold">
                       {subj.subject_name}
                     </CardTitle>
-                    {subj.description && (
-                      <CardDescription>{subj.description}</CardDescription>
-                    )}
+                      <SubjectDescription description={subj.description || ""} />
+
                   </div>
-                  
                 </div>
               </CardHeader>
 
               <CardContent>
-                <div className="flex justify-end space-x-1 pt-2 ">
+                <div className="flex justify-end space-x-1 pt-2">
                   <Button
                     variant="ghost"
                     size="sm"

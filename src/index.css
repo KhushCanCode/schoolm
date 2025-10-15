@@ -143,6 +143,10 @@ All colors MUST be HSL.
 
 }
 
+body{
+  background-color: var(--background);
+}
+
 /* ===== Custom Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 8px;

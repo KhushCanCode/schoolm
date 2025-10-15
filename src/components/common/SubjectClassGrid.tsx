@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useUsersStore} from "@/store/useUsersStore"; // ✅ import TeacherSubject
 import { toast } from "sonner";
-import { TeacherSubject } from "./Details";
+import { TeacherSubject } from "../../pages/principal/teachers/Details";
 import Heading from "@/components/common/Heading";
 
 export interface AssignSubjectsRequest {
@@ -125,7 +125,7 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
   };
 
   return (
-    <div className="overflow-auto mt-10">
+    <div className="overflow-auto mt-10 ">
       
       <Table className="w-full text-center border border-border  ">
         <TableHeader>
@@ -170,7 +170,7 @@ const SubjectClassGrid: React.FC<SubjectClassGridProps> = ({ teacherId, teacherS
         </Button>
       </div>
 
-     <pre>{JSON.stringify(assignments, null, 2)}</pre>
+     {/* <pre>{JSON.stringify(assignments, null, 2)}</pre> */}
     </div>
   );
 };

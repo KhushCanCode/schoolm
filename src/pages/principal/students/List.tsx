@@ -45,7 +45,7 @@ const StudentList = () => {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8">
           <Heading title="Students Management" description="Manage all student records and information" />
 
           <div className="flex gap-2">
@@ -55,14 +55,14 @@ const StudentList = () => {
             <Link to="/principal/students/register">
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Student
+                Student
               </Button>
             </Link>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
         
             <>
               <Card>
@@ -84,60 +84,121 @@ const StudentList = () => {
 
         {/* Table */}
         <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">All Students</CardTitle>
-              <div className="relative w-64">
-                <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-slate-500" />
-                </span>
-                <Input
-                  placeholder="Search students..."
-                  className="pl-10"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+          <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <CardTitle className="text-lg">All Students</CardTitle>
+            <div className="relative w-full sm:w-64">
+              <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                <Search className="h-4 w-4 text-slate-500" />
+              </span>
+              <Input
+                placeholder="Search students..."
+                className="pl-10 w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </CardHeader>
-          <CardContent>
-            
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Roll No.</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Class</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Father's Name</TableHead>
-                    <TableHead className="text-center">Status</TableHead>
-                    <TableHead className="text-center">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
+
+          <CardContent className="space-y-4">
+            {filteredStudents.length === 0 ? (
+              <p className="text-sm text-center">No students found.</p>
+            ) : (
+              <>
+                {/* Desktop Table */}
+                <div className="hidden sm:block">
+                  <Table className="min-w-full">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Roll No.</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Class</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Father's Name</TableHead>
+                        <TableHead className="text-center">Status</TableHead>
+                        <TableHead className="text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredStudents.map((student) => (
+                        <TableRow key={student.id} className="font-medium text-xs">
+                          <TableCell>{student.roll_no}</TableCell>
+                          <TableCell>{student.candidate_name}</TableCell>
+                          <TableCell>{`${student.class} - ${student.section}`}</TableCell>
+                          <TableCell>{student.email}</TableCell>
+                          <TableCell>{student.phone}</TableCell>
+                          <TableCell>{student.father_name}</TableCell>
+                          <TableCell className="text-center">
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs ${
+                                student.status === "active"
+                                  ? "bg-accent text-primary"
+                                  : "bg-muted text-slate-500"
+                              }`}
+                            >
+                              {student.status}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex justify-center gap-2">
+                              <Button variant="ghost" size="sm">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDelete(student.id)}
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                {/* Mobile Cards */}
+                <div className="sm:hidden space-y-4">
                   {filteredStudents.map((student) => (
-                    <TableRow key={student.id} className="font-medium text-xs">
-                      <TableCell>{student.roll_no}</TableCell>
-                      <TableCell>{student.candidate_name}</TableCell>
-                      <TableCell>{`${student.class} - ${student.section}`}</TableCell>
-                      <TableCell>{student.email}</TableCell>
-                      <TableCell>{student.phone}</TableCell>
-                      <TableCell>{student.father_name}</TableCell>
-                      <TableCell className="text-center">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            student.status === "active"
-                              ? "bg-accent text-primary"
-                              : "bg-muted text-slate-500"
-                          }`}
-                        >
-                          {student.status}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex justify-center gap-2">
-                          <Button variant="ghost" size="sm">
+                    <div key={student.id} className="border-b border-border py-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="font-medium">{student.candidate_name}</p>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              student.status === "active"
+                                ? "bg-accent text-primary"
+                                : "bg-muted text-slate-500"
+                            }`}
+                          >
+                            {student.status}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-1 text-sm text-slate-400">
+                        <p>
+                          <span className="font-medium">Roll No.:</span> {student.roll_no}
+                        </p>
+                        <p>
+                          <span className="font-medium">Class:</span> {`${student.class} - ${student.section}`}
+                        </p>
+                        <p>
+                          <span className="font-medium">Email:</span> {student.email}
+                        </p>
+                        <p>
+                          <span className="font-medium">Phone:</span> {student.phone}
+                        </p>
+                        <p>
+                          <span className="font-medium">Father's Name:</span> {student.father_name}
+                        </p>
+                      </div>
+                      <div className="flex justify-end  mt-2">
+                        <Button variant="ghost" size="sm">
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="sm">
@@ -150,14 +211,15 @@ const StudentList = () => {
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                      </div>
+                    </div>
                   ))}
-                </TableBody>
-              </Table>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
+
       </div>
     </div>
   );

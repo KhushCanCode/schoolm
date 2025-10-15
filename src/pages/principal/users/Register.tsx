@@ -67,7 +67,7 @@ const UserRegister = () => {
 
   return (
     <div className=' '>
-      <div className='space-y-6'>
+      <div className='space-y-6 mx-auto max-w-7xl'>
 
 
          <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8 ">

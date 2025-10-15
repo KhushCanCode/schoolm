@@ -111,7 +111,7 @@ export const useClassStore = create<ClassState>(() => ({
               Authorization: `Bearer ${token}`,
             },
           });
-    
+          console.log("getclasses: ", res)
           if (res.data.status) {
             return res.data.data;
           } else {

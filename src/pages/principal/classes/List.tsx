@@ -135,15 +135,15 @@ const ClassList = () => {
   };
 
   return (
-    <div className="space-y-6 ">
+    <div className="space-y-4 md:space-y-6 mx-auto max-w-7xl">
       {/* Header */}
-      <div className="flex justify-between items-center ">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8 ">
         <Heading title="Classes Management" description="Manage classes, sections, and capacity" />
         
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className='w-fit'>
               <Plus className="h-4 w-4" /> New Class
             </Button>
           </DialogTrigger>
@@ -265,7 +265,7 @@ const ClassList = () => {
       </div>
 
       {/* Class Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {classes.map((cls, index) => {
           const classWithId = cls as ClassForm & { id: string };
           return (
@@ -297,12 +297,14 @@ const ClassList = () => {
                   </div>
 
                   {/* Display notes */}
-                  {cls.notes && (
-                                      <div className="text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-dashed border-border italic">
-                    "{cls.notes && cls.notes.trim() !== "" ? cls.notes : "No notes yet"}"
+                  <div className="text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-dashed border-border italic">
+                    "
+                    {cls.notes && cls.notes.trim() !== ""
+                      ? cls.notes
+                      : "No notes yet"}
+                    "
                   </div>
 
-                  )}
 
                   <div className="flex items-center justify-end space-x-1 pt-2">
                     <Button variant="ghost" size="sm" onClick={() => handleEdit(classWithId.id, index)}>

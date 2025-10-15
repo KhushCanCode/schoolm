@@ -109,7 +109,7 @@ const StudentRegister = () => {
 
   return (
     <div className="min-h-screen  ">
-      <div className=" space-y-6">
+      <div className="space-y-4 md:space-y-6 mx-auto max-w-7xl">
         {/* Header */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8">
           <Heading title="Student Registration" description="Add a new student to the system" />
@@ -123,9 +123,6 @@ const StudentRegister = () => {
         </div>
 
         
-
-
-
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           {/* ---------------------- PERSONAL INFO ---------------------- */}
           <Card>

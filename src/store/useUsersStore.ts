@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import {  AssignSubjectsRequest } from "@/pages/principal/teachers/SubjectClassGrid";
+import {  AssignSubjectsRequest } from "@/components/common/SubjectClassGrid";
 import { TeacherSubject } from "@/pages/principal/teachers/Details";
 import { useId } from "react";
 

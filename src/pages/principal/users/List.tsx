@@ -174,127 +174,127 @@ const handleSubmit = async (e: React.FormEvent) => {
         </div>
 
         {/* Table */}
-<Card>
-  <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <CardTitle className="text-lg">All Users</CardTitle>
-    <div className="relative w-full sm:w-64">
-      <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-        <Search className="h-4 w-4 text-slate-400" />
-      </span>
-      <Input
-        placeholder="Search users..."
-        className="pl-10 w-full"
-        value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
-      />
-    </div>
-  </CardHeader>
-  <CardContent className="space-y-4">
-    {loading ? (
-      <p className="text-sm text-center">Loading...</p>
-    ) : filteredUsers.length === 0 ? (
-      <p className="text-sm text-center">No users found.</p>
-    ) : (
-      <>
-        {/* Desktop Table */}
-        <div className="hidden sm:block">
-          <Table className="min-w-full">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Username</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead className="text-center">Status</TableHead>
-                <TableHead className="text-center">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map(user => (
-                <TableRow key={user.id} className="text-xs font-medium">
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell className=" text-center ">
-                    <Switch
-                      checked={user.status === "active"}
-                      onCheckedChange={async (checked) => {
-                        const newStatus = checked ? "active" : "inactive";
-                        const updatedUser = { ...user, status: newStatus };
-                        const success = await toggleStatus(user.id, updatedUser);
-                        if (success) {
-                          setUsers(prev =>
-                            prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
-                          );
-                        }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        setEditingUser(user.id);
-                        setFormData(user);
-                        setOpen(true);
-                      }}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <CardTitle className="text-lg">All Users</CardTitle>
+              <div className="relative w-full sm:w-64">
+                <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-slate-400" />
+                </span>
+                <Input
+                  placeholder="Search users..."
+                  className="pl-10 w-full"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {loading ? (
+                <p className="text-sm text-center">Loading...</p>
+              ) : filteredUsers.length === 0 ? (
+                <p className="text-sm text-center">No users found.</p>
+              ) : (
+                <>
+                  {/* Desktop Table */}
+                  <div className="hidden sm:block">
+                    <Table className="min-w-full">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Username</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Phone</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead className="text-center">Status</TableHead>
+                          <TableHead className="text-center">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredUsers.map(user => (
+                          <TableRow key={user.id} className="text-xs font-medium">
+                            <TableCell>{user.username}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.phone}</TableCell>
+                            <TableCell>{user.role}</TableCell>
+                            <TableCell className=" text-center ">
+                              <Switch
+                                checked={user.status === "active"}
+                                onCheckedChange={async (checked) => {
+                                  const newStatus = checked ? "active" : "inactive";
+                                  const updatedUser = { ...user, status: newStatus };
+                                  const success = await toggleStatus(user.id, updatedUser);
+                                  if (success) {
+                                    setUsers(prev =>
+                                      prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
+                                    );
+                                  }
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setEditingUser(user.id);
+                                  setFormData(user);
+                                  setOpen(true);
+                                }}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
 
-        {/* Mobile Cards */}
-        <div className="sm:hidden space-y-4">
-          {filteredUsers.map(user => (
-            <div key={user.id} className="border-b border-border py-4 ">
-              <div className="flex justify-between items-center mb-2">
-                <p className="font-medium">{user.username}</p>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={user.status === "active"}
-                    onCheckedChange={async (checked) => {
-                      const newStatus = checked ? "active" : "inactive";
-                      const updatedUser = { ...user, status: newStatus };
-                      const success = await toggleStatus(user.id, updatedUser);
-                      if (success) {
-                        setUsers(prev =>
-                          prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
-                        );
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setEditingUser(user.id);
-                      setFormData(user);
-                      setOpen(true);
-                    }}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              <div className="space-y-1 text-sm text-slate-400">
-                <p><span className="font-medium">Email:</span> {user.email}</p>
-                <p><span className="font-medium">Phone:</span> {user.phone}</p>
-                <p><span className="font-medium">Role:</span> {user.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </>
-    )}
-  </CardContent>
-</Card>
+                  {/* Mobile Cards */}
+                  <div className="sm:hidden space-y-4">
+                    {filteredUsers.map(user => (
+                      <div key={user.id} className="border-b border-border py-4 ">
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="font-medium">{user.username}</p>
+                          <div className="flex items-center gap-2">
+                            <Switch
+                              checked={user.status === "active"}
+                              onCheckedChange={async (checked) => {
+                                const newStatus = checked ? "active" : "inactive";
+                                const updatedUser = { ...user, status: newStatus };
+                                const success = await toggleStatus(user.id, updatedUser);
+                                if (success) {
+                                  setUsers(prev =>
+                                    prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
+                                  );
+                                }
+                              }}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setEditingUser(user.id);
+                                setFormData(user);
+                                setOpen(true);
+                              }}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="space-y-1 text-sm text-slate-400">
+                          <p><span className="font-medium">Email:</span> {user.email}</p>
+                          <p><span className="font-medium">Phone:</span> {user.phone}</p>
+                          <p><span className="font-medium">Role:</span> {user.role}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
 
       </div>
     </div>

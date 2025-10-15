@@ -81,10 +81,10 @@ const Register = () => {
 
   return (
     <div className="min-h-screen  ">
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6 mx-auto max-w-7xl">
 
         {/* Header */}
-         <div className="flex flex-col md:flex-row items-start justify-between md:items-center mb-8">
+         <div className="flex flex-col md:flex-row items-start justify-between md:items-center gap-4 mb-8">
           <Heading title='Teacher Registration' description="Add a new teacher to the system"/>
             
               <Link to="/principal/dashboard">
@@ -231,7 +231,7 @@ const Register = () => {
           </Card>
 
           {/* Submit Button */}
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-center md:justify-end gap-4">
             <Link to="/principal/teachers/list">
               <Button variant="outline" className="hover:bg-destructive hover:text-accent">Cancel</Button>
             </Link>

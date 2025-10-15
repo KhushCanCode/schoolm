@@ -45,7 +45,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background  text-sidebar-foreground border-b border-border">
-      <div className="flex h-14 md:h-16 items-center justify-between  px-2 md:px-4">
+      <div className="flex h-14 md:h-16 items-center justify-between mx-auto max-w-7xl px-2 md:px-4">
 
         <div className="flex  items-center gap-4">
           <SidebarTrigger className="" />

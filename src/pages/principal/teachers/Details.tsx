@@ -5,7 +5,7 @@ import Heading from "@/components/common/Heading";
 import { BookOpen, Calendar, Edit, Mail, MapPin, Phone, User } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import SubjectClassGrid from "./SubjectClassGrid";
+import SubjectClassGrid from "../../../components/common/SubjectClassGrid";
 import { SubjectForm, useSubjectStore } from "@/store/useSubjectStore";
 
 export interface TeacherSubject {
@@ -61,8 +61,8 @@ const { getSubjects } = useSubjectStore();
 }, [teacher]);
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
+    <div className="mx-auto max-w-7xl">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8">
         <Heading
           title={teacher?.name || "Teacher Details"}
           description={teacher ? ` EMP${teacher?.id}` : "Loading..."}
