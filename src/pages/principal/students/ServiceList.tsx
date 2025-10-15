@@ -29,6 +29,7 @@ const ServiceList = () => {
     service_name: '',
     charge: 0,
     status: 'active',
+    description:''
   });
 
   // Fetch services from backend
@@ -71,6 +72,7 @@ const ServiceList = () => {
       service_name: '',
       charge: 0,
       status: 'active',
+      description: ''
     });
     setEditingIndex(null);
     setOpen(false);
@@ -193,7 +195,7 @@ const ServiceList = () => {
                       {svc.service_name}
                     </CardTitle>
                     <CardDescription>
-                      Charge: {svc.charge} | Status: {svc.status}
+                      Charge: {svc.charge} 
                     </CardDescription>
                   </div>
                 </div>

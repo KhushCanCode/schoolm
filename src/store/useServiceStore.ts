@@ -8,6 +8,7 @@ export interface ServiceForm {
   service_name?: string;
   charge?: number;
   status?: string;
+  description?:string;
 }
 
 interface ServiceState {
@@ -30,6 +31,7 @@ export const useServiceStore = create<ServiceState>(() => ({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
 
       if (res.data.status) {
         toast.success(res.data.message || "Service created successfully");

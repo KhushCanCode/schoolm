@@ -42,6 +42,7 @@ import {
   CalendarHeart,
   Calendar1,
   SquareLibrary,
+  HandCoins,
 } from "lucide-react";
 import {
   Sidebar,
@@ -105,7 +106,7 @@ const roleMenus: RoleMenus = {
           href: "/principal/students/attendance",
         },
         { title: "Records", icon: Archive, href: "/principal/students/records" },
-        { title: "Service List", icon: Archive, href: "/principal/students/servicelist" }
+        { title: "Services", icon: HandCoins, href: "/principal/students/servicelist" }
       ],
     },
     {

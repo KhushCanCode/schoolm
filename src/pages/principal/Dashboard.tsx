@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Contact, BookOpen, MessageSquare, FileText, DollarSign, Calendar } from 'lucide-react';
+import { Users, Contact, BookOpen, MessageSquare, FileText, DollarSign, Calendar, IndianRupee, Pen, PenBox, PenLineIcon, BookCheck, ClipboardList } from 'lucide-react';
 import { useUsersStore } from '@/store/useUsersStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Stats } from '@/store/useUsersStore';
@@ -51,7 +51,7 @@ const statCards = [
       title: 'Pending Dues',
       value: stats ? `₹${stats.pendingDues}` : 'Loading...',
       description: 'Amount pending',
-      icon: DollarSign,
+      icon: IndianRupee,
       color: 'text-red-500',
     },
     
@@ -68,14 +68,17 @@ const quickActions = [
   {
     title: "Create New Notice",
     description: "Send announcement to students",
+    icon: PenBox
   },
   {
     title: "Mark Attendance",
     description: "Record student attendance",
+    icon: BookCheck
   },
   {
     title: "Generate Report",
     description: "Create student progress report",
+    icon: ClipboardList
   },
 ];
 
@@ -141,29 +144,46 @@ const quickActions = [
         </Card>
 
        <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Quick Actions</CardTitle>
-          <CardDescription className="text-xs text-slate-500">
-            Frequently used actions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {quickActions.map((action, index) => (
-              <button
-                key={index}
-                className="w-full text-left p-3 border border-border border-dashed rounded-lg hover:bg-muted/80 transition-colors"
-              >
-                <p className="font-medium text-sm">{action.title}</p>
-                <p className="text-slate-500 text-xs">{action.description}</p>
-              </button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Quick Actions</CardTitle>
+              <CardDescription className="text-xs text-slate-500">
+                Frequently used actions
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <div className="space-y-3">
+                {quickActions.map((action, index) => {
+                  const Icon = action.icon;
+                  return (
+                    <button
+                      key={index}
+                      className="w-full flex items-center gap-3 text-left p-3 border border-border border-dashed rounded-lg hover:bg-muted/80 transition-colors"
+                    >
+                      {/* Icon with background */}
+                      <div className="bg-primary text-white p-2 rounded-md flex items-center justify-center">
+                        <Icon className="h-4 w-4" />
+                      </div>
+
+                      {/* Text Section */}
+                      <div>
+                        <p className="font-medium text-sm">{action.title}</p>
+                        <p className="text-slate-500 text-xs">{action.description}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
       </div>
     </div>
   );
 };
 
 export default AdminDashboard;
+
+
+
+
