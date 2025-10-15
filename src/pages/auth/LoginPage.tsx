@@ -9,7 +9,7 @@ import {
 import React, { ChangeEvent, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import AuthPattern from "../../components/AuthPattern"
+import AuthPattern from "../../components/common/AuthPattern"
 import { useAuthStore } from "../../store/useAuthStore"
 
 import {

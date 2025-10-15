@@ -70,7 +70,7 @@ const UserRegister = () => {
       <div className='space-y-6'>
 
 
-         <div className="flex justify-between items-center ">
+         <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8 ">
           <Heading title="User Registration" description="Add a new user to the system"/>
         
             <Link to="/principal/dashboard">
@@ -78,6 +78,7 @@ const UserRegister = () => {
             </Link>
             
           </div>
+          
 
         <form onSubmit={handleSubmit} className="space-y-6  ">
           {/* ---------------------- PERSONAL INFO ---------------------- */}
@@ -155,7 +156,7 @@ const UserRegister = () => {
 
 
           {/* ---------------------- SUBMIT ---------------------- */}
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-center md:justify-end gap-4">
             <Link to="/principal/dashboard">
               <Button variant="outline" className="">Cancel</Button>
             </Link>

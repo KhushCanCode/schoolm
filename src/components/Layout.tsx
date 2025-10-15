@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { SchoolNavbar } from "./SchoolNavbar";
 import { SchoolSidebar } from "./SchoolSidebar";
-import { Sidebar, SidebarProvider } from "./ui/sidebar";
+import { SidebarProvider } from "./ui/sidebar";
 import { useAuthStore } from "../store/useAuthStore";
 
 export default function Layout() {
@@ -27,18 +27,15 @@ export default function Layout() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen   font-[JetBrains Mono] w-full">
-        {/* Sidebar based on authenticated user's role */}
-        <Sidebar>
-          <SchoolSidebar currentRole={authUser.role} />
-        </Sidebar>
+      <div className="flex min-h-screen font-[JetBrains Mono] w-full">
+        <SchoolSidebar currentRole={authUser.role} />
 
         <div className="flex-1 flex flex-col">
           <SchoolNavbar
             currentRole={authUser.role}
-            onRoleChange={() => {}} 
+            onRoleChange={() => {}}
           />
-          <div className="p-6  bg-background h-full ">
+          <div className="p-4 md:p-6  bg-background h-full">
             <Outlet />
           </div>
         </div>

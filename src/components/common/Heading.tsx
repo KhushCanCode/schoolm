@@ -8,9 +8,9 @@ interface HeadingProps {
 const Heading: React.FC<HeadingProps> = ({ title, description }) => {
   return (
     <div>
-      <h2 className="text-2xl text-slate-800 dark:text-slate-300 font-semibold tracking-tight">{title}</h2>
+      <h2 className="text-xl md:text-2xl text-slate-800 dark:text-slate-300 font-semibold tracking-tight">{title}</h2>
       {description && (
-        <p className="leading-7 text-slate-400 ">{description}</p>
+        <p className="text-sm md:text-base md:leading-7 text-slate-400 ">{description}</p>
       )}
     </div>
   );

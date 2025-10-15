@@ -1,49 +1,7 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { useSidebar } from "@/components/ui/sidebar"; // ✅ import hook from shadcn
 
-import {
-  Home,
-  Users,
-  GraduationCap,
-  BookOpen,
-  Calendar,
-  MessageSquare,
-  FileText,
-  Settings,
-  BarChart3,
-  CreditCard,
-  UserCheck,
-  Clock,
-  School,
-  Car,
-  Utensils,
-  Stethoscope,
-  Trophy,
-  Camera,
-  Globe,
-  Calculator,
-  PieChart,
-  Receipt,
-  Wallet,
-  ChevronDown,
-  ChevronRight,
-  User,
-  BookA,
-  Users2,
-  Contact,
-  NotebookPen,
-  Presentation,
-  UserPlus,
-  List,
-  ClipboardList,
-  Archive,
-  BookCheck,
-  BookCopy,
-  CalendarHeart,
-  Calendar1,
-  SquareLibrary,
-  HandCoins,
-} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -62,367 +20,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Link } from "react-router-dom";
-
-interface MenuItem {
-  title: string;
-  icon: React.ElementType;
-  href: string;
-  submenu?: MenuItem[];
-}
-
-interface RoleMenus {
-  [key: string]: MenuItem[];
-}
-
-const roleMenus: RoleMenus = {
-  principal: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/principal/dashboard",
-    },
-
-    {
-      title: "Users ",
-      icon: Users,
-      href: "/principal/users",
-      submenu: [
-        { title: "Register", icon: UserPlus, href: "/principal/users/register" },
-        { title: "List", icon: ClipboardList, href: "/principal/users/list" },
-      ],
-    },
-
-    {
-      title: "Students ",
-      icon: Contact,
-      href: "/principal/students",
-      submenu: [
-        { title: "Register", icon: UserPlus, href: "/principal/students/register" },
-        { title: "List", icon: ClipboardList, href: "/principal/students/list" },
-        {
-          title: "Attendance",
-          icon: BookA,
-          href: "/principal/students/attendance",
-        },
-        { title: "Records", icon: Archive, href: "/principal/students/records" },
-        { title: "Services", icon: HandCoins, href: "/principal/students/servicelist" }
-      ],
-    },
-    {
-      title: "Teachers",
-      icon: GraduationCap,
-      href: "/principal/teachers",
-      submenu: [
-        { title: "Register", icon: UserPlus, href: "/principal/teachers/register" },
-        { title: "List", icon: ClipboardList, href: "/principal/teachers/list" },
-        // {
-        //   title: "Assign Subjects",
-        //   icon: BookCheck,
-        //   href: "/principal/teachers/subject",
-        // },
-      ],
-    },
-
-    {
-      title: "Classes",
-      icon: Presentation,
-      href: "/principal/classes/class",
-      submenu: [
-        { title: "List", icon: ClipboardList, href: "/principal/classes/list" },
-        { title: "SubjectList", icon: SquareLibrary, href: "/principal/classes/subjectlist" },
-        { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjects" },
-        {
-          title: "Timetable",
-          icon: Calendar1,
-          href: "/principal/classes/timetable",
-        },
-      ],
-    },
-    {
-      title: "Exam",
-      icon: NotebookPen,
-      href: "/principal/exam",
-    },
-
-    {
-      title: "Library",
-      icon: BookOpen,
-      href: "/principal/library",
-    },
-    {
-      title: "Transport",
-      icon: Car,
-      href: "/principal/transport",
-    },
-    {
-      title: "Hostel",
-      icon: Home,
-      href: "/principal/hostel",
-    },
-    {
-      title: "Communication",
-      icon: MessageSquare,
-      href: "/principal/communication",
-      
-       
-    
-    },
-    {
-      title: "Reports",
-      icon: BarChart3,
-      href: "/principal/reports",
-      submenu: [
-        {
-          title: "Student ",
-          icon: GraduationCap,
-          href: "/principal/reports/student",
-        },
-        { title: "Fees", icon: PieChart, href: "/principal/reports/fee" },
-        { title: "Attendance", icon: Clock, href: "/principal/reports/attendance" },
-        { title: "Exams", icon: Clock, href: "/principal/reports/exams" },
-      ],
-    },
-    {
-      title: "Settings",
-      icon: Settings,
-      href: "/principal/settings",
-      submenu: [
-        {
-          title: "User Management",
-          icon: Settings,
-          href: "/principal/settings/user-management",
-        },
-        { title: "Roles", icon: CreditCard, href: "/principal/settings/roles" },
-        {
-          title: "School info",
-          icon: MessageSquare,
-          href: "/principal/settings/school-info",
-        },
-      ],
-    },
-        
-  ],
-  teacher: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/teacher/dashboard",
-      
-    },
-    {
-      title: "My Profile",
-      icon: GraduationCap,
-      href: "/teacher/my-profile",
-    },
-    {
-      title: "My Classes",
-      icon: Clock,
-      href: "/teacher/my-classes",
-    },
-    {
-      title: "Student Attendance",
-      icon: Clock,
-      href: "/teacher/student-attendance",
-    },
-    {
-      title: "Exam",
-      icon: BookOpen,
-      href: "/teacher/exam",
-      submenu: [
-        { title: "Schedule", icon: Settings, href: "/teacher/exam/schedule" },
-        {
-          title: "Marks Entry",
-          icon: CreditCard,
-          href: "/teacher/exam/marks-entry",
-        },
-      ],
-    },
-    {
-      title: "Assignments",
-      icon: FileText,
-      href: "/teacher/assignments",
-    },
-    {
-      title: "Reports",
-      icon: BarChart3,
-      href: "/teacher/reports",
-    },
-    {
-      title: "Communication",
-      icon: MessageSquare,
-      href: "/teacher/communication",
-      
-    },
-  ],
-  student: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/student/dashboard",
-      
-    },
-    {
-      title: "My Profile",
-      icon: User,
-      href: "/student/profile",
-    },
-    {
-      title: "Attendance",
-      icon: FileText,
-      href: "/student/attendance",
-    },
-    {
-      title: "Exams",
-      icon: BarChart3,
-      href: "/student/exams",
-      submenu: [
-       
-        { title: "Results", icon: CreditCard, href: "/student/exams/result" },
-        {
-          title: "Reports Cards",
-          icon: CreditCard,
-          href: "/student/exams/reports-cards",
-        },
-      ],
-    },
-    {
-      title: "Fees",
-      icon: CreditCard,
-      href: "/student/fees",
-      submenu: [
-        { title: "Dues", icon: Settings, href: "/student/fees/due" },
-        {
-          title: "Payments History",
-          icon: CreditCard,
-          href: "/student/fees/payments-history",
-        },
-      ],
-    },
-    {
-      title: "Library",
-      icon: BookOpen,
-      href: "/student/library",
-    },
-    {
-      title: "Messages",
-      icon: MessageSquare,
-      href: "/student/messages",
-    },
-  ],
-  parent: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/parent/dashboard",
-    },
-    {
-      title: "Student Profile",
-      icon: GraduationCap,
-      href: "/parent/children",
-      submenu: [
-        {
-          title: "Academic",
-          icon: Settings,
-          href: "/parent/children/academic",
-        },
-        {
-          title: "Personal Info",
-          icon: CreditCard,
-          href: "/parent/children-personal-info",
-        },
-      ],
-    },
-    {
-      title: "Attendance",
-      icon: BarChart3,
-      href: "/parent/attendance",
-    },
-    {
-      title: "Exams",
-      icon: Clock,
-      href: "/parent/exams",
-      submenu: [
-        { title: "Results", icon: Settings, href: "/parent/exams/results" },
-        { title: "Report Cards", icon: CreditCard, href: "/parent/exams/reports-cards" },
-      ],
-    },
-    {
-      title: "Fees",
-      icon: CreditCard,
-      href: "/parent/fees",
-      submenu: [
-        { title: "Dues", icon: Settings, href: "/parent/fees/dues" },
-        {
-          title: "Payments Receipts",
-          icon: CreditCard,
-          href: "/parent/fees/payments-receipts",
-        },
-      ],
-    },
-    {
-      title: "Notices",
-      icon: MessageSquare,
-      href: "/parent/notices",
-    },
-  ],
-  accountant: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/accountant/dashboard",
-    },
-    {
-      title: " Fees",
-      icon: CreditCard,
-      href: "/accountant/fees",
-    },
-    
-    {
-      title: "Fees Structure",
-      icon: Receipt,
-      href: "/accountant/fees-structure",
-    },
-    {
-      title: "Monthly Dues",
-      icon: Receipt,
-      href: "/accountant/monthly-dues",
-    },
-    {
-      title: "Payments",
-      icon: Receipt,
-      href: "/accountant/payments",
-    },
-    {
-      title: "Extra Services",
-      icon: Receipt,
-      href: "/accountant/extra-services",
-    },
-
-    {
-      title: "Reports",
-      icon: BarChart3,
-      href: "/accountant/reports",
-      submenu: [
-        {
-          title: "Fee Reports",
-          icon: Receipt,
-          href: "/accountant/report/fee",
-        },
-        {
-          title: "Dues Pending",
-          icon: CreditCard,
-          href: "/accountant/report/dues-pending",
-        },
-        {
-          title: "Transactions",
-          icon: Wallet,
-          href: "/accountant/report/transactions",
-        },
-      ],
-    },
-  ],
-};
+import { roleMenus, MenuItem } from "@/data/sidebardata";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface SchoolSidebarProps {
   currentRole: string;
@@ -430,12 +29,25 @@ interface SchoolSidebarProps {
 
 export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
   const [openGroups, setOpenGroups] = useState<string[]>([]);
+  const location = useLocation();
+  const {open, setOpen } = useSidebar(); 
   const currentMenus = roleMenus[currentRole] || [];
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) =>
-      prev.includes(title) ? prev.filter((g) => g !== title) : [...prev, title]
+      prev.includes(title)
+        ? prev.filter((g) => g !== title)
+        : [...prev, title]
     );
+  };
+
+  const isActive = (href: string) => location.pathname === href;
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 1024) {
+      console.log("Closing sidebar on mobile...");
+      setOpen(false);
+    }
   };
 
   const renderMenuItem = (item: MenuItem) => {
@@ -449,24 +61,33 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
           onOpenChange={() => toggleGroup(item.title)}
         >
           <SidebarMenuItem>
-            <CollapsibleTrigger className=" hover:w-full" asChild>
-              <SidebarMenuButton className="w-full ">
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton>
                 <item.icon className="h-4 w-4" />
                 <span>{item.title}</span>
                 {isOpen ? (
-                  <ChevronDown className="ml-auto h-4 w-4 block" />
+                  <ChevronDown className="ml-auto h-4 w-4" />
                 ) : (
-                  <ChevronRight className="ml-auto h-4 w-4 block" />
+                  <ChevronRight className="ml-auto h-4 w-4" />
                 )}
               </SidebarMenuButton>
             </CollapsibleTrigger>
+
             <CollapsibleContent>
               <SidebarMenuSub>
                 {item.submenu.map((subItem) => (
                   <SidebarMenuSubItem key={subItem.href}>
-                    <SidebarMenuSubButton asChild>
+                    <SidebarMenuSubButton
+                      asChild
+                      onClick={handleLinkClick}
+                      className={`${
+                        isActive(subItem.href)
+                          ? "bg-primary text-white"
+                          : ""
+                      }`}
+                    >
                       <Link to={subItem.href}>
-                        <subItem.icon className="h-4 w-4 " />
+                        <subItem.icon className="h-4 w-4" />
                         <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuSubButton>
@@ -481,7 +102,11 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
 
     return (
       <SidebarMenuItem key={item.href}>
-        <SidebarMenuButton asChild>
+        <SidebarMenuButton
+          asChild
+          onClick={handleLinkClick}
+          className={isActive(item.href) ? "bg-primary text-white" : ""}
+        >
           <Link to={item.href}>
             <item.icon className="h-4 w-4" />
             <span>{item.title}</span>
@@ -492,7 +117,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
   };
 
   return (
-    <Sidebar className="border-r ">
+    <Sidebar className="border-border">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold mb-4 text-sidebar-primary-foreground dark:text-foreground">

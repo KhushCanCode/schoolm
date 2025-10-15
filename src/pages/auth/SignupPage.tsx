@@ -2,7 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 // import { useAuthStore } from '../store/useAuthStore';
 import { MessageSquare, EyeOff, Eye, Loader2, Book, User, Lock, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AuthPattern from '../../components/AuthPattern';
+import AuthPattern from '../../components/common/AuthPattern';
 import toast from 'react-hot-toast';
 
 interface FormData {

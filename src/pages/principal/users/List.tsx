@@ -98,7 +98,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto ">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-8">
           <Heading title="User Management" description="Manage all user records and information" />
           
           <div className="flex gap-2">
@@ -116,7 +116,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         {/* Edit Form */}
         <div>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={open} onOpenChange={setOpen} >
             <DialogContent>
               <DialogHeader>
                 <DialogTitle className="text-lg text-center">Edit User</DialogTitle>
@@ -144,7 +144,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   />
                 </div>
 
-                <div className="flex justify-end space-x-2">
+                <div className="flex justify-center md:justify-end space-x-2">
                   <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                     Cancel
                   </Button>
@@ -156,14 +156,14 @@ const handleSubmit = async (e: React.FormEvent) => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{users.length}</div>
               <div className="text-sm text-gray-500">Total Users</div>
             </CardContent>
           </Card>
-          <Card className="w-[250px]">
+          <Card className="">
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-green-600">
                 {users.filter(u => u.status === "active").length}
@@ -174,99 +174,128 @@ const handleSubmit = async (e: React.FormEvent) => {
         </div>
 
         {/* Table */}
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">All Users</CardTitle>
-              <div className="relative w-64">
-                <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-slate-400" />
-                </span>
-                <Input
-                  placeholder="Search users..."
-                  className="pl-10"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                />
+<Card>
+  <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <CardTitle className="text-lg">All Users</CardTitle>
+    <div className="relative w-full sm:w-64">
+      <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+        <Search className="h-4 w-4 text-slate-400" />
+      </span>
+      <Input
+        placeholder="Search users..."
+        className="pl-10 w-full"
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+      />
+    </div>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    {loading ? (
+      <p className="text-sm text-center">Loading...</p>
+    ) : filteredUsers.length === 0 ? (
+      <p className="text-sm text-center">No users found.</p>
+    ) : (
+      <>
+        {/* Desktop Table */}
+        <div className="hidden sm:block">
+          <Table className="min-w-full">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Username</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.map(user => (
+                <TableRow key={user.id} className="text-xs font-medium">
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell className=" text-center ">
+                    <Switch
+                      checked={user.status === "active"}
+                      onCheckedChange={async (checked) => {
+                        const newStatus = checked ? "active" : "inactive";
+                        const updatedUser = { ...user, status: newStatus };
+                        const success = await toggleStatus(user.id, updatedUser);
+                        if (success) {
+                          setUsers(prev =>
+                            prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
+                          );
+                        }
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setEditingUser(user.id);
+                        setFormData(user);
+                        setOpen(true);
+                      }}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="sm:hidden space-y-4">
+          {filteredUsers.map(user => (
+            <div key={user.id} className="border-b border-border py-4 ">
+              <div className="flex justify-between items-center mb-2">
+                <p className="font-medium">{user.username}</p>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={user.status === "active"}
+                    onCheckedChange={async (checked) => {
+                      const newStatus = checked ? "active" : "inactive";
+                      const updatedUser = { ...user, status: newStatus };
+                      const success = await toggleStatus(user.id, updatedUser);
+                      if (success) {
+                        setUsers(prev =>
+                          prev.map(u => u.id === user.id ? { ...u, status: newStatus } : u)
+                        );
+                      }
+                    }}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setEditingUser(user.id);
+                      setFormData(user);
+                      setOpen(true);
+                    }}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              <div className="space-y-1 text-sm text-slate-400">
+                <p><span className="font-medium">Email:</span> {user.email}</p>
+                <p><span className="font-medium">Phone:</span> {user.phone}</p>
+                <p><span className="font-medium">Role:</span> {user.role}</p>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <p className="text-sm">Loading...</p>
-            ) : filteredUsers.length === 0 ? (
-              <p>No users found.</p>
-            ) : (
-              <Table className="">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Username</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead className="flex items-center justify-center">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredUsers.map(user => (
-                    <TableRow key={user.id} className="font-medium text-xs">
-                      <TableCell>{user.username}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.phone}</TableCell>
-                      <TableCell>{user.role}</TableCell>
-                      <TableCell className="flex items-center justify-center">
-                          <div className="flex items-center gap-2">
-                            <Switch
-                              checked={user.status === "active"}
-                              onCheckedChange={async (checked) => {
-                                const newStatus = checked ? "active" : "inactive";
-                                const updatedUser = { ...user, status: newStatus };
+          ))}
+        </div>
+      </>
+    )}
+  </CardContent>
+</Card>
 
-                                const success = await toggleStatus(user.id, updatedUser);
-                                if (success) {
-                                  setUsers((prev) =>
-                                    prev.map((u) =>
-                                      u.id === user.id ? { ...u, status: newStatus } : u
-                                    )
-                                  );
-                                  
-                                }
-                              }}
-                            />
-                          </div>
-                        </TableCell>
-
-
-                      <TableCell>
-                        <div className="flex gap-2 justify-center">
-
-                          {/* Edit Button */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setEditingUser(user.id);
-                              setFormData(user); 
-                              setOpen(true);    
-                            }}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-
-                          {/* Edit Delete */}
-                          {/* <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
-                            <Trash2 className="h-4 w-4 text-destructive/60" />
-                          </Button> */}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-       
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

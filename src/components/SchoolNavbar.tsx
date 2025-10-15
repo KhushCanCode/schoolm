@@ -45,16 +45,18 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background  text-sidebar-foreground border-b border-border">
-      <div className="flex h-16 items-center justify-end gap-0 md:gap-2 px-4">
+      <div className="flex h-14 md:h-16 items-center justify-between  px-2 md:px-4">
 
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden" />
+        <div className="flex  items-center gap-4">
+          <SidebarTrigger className="" />
         </div>
 
-        <div className="flex items-center gap-2  flex-1 max-w-md mx-4">
+        <div className="flex items-center justify-end w-full gap-0 md:gap-2 md:w-2/3 lg:w-1/2 ">
+
+          <div className="flex items-center gap-2  flex-1 max-w-md mx-4">
           <div className="relative flex-1 ">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input placeholder="Search..." className="pl-9 h-9 " />
+            <Input placeholder="Search..." className="pl-9 h-8 md:h-9 " />
           </div>
         </div>
 
@@ -63,8 +65,8 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               
-              <div className="w-10">
-                 <Avatar className="h-8 cursor-pointer w-8 ">
+              <div className="w-11 md:w-10 ">
+                 <Avatar className="h-8 w-8 cursor-pointer   ">
                   <AvatarFallback>
                     <User className="h-4 w-4 text-violet-500" />
                   </AvatarFallback>
@@ -86,10 +88,11 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-            <div className="border-l mr-2 h-5 border-violet-200">
+            <div className="border-l mr-2 h-5 border-border">
             </div>
 
             <ThemeToggle/>
+        </div>
           
 
       </div>

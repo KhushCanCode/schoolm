@@ -3,7 +3,7 @@ import { Lock } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
 import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
-import AuthPattern from "@/components/AuthPattern";
+import AuthPattern from "@/components/common/AuthPattern";
 
 interface ResetPasswordState {
   email: string;
