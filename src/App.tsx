@@ -72,6 +72,7 @@ import SubjectList from "./pages/principal/classes/SubjectList";
 import Details from "./pages/principal/teachers/Details";
 import NotFound from "./components/common/NotFound";
 import Landing from "./pages/landing/Landing";
+import ServiceList from "./pages/principal/students/ServiceList";
 
 
 
@@ -135,6 +136,7 @@ const App = () => (
               <Route path="records" element={<Records />} />
               <Route path="records/:id" element={<Records />} />
               <Route path="register" element={<StudentRegister />} />
+              <Route path="servicelist" element={<ServiceList/>}/>
             </Route>
 
             <Route path="users/">

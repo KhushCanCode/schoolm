@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import {
   Home,
   Users,
@@ -103,6 +105,7 @@ const roleMenus: RoleMenus = {
           href: "/principal/students/attendance",
         },
         { title: "Records", icon: Archive, href: "/principal/students/records" },
+        { title: "Service List", icon: Archive, href: "/principal/students/servicelist" }
       ],
     },
     {
