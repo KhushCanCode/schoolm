@@ -40,6 +40,9 @@ export interface TeacherForm {
 
 // Student response type
 export interface StudentForm {
+  id?:number;
+  status?:string;
+  section?:string;
   school_id?: string;
   candidate_name?: string;
   gender?: string;
@@ -300,9 +303,15 @@ export const useUsersStore = create<UsersState>(() => ({
 
     // Get Student Details
   getStudentDetails: async (schoolId) => {
+    const token = localStorage.getItem('token');
     try {
       const res = await axiosInstance.get(
-        `/principal/students/getstudents/${schoolId}`
+        `/principal/student/getstudents/${schoolId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (res.data.status) {

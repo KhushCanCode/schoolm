@@ -6,71 +6,29 @@ import { Search, Plus, Eye, Edit, Trash2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Link } from "react-router-dom";
 import Heading from "@/components/common/Heading";
-import { Skeleton } from "@/components/ui/skeleton"; // ✅ Import Skeleton
+import { StudentForm, useUsersStore } from "@/store/useUsersStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
-interface Student {
-  id: number;
-  rollNo: string;
-  candidateName: string;
-  class: string;
-  section: string;
-  email: string;
-  phone: string;
-  address: string;
-  fatherName: string;
-  status: "active" | "inactive";
-}
 
 const StudentList = () => {
-  const [students, setStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<StudentForm[]>([]);
+  const {getStudentDetails} = useUsersStore()
+  const {authUser} = useAuthStore();
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true); // ✅ loading state
+  const [loading, setLoading] = useState(true); 
 
-  useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      setStudents([
-        {
-          id: 1,
-          rollNo: "101",
-          candidateName: "Aarav Sharma",
-          class: "10",
-          section: "A",
-          email: "aarav.sharma@example.com",
-          phone: "9876543210",
-          address: "123, Green Park, Delhi",
-          fatherName: "Rajesh Sharma",
-          status: "active",
-        },
-        {
-          id: 2,
-          rollNo: "102",
-          candidateName: "Priya Mehta",
-          class: "9",
-          section: "B",
-          email: "priya.mehta@example.com",
-          phone: "9876543211",
-          address: "456, Sector 14, Gurugram",
-          fatherName: "Amit Mehta",
-          status: "inactive",
-        },
-        {
-          id: 3,
-          rollNo: "103",
-          candidateName: "Rohan Verma",
-          class: "10",
-          section: "C",
-          email: "rohan.verma@example.com",
-          phone: "9876543212",
-          address: "22, Patel Nagar, Rohtak",
-          fatherName: "Suresh Verma",
-          status: "active",
-        },
-      ]);
-      setLoading(false);
-    }, );
-    return () => clearTimeout(timer);
-  }, []);
+
+  const fetchStudents = async()=>{
+    const schoolId = authUser?.school_id;
+    if(!schoolId) return;
+    const data = await getStudentDetails(schoolId);
+    if(data) setStudents(data);
+    console.log(data);
+  }
+
+  useEffect(()=>{
+    fetchStudents();
+  },[]);
 
   const handleDelete = (id: number) => {
     if (!window.confirm("Are you sure you want to delete this student?")) return;
@@ -79,9 +37,8 @@ const StudentList = () => {
 
   const filteredStudents = students.filter(
     (student) =>
-      student.candidateName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.class.toLowerCase().includes(searchTerm.toLowerCase())
+      student.candidate_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.roll_no.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -161,12 +118,12 @@ const StudentList = () => {
                 <TableBody>
                   {filteredStudents.map((student) => (
                     <TableRow key={student.id} className="font-medium text-xs">
-                      <TableCell>{student.rollNo}</TableCell>
-                      <TableCell>{student.candidateName}</TableCell>
+                      <TableCell>{student.roll_no}</TableCell>
+                      <TableCell>{student.candidate_name}</TableCell>
                       <TableCell>{`${student.class} - ${student.section}`}</TableCell>
                       <TableCell>{student.email}</TableCell>
                       <TableCell>{student.phone}</TableCell>
-                      <TableCell>{student.fatherName}</TableCell>
+                      <TableCell>{student.father_name}</TableCell>
                       <TableCell className="text-center">
                         <span
                           className={`px-2 py-1 rounded-full text-xs ${
