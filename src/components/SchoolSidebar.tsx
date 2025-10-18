@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSidebar } from "@/components/ui/sidebar"; // ✅ import hook from shadcn
-
+import { useSidebar } from "@/components/ui/sidebar"; // ✅ Shadcn hook
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/collapsible";
 import { roleMenus, MenuItem } from "@/data/sidebardata";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile"; // ✅ optional: more robust
 
 interface SchoolSidebarProps {
   currentRole: string;
@@ -30,23 +30,23 @@ interface SchoolSidebarProps {
 export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const location = useLocation();
-  const {open, setOpen } = useSidebar(); 
+  const { setOpenMobile } = useSidebar(); // ✅ only need setOpenMobile
+  const isMobile = useIsMobile(); // ✅ detects mobile screens
+
   const currentMenus = roleMenus[currentRole] || [];
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) =>
-      prev.includes(title)
-        ? prev.filter((g) => g !== title)
-        : [...prev, title]
+      prev.includes(title) ? prev.filter((g) => g !== title) : [...prev, title]
     );
   };
 
   const isActive = (href: string) => location.pathname === href;
 
   const handleLinkClick = () => {
-    if (window.innerWidth < 1024) {
-      console.log("Closing sidebar on mobile...");
-      setOpen(false);
+    if (isMobile) {
+      // ✅ closes the Sheet (mobile sidebar)
+      setOpenMobile(false);
     }
   };
 
@@ -80,11 +80,11 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
                     <SidebarMenuSubButton
                       asChild
                       onClick={handleLinkClick}
-                      className={`${
+                      className={
                         isActive(subItem.href)
                           ? "bg-primary text-white"
-                          : ""
-                      }`}
+                          : undefined
+                      }
                     >
                       <Link to={subItem.href}>
                         <subItem.icon className="h-4 w-4" />
