@@ -27,7 +27,7 @@ export interface TeacherSubject {
 }
 
 const Details = () => {
-  const { id } = useParams(); // get id from URL
+  const { id } = useParams(); 
   const { getTeacherById } = useUsersStore();
   const [teacher, setTeacher] = useState<TeacherForm| null>(null);
   const [subjects, setSubjects] = useState<SubjectForm[]>([]);
@@ -37,7 +37,7 @@ const { getSubjects } = useSubjectStore();
   const fetchTeacher = async () => {
     try {
       if (!id) return;
-      const data = await getTeacherById(Number(id));
+      const data = await getTeacherById(id);
 
       setTeacher(data);
     } catch (error) {

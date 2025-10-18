@@ -23,7 +23,10 @@ interface AuthState {
   getUser: () => Promise<void>;
   login: (data: { email: string; password: string; school_id: string; role: string }) => Promise<boolean>;
   logout: () => Promise<void>;
+  verifyForOtp: (data: any) => Promise<boolean>;
+  changePassword: (data: any)=> Promise<boolean>;
   getSchoolList: () => Promise<School[]>;
+
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -95,6 +98,42 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     toast.success("Logged out successfully");
   },
 
+  //Verify OTP Controller
+  verifyForOtp: async (data) => {
+    try {
+      const res = await axiosInstance.post("/auth/verify-otp", data);
+      if (res.data.status) {
+        toast.success(res.data.message || "OTP sent to your email");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to send OTP");
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to send OTP");
+      return false;
+    }
+  },
+
+  //Change Password Controller
+  changePassword: async (data) => {
+    try {
+      const res = await axiosInstance.post(
+        `/auth/change-password/${data.role}`,
+        data
+      );
+      if (res.data.status) {
+        toast.success(res.data.message || "Password reset successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to reset password");
+        return false;
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to reset password");
+      return false;
+    }
+  },
 
   // Get Schools Controller
   getSchoolList: async () => {

@@ -1,29 +1,44 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Mail, School } from "lucide-react";
+import { Mail, School as SchoolIcon, Book } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AuthPattern from "@/components/common/AuthPattern";
 
-interface SchoolType {
-  id: string;
-  name: string;
-}
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { School } from "./LoginPage";
+
+
 
 function RequestOtpPage() {
   const [formData, setFormData] = useState({
     email: "",
     role: "",
-    schoolId: "",
+    school_id: "",
   });
 
-  const [schools, setSchools] = useState<SchoolType[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
   const verifyForOtp = useAuthStore((state) => state.verifyForOtp);
   const getSchoolList = useAuthStore((state) => state.getSchoolList);
-
   const navigate = useNavigate();
 
-  // Fetch schools list
+  // Fetch school list
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolList = await getSchoolList();
@@ -36,18 +51,21 @@ function RequestOtpPage() {
     fetchSchools();
   }, [getSchoolList]);
 
-  // Send OTP
-  const handleSendOtp = async () => {
-    if (!formData.email || !formData.role || !formData.schoolId) {
+  // Handle OTP Request
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.role || !formData.school_id) {
       toast.error("Please fill email, role, and school first");
       return;
     }
 
+    console.log("formdata: ", formData)
 
     const success = await verifyForOtp({
       email: formData.email,
       role: formData.role,
-      schoolId: formData.schoolId,
+      school_id: formData.school_id,
     });
 
     if (success) {
@@ -58,82 +76,114 @@ function RequestOtpPage() {
     }
   };
 
+  const handleBackToLogin = () => navigate("/login");
+
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left Form Section */}
-      <div className="h-full flex items-center justify-center">
-        <div className="border border-blue-200 p-8 rounded-2xl w-full max-w-md space-y-6">
-          <h2 className="text-xl font-semibold text-center">
-            Request Password Reset
-          </h2>
+    <div className="min-h-screen grid lg:grid-cols-2 bg-card text-slate-800 dark:text-slate-200">
+      {/* Left Side */}
+      <div className="flex flex-col justify-center items-center">
+        <Card className="w-full max-w-md border-none shadow-none">
+          <CardHeader className="text-center space-y-3">
+            <div className="flex flex-col items-center gap-2">
+              <CardTitle className="text-xl md:text-2xl font-bold">
+                Request Password Reset
+              </CardTitle>
+              <CardDescription>
+                Enter your details to receive an OTP on your registered email
+              </CardDescription>
+            </div>
+          </CardHeader>
 
-          {/* Email */}
-          <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-            <Mail className="size-5 text-gray-400" />
-            <input
-              type="email"
-              className="grow outline-none"
-              placeholder="Enter your registered email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-          </label>
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleSendOtp}>
+              {/* Email */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="size-4 text-muted-foreground" />
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="example@gmail.com"
+                  value={formData.email}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </div>
 
-          {/* School */}
-          <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-            <School className="size-5 text-gray-400" />
-            <select
-              className="grow outline-none bg-transparent"
-              value={formData.schoolId}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                setFormData({ ...formData, schoolId: e.target.value })
-              }
-            >
-              <option value="" disabled>
-                Select School
-              </option>
-              {schools.map((school) => (
-                <option key={school.id} value={school.id}>
-                  {school.id} - {school.name}
-                </option>
-              ))}
-            </select>
-          </label>
+              {/* School Dropdown */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <SchoolIcon className="size-4 text-muted-foreground" />
+                  School
+                </Label>
+                <Select
+                  value={formData.school_id}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, school_id: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select School" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {schools.map((school) => (
+                      <SelectItem key={school.id} value={String(school.id)}>
+                        {school.name} / {school.city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* Role */}
-          <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-            <select
-              className="grow outline-none bg-transparent"
-              value={formData.role}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                setFormData({ ...formData, role: e.target.value })
-              }
-            >
-              <option value="" disabled>
-                Select Role
-              </option>
-              <option value="admin">Admin</option>
-              <option value="accountant">Accountant</option>
-              <option value="principal">Principal</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="parent">Parent</option>
-            </select>
-          </label>
+              {/* Role Dropdown */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <Book className="size-4 text-muted-foreground" />
+                  Role
+                </Label>
+                <Select
+                  value={formData.role}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, role: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="accountant">Accountant</SelectItem>
+                    <SelectItem value="principal">Principal</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="parent">Parent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <button
-            type="button"
-            onClick={handleSendOtp}
-            className="bg-blue-500 text-white rounded-xl py-2 w-full hover:bg-blue-700 transition-all"
-          >
-            Send OTP
-          </button>
-        </div>
+              {/* Submit Button */}
+              <Button type="submit" className="w-full">
+                Send OTP
+              </Button>
+
+              {/* Back to Login */}
+              <Button
+                type="button"
+                variant="link"
+                onClick={handleBackToLogin}
+                className="w-full text-sm text-primary hover:underline"
+              >
+                Back to Login
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Right pattern */}
+      {/* Right Side */}
       <AuthPattern />
     </div>
   );

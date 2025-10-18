@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSidebar } from "@/components/ui/sidebar"; // ✅ Shadcn hook
+import { useSidebar } from "@/components/ui/sidebar"; 
 import {
   Sidebar,
   SidebarContent,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/collapsible";
 import { roleMenus, MenuItem } from "@/data/sidebardata";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile"; // ✅ optional: more robust
+import { useIsMobile } from "@/hooks/use-mobile"; // 
 
 interface SchoolSidebarProps {
   currentRole: string;
@@ -30,8 +30,8 @@ interface SchoolSidebarProps {
 export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const location = useLocation();
-  const { setOpenMobile } = useSidebar(); // ✅ only need setOpenMobile
-  const isMobile = useIsMobile(); // ✅ detects mobile screens
+  const { setOpenMobile } = useSidebar(); 
+  const isMobile = useIsMobile(); 
 
   const currentMenus = roleMenus[currentRole] || [];
 
@@ -45,7 +45,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
 
   const handleLinkClick = () => {
     if (isMobile) {
-      // ✅ closes the Sheet (mobile sidebar)
+      // closes the mobile sidebar
       setOpenMobile(false);
     }
   };
@@ -117,7 +117,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
   };
 
   return (
-    <Sidebar className="border-border">
+    <Sidebar className="border-border ">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold mb-4 text-sidebar-primary-foreground dark:text-foreground">

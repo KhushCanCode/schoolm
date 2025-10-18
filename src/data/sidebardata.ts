@@ -109,8 +109,8 @@ export const roleMenus: RoleMenus = {
       href: "/principal/classes/class",
       submenu: [
         { title: "List", icon: ClipboardList, href: "/principal/classes/list" },
-        { title: "SubjectList", icon: SquareLibrary, href: "/principal/classes/subjectlist" },
-        { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjects" },
+        { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjectlist" },
+        // { title: "Subjects", icon: BookCopy, href: "/principal/classes/subjects" },
         {
           title: "Timetable",
           icon: Calendar1,

@@ -21,7 +21,7 @@ export interface UserData {
 
 //Teacher Response Type
 export interface TeacherForm {
-    id?: number
+  id?: string
   status?: string;
   school_id?: string;
   name?: string;
@@ -102,10 +102,10 @@ interface UsersState {
 
   //Teacher Controllers
   registerTeacher: (school_id: string, data: TeacherForm) => Promise<boolean>;
-  // updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
-  deleteTeacher: (teacherId: number) => Promise<boolean>;
+  updateTeacher: (teacherId: string, school_id: string, data: TeacherForm) => Promise<boolean>;
+  deleteTeacher: (teacherId: string) => Promise<boolean>;
   assignSubClasstoTeacher: (teacherId:number, data: AssignSubjectsRequest) => Promise<boolean>;
-  getTeacherById: (teacherId: number) => Promise<TeacherForm | null>;
+  getTeacherById: (teacherId: string) => Promise<TeacherForm | null>;
   getAllTeachers: (school_id: string) => Promise<TeacherForm[] | null>;
 
   
@@ -360,6 +360,35 @@ export const useUsersStore = create<UsersState>(() => ({
   },
 
   //Update Teacher
+  updateTeacher: async(teacherId, school_id, data) =>{
+  const token = localStorage.getItem("token");
+
+    try {
+      const res = await axiosInstance.put(
+        `/principal/teacher/update/${teacherId}/${school_id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+
+      );
+
+      if (res.data.status) {
+        toast.success(res.data.message || "Teacher updated successfully");
+        return true;
+      } else {
+        toast.error(res.data.message || "Failed to update teacher");
+        return false;
+      }
+    } catch (error: any) {
+      console.error(
+        "Error updating teacher:",
+        error?.response?.data?.message || error.message
+      );
+      toast.error(error?.response?.data?.message || "Failed to update teacher");
+      return false;
+    }
+  },
 
   // Delete Teacher
   deleteTeacher: async(teacherId) =>{

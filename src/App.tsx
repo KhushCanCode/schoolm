@@ -92,6 +92,8 @@ const App = () => (
         {/* <Route path="/signup" element={<SignupPage/>}/> */}
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-otp" element={<RequestOtpPage/>}/>
+          <Route path="/reset-password" element={<ResetPasswordPage/>}/>
         </Route>
 
         {/* admin panel */}

@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Lock } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
 import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthPattern from "@/components/common/AuthPattern";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 interface ResetPasswordState {
   email: string;
@@ -38,13 +49,11 @@ function ResetPasswordPage() {
     }
 
     const success = await changePassword({
-      email: state.email,
+      email: state?.email,
       otp: formData.otp,
       newPassword: formData.newPassword,
-      role: state.role,
+      role: state?.role,
     });
-
-   
 
     if (success) {
       toast.success("Password reset successful!");
@@ -55,70 +64,82 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left Form Section */}
-      <div className="h-full flex items-center justify-center">
-        <div className="border border-blue-200 p-8 rounded-2xl w-full max-w-md space-y-6">
-          <h2 className="text-xl font-semibold text-center">
-            Enter OTP & Reset Password
-          </h2>
+    <div className="min-h-screen grid lg:grid-cols-2 bg-card text-slate-800 dark:text-slate-200">
+      {/* Left Side Form */}
+      <div className="flex flex-col justify-center items-center">
+        <Card className="w-full max-w-md border-none shadow-none">
+          <CardHeader className="text-center space-y-3">
+            <CardTitle className="text-xl md:text-2xl font-bold">
+              Reset Your Password
+            </CardTitle>
+            <CardDescription>
+              Enter the OTP sent to your email and set a new password
+            </CardDescription>
+          </CardHeader>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* OTP */}
-            <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-              <input
-                type="text"
-                className="grow outline-none"
-                placeholder="Enter OTP"
-                value={formData.otp}
-                onChange={(e) =>
-                  setFormData({ ...formData, otp: e.target.value })
-                }
-              />
-            </label>
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* OTP */}
+              <div className="space-y-2">
+                <Input
+                  id="otp"
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={formData.otp}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, otp: e.target.value })
+                  }
+                />
+              </div>
 
-            {/* New Password */}
-            <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-              <Lock className="size-5 text-gray-400" />
-              <input
-                type="password"
-                className="grow outline-none"
-                placeholder="Enter new password"
-                value={formData.newPassword}
-                onChange={(e) =>
-                  setFormData({ ...formData, newPassword: e.target.value })
-                }
-              />
-            </label>
+              {/* New Password */}
+              <div className="space-y-2">
+                
+                <Input
+                  id="newPassword"
+                  type="password"
+                  placeholder="Enter new password"
+                  value={formData.newPassword}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, newPassword: e.target.value })
+                  }
+                />
+              </div>
 
-            {/* Confirm Password */}
-            <label className="border-2 p-2 rounded-xl flex items-center gap-2">
-              <Lock className="size-5 text-gray-400" />
-              <input
-                type="password"
-                className="grow outline-none"
-                placeholder="Confirm new password"
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    confirmPassword: e.target.value,
-                  })
-                }
-              />
-            </label>
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={formData.confirmPassword}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, confirmPassword: e.target.value })
+                  }
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="bg-green-600 text-white rounded-xl py-2 w-full hover:bg-green-700 transition-all"
-            >
-              Reset Password
-            </button>
-          </form>
-        </div>
+              {/* Submit Button */}
+              <Button type="submit" className="w-full">
+                Reset Password
+              </Button>
+
+              {/* Back to Login */}
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => navigate("/verify-otp")}
+                className="w-full text-sm text-primary hover:underline"
+              >
+                Request Otp Again
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Right pattern */}
+      {/* Right Side Pattern */}
       <AuthPattern />
     </div>
   );

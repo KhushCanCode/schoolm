@@ -93,6 +93,7 @@ const UserRegister = () => {
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
+                  placeholder="John Doe"
                   value={formData.username}
                   onChange={(e) => handleInputChange("username", e.target.value)}
                   required
@@ -105,6 +106,7 @@ const UserRegister = () => {
                 <Input
                   id="email"
                   type="email"
+                  placeholder="johndoe@gmail.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   required
@@ -116,6 +118,7 @@ const UserRegister = () => {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  placeholder="johndoe123"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
                 />
@@ -145,6 +148,7 @@ const UserRegister = () => {
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
                   id="phone"
+                  placeholder="9894223678"
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                 />

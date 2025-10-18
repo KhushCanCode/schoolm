@@ -136,6 +136,7 @@ const StudentRegister = () => {
                 <Label htmlFor="candidate_name">Name *</Label>
                 <Input
                   id="candidate_name"
+                  placeholder="John Doe"
                   value={formData.candidate_name}
                   onChange={(e) => handleInputChange("candidate_name", e.target.value)}
                   required
@@ -147,9 +148,10 @@ const StudentRegister = () => {
                 <Label htmlFor="addhar">Aadhaar Number</Label>
                 <Input
                   id="addhar"
+                  
                   value={formData.addhar}
                   onChange={(e) => handleInputChange("addhar", e.target.value)}
-                  placeholder=""
+                  placeholder="1234 5678 9012"
                 />
               </div>
 
@@ -159,6 +161,7 @@ const StudentRegister = () => {
                 <Input
                   id="email"
                   type="email"
+                  placeholder="johndoe@gmail.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   required
@@ -170,6 +173,8 @@ const StudentRegister = () => {
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
                   id="phone"
+                  type="tel"
+                  placeholder="9876543210"
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                 />
@@ -208,6 +213,7 @@ const StudentRegister = () => {
                 <Textarea
                   id="address"
                   value={formData.address}
+                  placeholder="A-district, South City, India"
                   onChange={(e) => handleInputChange("address", e.target.value)}
                   rows={3}
                 />
@@ -298,7 +304,7 @@ const StudentRegister = () => {
                   type="email"
                   value={formData.parent_email}
                   onChange={(e) => handleInputChange("parent_email", e.target.value)}
-                  placeholder=""
+                  placeholder="parent@gmail.com"
                 />
               </div>
 
@@ -307,6 +313,7 @@ const StudentRegister = () => {
                 <Label htmlFor="father_name">Father's Name *</Label>
                 <Input
                   id="father_name"
+                  placeholder="Jim Carrey"
                   value={formData.father_name}
                   onChange={(e) => handleInputChange("father_name", e.target.value)}
                   required
@@ -318,6 +325,7 @@ const StudentRegister = () => {
                 <Label htmlFor="mother_name">Mother's Name *</Label>
                 <Input
                   id="mother_name"
+                  placeholder="Angelina Joe"
                   value={formData.mother_name}
                   onChange={(e) => handleInputChange("mother_name", e.target.value)}
                   required
