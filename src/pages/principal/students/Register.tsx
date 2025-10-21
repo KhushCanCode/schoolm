@@ -334,73 +334,7 @@ const StudentRegister = () => {
             </CardContent>
           </Card>
 
-          {/* ---------------------- STUDENT SERVICES ---------------------- */}
-
-          {/* <Card> */}
-          {/* <CardHeader>
-              <CardTitle className="text-lg">Services Information</CardTitle>
-            </CardHeader> */}
-          {/* <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
-
-          {/* Transport Service */}
-          {/* <div className="space-y-2">
-                <Label htmlFor="transport_service">Transport Service</Label>
-                <Select
-                  value={formData.transport_service ? "true" : "false"}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, transport_service: value === "true" })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select option" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true" className="">Yes</SelectItem>
-                    <SelectItem value="false">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
-
-          {/*  Library Service */}
-          {/* <div className="space-y-2">
-                <Label htmlFor="library_service">Library Service</Label>
-                <Select
-                  value={formData.library_service ? "true" : "false"}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, library_service: value === "true" })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select option" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">Yes</SelectItem>
-                    <SelectItem value="false">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
-
-          {/* Computer Service */}
-          {/* <div className="space-y-2">
-                <Label htmlFor="computer_service">Computer Service</Label>
-                <Select
-                  value={formData.computer_service ? "true" : "false"}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, computer_service: value === "true" })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select option" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">Yes</SelectItem>
-                    <SelectItem value="false">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
-
-          {/* </CardContent> */}
-          {/* </Card> */}
+          
 
           {/* ---------------------- SUBMIT ---------------------- */}
           <div className="flex justify-center md:justify-end gap-4">

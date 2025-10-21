@@ -18,7 +18,7 @@ const {getAllTeachers, deleteTeacher} = useUsersStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-const handleDelete = async (index: number, id: number) => {
+const handleDelete = async (index: number, id: string) => {
   
   const success = await deleteTeacher(id); 
   if (success) {
@@ -88,7 +88,7 @@ const handleDelete = async (index: number, id: number) => {
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{teachers.length}</div>
-              <div className="text-sm text-slate-500">Total Teachers</div>
+              <div className="text-sm text-muted-foreground">Total Teachers</div>
             </CardContent>
           </Card>
           <Card className="">
@@ -96,7 +96,7 @@ const handleDelete = async (index: number, id: number) => {
               <div className="text-2xl font-bold text-green-600">
                 {teachers.filter(u => u.status === "active").length}
               </div>
-              <div className="text-sm text-slate-500">Active Teachers</div>
+              <div className="text-sm text-muted-foreground">Active Teachers</div>
             </CardContent>
           </Card>
         </div>
@@ -106,7 +106,7 @@ const handleDelete = async (index: number, id: number) => {
             <CardTitle className="text-lg">All Teachers</CardTitle>
             <div className="relative w-full sm:w-64">
               <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-slate-500" />
+                <Search className="h-4 w-4 " />
               </span>
               <Input
                 placeholder="Search teachers..."
@@ -149,7 +149,7 @@ const handleDelete = async (index: number, id: number) => {
                             <span
                               className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 teacher.status === "active"
-                                  ? "bg-accent text-primary"
+                                  ? "bg-accent text-accent-foreground"
                                   : "bg-muted text-gray-600"
                               }`}
                             >

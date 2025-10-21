@@ -110,7 +110,7 @@ const quickActions = [
                 ) : (
                   <>
                     <div className="text-2xl font-bold">{stat.value}</div>
-                    <p className="text-xs text-slate-500">{stat.description}</p>
+                    <p className="text-xs text-muted-foreground">{stat.description}</p>
                   </>
                 )}
               </CardContent>
@@ -124,7 +124,7 @@ const quickActions = [
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Recent Activities</CardTitle>
-            <CardDescription className="text-xs text-slate-500">
+            <CardDescription className="text-xs text-muted-foreground">
               Latest updates from your school
             </CardDescription>
           </CardHeader>
@@ -135,7 +135,7 @@ const quickActions = [
                   <div className={`w-2 h-2 rounded-full ${activity.color}`}></div>
                   <div className="flex-1">
                     <p className="text-sm font-medium">{activity.title}</p>
-                    <p className="text-xs text-slate-500">{activity.time}</p>
+                    <p className="text-xs text-muted-foreground">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -146,7 +146,7 @@ const quickActions = [
        <Card>
             <CardHeader>
               <CardTitle className="text-lg">Quick Actions</CardTitle>
-              <CardDescription className="text-xs text-slate-500">
+              <CardDescription className="text-xs text-muted-foreground">
                 Frequently used actions
               </CardDescription>
             </CardHeader>
@@ -168,7 +168,7 @@ const quickActions = [
                       {/* Text Section */}
                       <div>
                         <p className="font-medium text-sm">{action.title}</p>
-                        <p className="text-slate-500 text-xs">{action.description}</p>
+                        <p className="text-muted-foreground text-xs">{action.description}</p>
                       </div>
                     </button>
                   );

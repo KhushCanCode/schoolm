@@ -55,7 +55,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
 
           <div className="flex items-center gap-2  flex-1 max-w-md mx-4">
           <div className="relative flex-1 ">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input placeholder="Search..." className="pl-9 h-8 md:h-9 " />
           </div>
         </div>
@@ -68,7 +68,7 @@ export function SchoolNavbar({ currentRole, onRoleChange }: SchoolNavbarProps) {
               <div className="w-11 md:w-10 ">
                  <Avatar className="h-8 w-8 cursor-pointer   ">
                   <AvatarFallback>
-                    <User className="h-4 w-4 text-violet-500" />
+                    <User className="h-4 w-4 text-primary" />
                   </AvatarFallback>
                 </Avatar>
               </div>

@@ -68,7 +68,7 @@ const StudentList = () => {
               <Card>
                 <CardContent className="p-4 text-center">
                   <div className="text-2xl font-bold text-primary">{students.length}</div>
-                  <div className="text-sm text-slate-500">Total Students</div>
+                  <div className="text-sm text-muted-foreground">Total Students</div>
                 </CardContent>
               </Card>
               <Card>
@@ -76,7 +76,7 @@ const StudentList = () => {
                   <div className="text-2xl font-bold text-green-600">
                     {students.filter((s) => s.status === "active").length}
                   </div>
-                  <div className="text-sm text-slate-500">Active Students</div>
+                  <div className="text-sm text-muted-foreground">Active Students</div>
                 </CardContent>
               </Card>
             </>
@@ -88,7 +88,7 @@ const StudentList = () => {
             <CardTitle className="text-lg">All Students</CardTitle>
             <div className="relative w-full sm:w-64">
               <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-slate-500" />
+                <Search className="h-4 w-4 " />
               </span>
               <Input
                 placeholder="Search students..."
@@ -133,7 +133,7 @@ const StudentList = () => {
                               className={`px-2 py-1 rounded-full text-xs ${
                                 student.status === "active"
                                   ? "bg-accent text-primary"
-                                  : "bg-muted text-slate-500"
+                                  : "bg-accent text-accent-foreground"
                               }`}
                             >
                               {student.status}
@@ -170,17 +170,13 @@ const StudentList = () => {
                         <p className="font-medium">{student.candidate_name}</p>
                         <div className="flex items-center gap-2">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs ${
-                              student.status === "active"
-                                ? "bg-accent text-primary"
-                                : "bg-muted text-slate-500"
-                            }`}
+                            className="px-2 py-1 rounded-full text-xs bg-accent text-accent-foreground" 
                           >
                             {student.status}
                           </span>
                         </div>
                       </div>
-                      <div className="space-y-1 text-sm text-slate-400">
+                      <div className="space-y-1 text-sm text-muted-foreground">
                         <p>
                           <span className="font-medium">Roll No.:</span> {student.roll_no}
                         </p>

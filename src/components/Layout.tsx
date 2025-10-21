@@ -18,7 +18,7 @@ export default function Layout() {
   if (!authUser) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg font-medium text-red-500">
+        <p className="text-lg font-medium text-foreground">
           Not authenticated. Please login.
         </p>
       </div>

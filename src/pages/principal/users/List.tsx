@@ -160,7 +160,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{users.length}</div>
-              <div className="text-sm text-gray-500">Total Users</div>
+              <div className="text-sm text-muted-foreground">Total Users</div>
             </CardContent>
           </Card>
           <Card className="">
@@ -168,7 +168,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               <div className="text-2xl font-bold text-green-600">
                 {users.filter(u => u.status === "active").length}
               </div>
-              <div className="text-sm text-gray-500">Active Users</div>
+              <div className="text-sm text-muted-foreground">Active Users</div>
             </CardContent>
           </Card>
         </div>
@@ -179,7 +179,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               <CardTitle className="text-lg">All Users</CardTitle>
               <div className="relative w-full sm:w-64">
                 <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-4 w-4 text-slate-400" />
+                  <Search className="h-4 w-4 " />
                 </span>
                 <Input
                   placeholder="Search users..."

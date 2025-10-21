@@ -4,8 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@custom-variant light (&:is(.light *));
 @custom-variant dark (&:is(.dark *));
+@custom-variant dark-red(&:is(.dark-red *));
 
 
 
@@ -14,7 +15,7 @@ All colors MUST be HSL.
 */
 
 @layer base {
-:root {
+.light {
   --background: 240 100% 98.0392%;
   --foreground: 240 27.5862% 22.7451%;
   --card: 0 0% 100%;
@@ -140,6 +141,66 @@ All colors MUST be HSL.
     0px 8px 10px -1px hsl(var(--shadow-color) / 0.12);
   --shadow-2xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.3);
 }
+
+.dark-red {
+  --background: 0 30% 8%;             /* very dark red background */
+  --foreground: 0 40% 90%;            /* light text on dark red */
+  --card: 0 30% 14%;                  /* dark red cards */
+  --card-foreground: 0 40% 90%;
+  --popover: 0 30% 14%;
+  --popover-foreground: 0 40% 90%;
+  --primary: 0 80% 45%;               /* strong red */
+  --primary-foreground: 0 30% 8%;     /* text on primary red */
+  --secondary: 0 50% 25%;             /* darker secondary red */
+  --secondary-foreground: 0 40% 90%;
+  --muted: 0 20% 15%;
+  --muted-foreground: 0 20% 70%;
+  --accent: 0 60% 30%;                /* accent red */
+  --accent-foreground: 0 40% 90%;
+  --destructive: 0 70% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 25% 20%;
+  --input: 0 25% 20%;
+  --ring: 0 80% 45%;
+  --chart-1: 0 80% 45%;
+  --chart-2: 345 70% 83%;
+  --chart-3: 158 30% 60%;
+  --chart-4: 35 75% 75%;
+  --chart-5: 215 55% 75%;
+  --sidebar: 0 30% 14%;
+  --sidebar-foreground: 0 40% 90%;
+  --sidebar-primary: 0 80% 45%;
+  --sidebar-primary-foreground: 0 30% 8%;
+  --sidebar-accent: 0 60% 30%;
+  --sidebar-accent-foreground: 0 40% 90%;
+  --sidebar-border: 0 25% 20%;
+  --sidebar-ring: 0 80% 45%;
+
+  /* Fonts */
+  --font-sans: Inter, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: JetBrains Mono, monospace;
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Shadows */
+  --shadow-color: 0 30% 25%;
+  --shadow-2xs: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.06);
+  --shadow-xs: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.06);
+  --shadow-sm: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+    0px 1px 2px -1px hsl(var(--shadow-color) / 0.12);
+  --shadow: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+    0px 1px 2px -1px hsl(var(--shadow-color) / 0.12);
+  --shadow-md: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+    0px 2px 4px -1px hsl(var(--shadow-color) / 0.12);
+  --shadow-lg: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+    0px 4px 6px -1px hsl(var(--shadow-color) / 0.12);
+  --shadow-xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+    0px 8px 10px -1px hsl(var(--shadow-color) / 0.12);
+  --shadow-2xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.3);
+}
+
 
 }
 
