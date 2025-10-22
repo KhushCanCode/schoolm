@@ -47,12 +47,13 @@ function ResetPasswordPage() {
       toast.error("Passwords do not match");
       return;
     }
-
+console.log("state:" , state)
     const success = await changePassword({
       email: state?.email,
       otp: formData.otp,
       newPassword: formData.newPassword,
       role: state?.role,
+      school_id:state?.school_id
     });
 
     if (success) {

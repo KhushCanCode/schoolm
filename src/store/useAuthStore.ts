@@ -117,9 +117,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   //Change Password Controller
   changePassword: async (data) => {
+    console.log(data)
     try {
       const res = await axiosInstance.post(
-        `/auth/change-password/${data.role}`,
+        `/auth/change-password`,
         data
       );
       if (res.data.status) {
