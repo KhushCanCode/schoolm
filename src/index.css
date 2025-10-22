@@ -143,60 +143,64 @@ All colors MUST be HSL.
 }
 
 .dark-red {
-  --background: 0 30% 8%;             /* very dark red background */
-  --foreground: 0 40% 90%;            /* light text on dark red */
-  --card: 0 30% 14%;                  /* dark red cards */
-  --card-foreground: 0 40% 90%;
-  --popover: 0 30% 14%;
-  --popover-foreground: 0 40% 90%;
-  --primary: 0 80% 45%;               /* strong red */
-  --primary-foreground: 0 30% 8%;     /* text on primary red */
-  --secondary: 0 50% 25%;             /* darker secondary red */
-  --secondary-foreground: 0 40% 90%;
-  --muted: 0 20% 15%;
-  --muted-foreground: 0 20% 70%;
-  --accent: 0 60% 30%;                /* accent red */
-  --accent-foreground: 0 40% 90%;
-  --destructive: 0 70% 60%;
+  --background: 330 45% 96%;          /* very light pink background */
+  --foreground: 330 25% 20%;          /* dark rose text */
+  --card: 330 50% 98%;                /* slightly lighter pink card */
+  --card-foreground: 330 25% 20%;
+  --popover: 330 45% 98%;
+  --popover-foreground: 330 25% 20%;
+  --primary: 330 70% 70%;             /* main soft pink */
+  --primary-foreground: 330 20% 98%;  /* text on primary */
+  --secondary: 340 50% 85%;           /* lighter pink secondary */
+  --secondary-foreground: 330 25% 20%;
+  --muted: 330 30% 90%;               /* pale muted pink */
+  --muted-foreground: 330 15% 40%;
+  --accent: 340 65% 80%;              /* accent pink */
+  --accent-foreground: 330 20% 15%;
+  --destructive: 0 65% 65%;           /* soft red for destructive */
   --destructive-foreground: 0 0% 100%;
-  --border: 0 25% 20%;
-  --input: 0 25% 20%;
-  --ring: 0 80% 45%;
-  --chart-1: 0 80% 45%;
-  --chart-2: 345 70% 83%;
-  --chart-3: 158 30% 60%;
-  --chart-4: 35 75% 75%;
-  --chart-5: 215 55% 75%;
-  --sidebar: 0 30% 14%;
-  --sidebar-foreground: 0 40% 90%;
-  --sidebar-primary: 0 80% 45%;
-  --sidebar-primary-foreground: 0 30% 8%;
-  --sidebar-accent: 0 60% 30%;
-  --sidebar-accent-foreground: 0 40% 90%;
-  --sidebar-border: 0 25% 20%;
-  --sidebar-ring: 0 80% 45%;
+  --border: 330 30% 85%;
+  --input: 330 30% 85%;
+  --ring: 330 70% 70%;
+  
+  /* Charts */
+  --chart-1: 330 70% 70%;
+  --chart-2: 340 80% 85%;
+  --chart-3: 270 50% 75%;   /* soft lavender */
+  --chart-4: 50 70% 80%;    /* pastel yellow */
+  --chart-5: 180 45% 75%;   /* mint teal */
+  
+  /* Sidebar */
+  --sidebar: 330 45% 96%;
+  --sidebar-foreground: 330 25% 20%;
+  --sidebar-primary: 330 70% 70%;
+  --sidebar-primary-foreground: 330 20% 98%;
+  --sidebar-accent: 340 65% 80%;
+  --sidebar-accent-foreground: 330 20% 15%;
+  --sidebar-border: 330 30% 85%;
+  --sidebar-ring: 330 70% 70%;
 
   /* Fonts */
-  --font-sans: Inter, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: JetBrains Mono, monospace;
+  --font-sans: "Poppins", Inter, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
 
   /* Radius */
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 
   /* Shadows */
-  --shadow-color: 0 30% 25%;
+  --shadow-color: 330 30% 70%;
   --shadow-2xs: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.06);
-  --shadow-xs: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.06);
+  --shadow-xs: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.08);
   --shadow-sm: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
     0px 1px 2px -1px hsl(var(--shadow-color) / 0.12);
   --shadow: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
     0px 1px 2px -1px hsl(var(--shadow-color) / 0.12);
-  --shadow-md: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+  --shadow-md: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.14),
     0px 2px 4px -1px hsl(var(--shadow-color) / 0.12);
-  --shadow-lg: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+  --shadow-lg: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.18),
     0px 4px 6px -1px hsl(var(--shadow-color) / 0.12);
-  --shadow-xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.12),
+  --shadow-xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.2),
     0px 8px 10px -1px hsl(var(--shadow-color) / 0.12);
   --shadow-2xl: 0px 4px 10px 0px hsl(var(--shadow-color) / 0.3);
 }

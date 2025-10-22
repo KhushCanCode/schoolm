@@ -120,7 +120,7 @@ export function SchoolSidebar({ currentRole }: SchoolSidebarProps) {
     <Sidebar className="border-border ">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold mb-4 text-sidebar-primary-foreground dark:text-foreground">
+          <SidebarGroupLabel className="text-lg font-semibold mb-4 ">
             {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)} Panel
           </SidebarGroupLabel>
           <SidebarGroupContent>

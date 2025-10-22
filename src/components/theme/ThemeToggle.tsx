@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { Sun, Moon, Droplet } from "lucide-react"; // Droplet as red theme icon
+import { Sun, Moon, Droplet, Lollipop } from "lucide-react"; // Droplet as red theme icon
 
 const THEMES = ["light", "dark", "dark-red"];
 
@@ -24,7 +24,7 @@ export default function ThemeToggle(): JSX.Element {
 
   const getIcon = () => {
     if (currentTheme === "dark") return <Sun className="size-4" />;
-    if (currentTheme === "dark-red") return <Droplet className="size-4" />;
+    if (currentTheme === "dark-red") return <Lollipop className="size-4" />;
     return <Moon className="size-4" />;
   };
 
