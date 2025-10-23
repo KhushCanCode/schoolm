@@ -9,19 +9,24 @@ export interface SubjectForm {
   description?: string;
 }
 
+export interface SchoolSubject extends SubjectForm{
+}
+
 interface SubjectState {
+  subjects: SchoolSubject[];
   createSubject: (data: SubjectForm) => Promise<boolean>;
   updateSubject: (subjectId: string, data: SubjectForm) => Promise<boolean>;
   deleteSubject: (subjectId: string) => Promise<boolean>;
   getSubjects: (school_id: number) => Promise<SubjectForm[]>;
 }
 
-export const useSubjectStore = create<SubjectState>(() => ({
+export const useSubjectStore = create<SubjectState>((set, get) => ({
+  subjects: [],
 
   // CREATE SUBJECT 
   createSubject: async (data: SubjectForm) => {
     const token = localStorage.getItem("token");
-    console.log("Creating subject with data:", data); 
+    console.log("Creating subject with data:", data);
     try {
       const res = await axiosInstance.post(`/principal/subject/create/${data.school_id}`, data, {
         headers: {
@@ -30,6 +35,8 @@ export const useSubjectStore = create<SubjectState>(() => ({
       });
 
       if (res.data.status) {
+        const created: SchoolSubject = res.data.data;
+        set((state) => ({ subjects: [...state.subjects, created] }));
         toast.success(res.data.message || "Subject created successfully");
         return true;
       } else {
@@ -54,6 +61,12 @@ export const useSubjectStore = create<SubjectState>(() => ({
       });
 
       if (res.data.status) {
+        const updated: SchoolSubject = res.data.data;
+        set((state) => ({
+          subjects: state.subjects.map((s) =>
+            String(s.id) === String(updated.id) ? updated : s
+          ),
+        }));
         toast.success(res.data.message || "Subject updated successfully");
         return true;
       } else {
@@ -78,6 +91,9 @@ export const useSubjectStore = create<SubjectState>(() => ({
       });
 
       if (res.data.status) {
+        set((state) => ({
+          subjects: state.subjects.filter((s) => String(s.id) !== String(subjectId)),
+        }));
         toast.success(res.data.message || "Subject deleted successfully");
         return true;
       } else {
@@ -102,7 +118,9 @@ export const useSubjectStore = create<SubjectState>(() => ({
       });
 
       if (res.data.status) {
-        return res.data.data;
+        const data: SchoolSubject[] = res.data.data;
+        set(() => ({ subjects: data }));
+        return data;
       } else {
         toast.error(res.data.message || "Failed to fetch subjects");
         return [];

@@ -38,6 +38,10 @@ export interface TeacherForm {
   
 }
 
+export interface Teacher extends TeacherForm{
+  
+}
+
 // Student response type
 export interface StudentForm {
   id?:number;
